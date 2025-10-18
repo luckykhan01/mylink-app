@@ -344,6 +344,30 @@ class ApiClient {
 
     return response.json()
   }
+
+  async uploadResume(applicationId: number, file: File): Promise<{ message: string; filename: string }> {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const token = typeof window !== "undefined" ? localStorage.getItem("access_token") : null
+    const headers: HeadersInit = {}
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`
+    }
+
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/upload-resume`, {
+      method: "POST",
+      headers,
+      body: formData,
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.detail || "Failed to upload resume")
+    }
+
+    return response.json()
+  }
 }
 
 export const api = new ApiClient()

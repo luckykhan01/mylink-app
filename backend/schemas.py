@@ -94,6 +94,8 @@ class UserListResponse(BaseModel):
 
 class JobApplicationBase(BaseModel):
     cover_letter: Optional[str] = None
+    resume_filename: Optional[str] = None
+    resume_content: Optional[str] = None
 
 class JobApplicationCreate(JobApplicationBase):
     vacancy_id: int
@@ -101,10 +103,14 @@ class JobApplicationCreate(JobApplicationBase):
 class JobApplicationUpdate(BaseModel):
     cover_letter: Optional[str] = None
     status: Optional[str] = None
+    resume_filename: Optional[str] = None
+    resume_path: Optional[str] = None
+    resume_content: Optional[str] = None
 
 class JobApplicationResponse(JobApplicationBase):
     id: int
     status: str
+    resume_path: Optional[str] = None
     created_at: datetime
     updated_at: Optional[datetime] = None
     job_seeker_id: int

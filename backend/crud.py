@@ -134,6 +134,10 @@ def get_job_applications(
     
     return applications, total
 
+def get_job_application(db: Session, application_id: int) -> Optional[JobApplication]:
+    """Получить заявку по ID"""
+    return db.query(JobApplication).filter(JobApplication.id == application_id).first()
+
 def update_job_application(db: Session, application_id: int, application_data: dict) -> Optional[JobApplication]:
     """Обновить заявку на работу"""
     db_application = db.query(JobApplication).filter(JobApplication.id == application_id).first()

@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Depends, HTTPException, Query
+from fastapi import FastAPI, Depends, HTTPException, Query, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import Optional
 import uvicorn
+from pathlib import Path
 
 from database import get_db, engine
 from models import Base, UserRole
@@ -14,13 +15,13 @@ from schemas import (
 from crud import (
     get_vacancy, get_vacancies, create_vacancy, 
     update_vacancy, delete_vacancy, get_companies, get_locations,
-    create_job_application, get_job_applications, update_job_application
+    create_job_application, get_job_applications, get_job_application, update_job_application
 )
 from user_crud import (
-    get_user, get_user_by_email, get_users, create_user,
+    get_user, get_users, create_user,
     update_user, delete_user, authenticate_user
 )
-from auth import create_access_token, verify_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from auth import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 from datetime import timedelta
 
 # Создаем экземпляр FastAPI приложения
@@ -67,11 +68,6 @@ async def api_info():
             {"path": "/redoc", "method": "GET", "description": "ReDoc документация"}
         ]
     }
-
-# Пример маршрута с параметрами
-@app.get("/users/{user_id}")
-async def get_user(user_id: int):
-    return {"user_id": user_id, "name": f"Пользователь {user_id}"}
 
 # ===== ЭНДПОИНТЫ ДЛЯ ВАКАНСИЙ =====
 
@@ -299,6 +295,58 @@ async def update_job_application_endpoint(
     if not updated_application:
         raise HTTPException(status_code=404, detail="Заявка не найдена")
     return updated_application
+
+@app.post("/applications/{application_id}/upload-resume")
+async def upload_resume(
+    application_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    """Загрузить резюме для заявки"""
+    # Проверяем существование заявки
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    # Проверяем тип файла
+    allowed_types = ["application/pdf", "application/msword", 
+                     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                     "text/plain"]
+    if file.content_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Неподдерживаемый тип файла. Разрешены: PDF, DOC, DOCX, TXT")
+    
+    # Проверяем размер файла (макс 10MB)
+    file_content = await file.read()
+    if len(file_content) > 10 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="Файл слишком большой. Максимальный размер: 10MB")
+    
+    # Создаем директорию для резюме если её нет
+    upload_dir = Path("uploads/resumes")
+    upload_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Генерируем безопасное имя файла
+    safe_filename = f"resume_{application_id}_{file.filename}"
+    file_path = upload_dir / safe_filename
+    
+    # Сохраняем файл
+    with open(file_path, "wb") as buffer:
+        buffer.write(file_content)
+    
+    # Обновляем заявку с информацией о резюме
+    update_data = {
+        "resume_filename": file.filename,
+        "resume_path": str(file_path),
+        # В будущем здесь можно добавить извлечение текста из PDF/DOC
+        "resume_content": "Resume content will be extracted by AI"
+    }
+    
+    update_job_application(db, application_id, update_data)
+    
+    return {
+        "message": "Резюме успешно загружено",
+        "filename": file.filename,
+        "application_id": application_id
+    }
 
 if __name__ == "__main__":
     # Запуск сервера
