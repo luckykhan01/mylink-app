@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - mylink-network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_AI_URL=http://localhost:8001
+    networks:
+      - mylink-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  ai-assistent:
+    build: ./ai-assistent
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./ai-assistent:/app
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - mylink-network
+    restart: unless-stopped
+
+networks:
+  mylink-network:
+    driver: bridge
+
+volumes:
+  node_modules:
