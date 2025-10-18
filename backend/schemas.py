@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional
+from pydantic import BaseModel, EmailStr
+from typing import Optional, List
 from datetime import datetime
+from models import UserRole
 
 class VacancyBase(BaseModel):
     title: str
@@ -39,6 +40,7 @@ class VacancyResponse(VacancyBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime] = None
+    employer_id: int
 
     class Config:
         from_attributes = True
@@ -49,3 +51,64 @@ class VacancyListResponse(BaseModel):
     page: int
     per_page: int
     total_pages: int
+
+# ===== СХЕМЫ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ =====
+
+class UserBase(BaseModel):
+    email: EmailStr
+    full_name: str
+    phone: Optional[str] = None
+    role: UserRole
+
+class UserCreate(UserBase):
+    password: str
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    phone: Optional[str] = None
+    password: Optional[str] = None
+    is_active: Optional[bool] = None
+
+class UserResponse(UserBase):
+    id: int
+    is_active: bool
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserListResponse(BaseModel):
+    users: List[UserResponse]
+    total: int
+    page: int
+    per_page: int
+    total_pages: int
+
+# ===== СХЕМЫ ДЛЯ ЗАЯВОК НА РАБОТУ =====
+
+class JobApplicationBase(BaseModel):
+    cover_letter: Optional[str] = None
+
+class JobApplicationCreate(JobApplicationBase):
+    vacancy_id: int
+
+class JobApplicationUpdate(BaseModel):
+    cover_letter: Optional[str] = None
+    status: Optional[str] = None
+
+class JobApplicationResponse(JobApplicationBase):
+    id: int
+    status: str
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    job_seeker_id: int
+    vacancy_id: int
+
+    class Config:
+        from_attributes = True

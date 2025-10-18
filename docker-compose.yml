@@ -34,12 +34,9 @@ services:
     build: ./frontend
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
     environment:
-      - REACT_APP_API_URL=http://localhost:8000
-      - REACT_APP_AI_URL=http://localhost:8001
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - BACKEND_URL=http://backend:8000
     networks:
       - mylink-network
     depends_on:
@@ -63,5 +60,4 @@ networks:
     driver: bridge
 
 volumes:
-  node_modules:
   postgres_data:

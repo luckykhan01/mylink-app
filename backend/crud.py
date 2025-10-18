@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
 from typing import List, Optional
-from models import Vacancy
+from models import Vacancy, JobApplication
 from schemas import VacancyCreate, VacancyUpdate
 
 def get_vacancy(db: Session, vacancy_id: int) -> Optional[Vacancy]:
@@ -57,8 +57,10 @@ def get_vacancies(
     
     return vacancies, total
 
-def create_vacancy(db: Session, vacancy: VacancyCreate) -> Vacancy:
-    db_vacancy = Vacancy(**vacancy.dict())
+def create_vacancy(db: Session, vacancy: VacancyCreate, employer_id: int) -> Vacancy:
+    vacancy_data = vacancy.dict()
+    vacancy_data["employer_id"] = employer_id
+    db_vacancy = Vacancy(**vacancy_data)
     db.add(db_vacancy)
     db.commit()
     db.refresh(db_vacancy)
@@ -95,3 +97,52 @@ def get_locations(db: Session) -> List[str]:
     """Получить список всех локаций"""
     locations = db.query(Vacancy.location).distinct().all()
     return [location[0] for location in locations if location[0]]
+
+# ===== CRUD ДЛЯ ЗАЯВОК НА РАБОТУ =====
+
+def create_job_application(db: Session, application_data: dict, job_seeker_id: int) -> JobApplication:
+    """Создать заявку на работу"""
+    application_data["job_seeker_id"] = job_seeker_id
+    db_application = JobApplication(**application_data)
+    db.add(db_application)
+    db.commit()
+    db.refresh(db_application)
+    return db_application
+
+def get_job_applications(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    job_seeker_id: Optional[int] = None,
+    vacancy_id: Optional[int] = None,
+    status: Optional[str] = None
+) -> tuple[List, int]:
+    """Получить заявки на работу с фильтрацией"""
+    query = db.query(JobApplication)
+    
+    if job_seeker_id:
+        query = query.filter(JobApplication.job_seeker_id == job_seeker_id)
+    
+    if vacancy_id:
+        query = query.filter(JobApplication.vacancy_id == vacancy_id)
+    
+    if status:
+        query = query.filter(JobApplication.status == status)
+    
+    total = query.count()
+    applications = query.offset(skip).limit(limit).all()
+    
+    return applications, total
+
+def update_job_application(db: Session, application_id: int, application_data: dict) -> Optional[JobApplication]:
+    """Обновить заявку на работу"""
+    db_application = db.query(JobApplication).filter(JobApplication.id == application_id).first()
+    if not db_application:
+        return None
+    
+    for field, value in application_data.items():
+        setattr(db_application, field, value)
+    
+    db.commit()
+    db.refresh(db_application)
+    return db_application
