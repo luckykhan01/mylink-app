@@ -2,11 +2,11 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { MessageCircle, X, Send } from "lucide-react"
+import { MessageCircle, X, Send, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { api } from "@/lib/api"
 
@@ -15,12 +15,15 @@ interface ChatbotWidgetProps {
   vacancyId: string
   onAnalysisComplete?: (analysis: any) => void
   embedded?: boolean // Если true, виджет будет отображаться без плавающей кнопки
+  autoStart?: boolean // Автоматически начать анализ при загрузке
 }
 
-export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, embedded = false }: ChatbotWidgetProps) {
+export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, embedded = false, autoStart = false }: ChatbotWidgetProps) {
   const [isOpen, setIsOpen] = useState(embedded ? true : false)
   const [inputValue, setInputValue] = useState("")
   const [questionCount, setQuestionCount] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [sessionId, setSessionId] = useState<string | null>(null)
   const [localMessages, setLocalMessages] = useState<Array<{ id: string; role: string; text: string }>>([
     {
       id: 'welcome',
@@ -29,9 +32,52 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
     }
   ])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Автоматически запускаем анализ при загрузке если autoStart = true
+  useEffect(() => {
+    console.log('useEffect triggered:', { autoStart, sessionId, applicationId })
+    if (autoStart && !sessionId && applicationId && applicationId !== '') {
+      console.log('Starting AI analysis for application:', applicationId)
+      startAIAnalysis()
+    }
+  }, [autoStart, sessionId, applicationId])
+
+  const startAIAnalysis = async () => {
+    console.log('startAIAnalysis called with applicationId:', applicationId)
+    setIsLoading(true)
+    try {
+      console.log('Calling api.analyzeApplication...')
+      const analysis = await api.analyzeApplication(Number(applicationId))
+      console.log('AI Analysis response:', analysis)
+      setSessionId(analysis.session_id)
+      
+      // Добавляем вопросы от AI в чат
+      if (analysis.followup_questions && analysis.followup_questions.length > 0) {
+        const aiQuestions = analysis.followup_questions.map((question, index) => ({
+          id: `ai-question-${index}`,
+          role: 'assistant',
+          text: question
+        }))
+        setLocalMessages(prev => [...prev, ...aiQuestions])
+      }
+      
+      console.log('AI Analysis completed:', analysis)
+    } catch (error) {
+      console.error('Failed to start AI analysis:', error)
+      // Fallback к локальным сообщениям
+      const fallbackMessage = {
+        id: 'fallback',
+        role: 'assistant',
+        text: 'Извините, AI-анализ временно недоступен. Пожалуйста, расскажите о себе в свободной форме.'
+      }
+      setLocalMessages(prev => [...prev, fallbackMessage])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!inputValue.trim()) return
+    if (!inputValue.trim() || isLoading) return
 
     // Добавляем сообщение пользователя в локальный массив
     const userMessage = {
@@ -45,29 +91,68 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
     // Сохраняем в базу через API
     saveMessageToAPI('user', inputValue)
     
+    const userInput = inputValue
     setInputValue("")
+    setIsLoading(true)
     
-    // Имитация ответа бота (пока API не готов)
-    setTimeout(() => {
-      const botResponses = [
-        'Спасибо за ваш ответ! Это очень интересно. Расскажите подробнее о вашем опыте.',
-        'Отлично! А можете рассказать о конкретных проектах, над которыми вы работали?',
-        'Понятно. Какие технологии вы использовали в последнее время?',
-        'Интересно! Какие задачи вам нравится решать больше всего?',
-        'Хорошо. Почему вы заинтересовались именно этой вакансией?',
-        'Спасибо! Есть ли у вас вопросы о компании или позиции?'
-      ]
-      
-      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)]
-      
-      const botMessage = {
-        id: `bot-${Date.now()}`,
-        role: 'assistant',
-        text: randomResponse
+    try {
+      if (sessionId) {
+        // Отправляем сообщение в AI-ассистента
+        const chatResult = await api.sendChatMessage(Number(applicationId), sessionId, userInput)
+        
+        // Добавляем ответы бота
+        chatResult.bot_replies.forEach((reply, index) => {
+          const botMessage = {
+            id: `bot-${Date.now()}-${index}`,
+            role: 'assistant',
+            text: reply
+          }
+          setLocalMessages(prev => [...prev, botMessage])
+          saveMessageToAPI('assistant', reply)
+        })
+        
+        // Проверяем, завершен ли анализ
+        if (chatResult.relevance_percent >= 80 || questionCount >= 5) {
+          onAnalysisComplete?.(chatResult)
+        }
+      } else {
+        // Fallback к локальным ответам если нет сессии
+        setTimeout(() => {
+          const botResponses = [
+            'Спасибо за ваш ответ! Это очень интересно. Расскажите подробнее о вашем опыте.',
+            'Отлично! А можете рассказать о конкретных проектах, над которыми вы работали?',
+            'Понятно. Какие технологии вы использовали в последнее время?',
+            'Интересно! Какие задачи вам нравится решать больше всего?',
+            'Хорошо. Почему вы заинтересовались именно этой вакансией?',
+            'Спасибо! Есть ли у вас вопросы о компании или позиции?'
+          ]
+          
+          const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)]
+          
+          const botMessage = {
+            id: `bot-${Date.now()}`,
+            role: 'assistant',
+            text: randomResponse
+          }
+          setLocalMessages(prev => [...prev, botMessage])
+          saveMessageToAPI('assistant', botMessage.text)
+        }, 1000)
       }
-      setLocalMessages(prev => [...prev, botMessage])
-      saveMessageToAPI('assistant', botMessage.text)
-    }, 1000)
+    } catch (error) {
+      console.error('Failed to send message to AI:', error)
+      // Fallback к локальным ответам
+      setTimeout(() => {
+        const botMessage = {
+          id: `bot-${Date.now()}`,
+          role: 'assistant',
+          text: 'Спасибо за ваш ответ! Расскажите еще что-нибудь о себе.'
+        }
+        setLocalMessages(prev => [...prev, botMessage])
+        saveMessageToAPI('assistant', botMessage.text)
+      }, 1000)
+    } finally {
+      setIsLoading(false)
+    }
   }
   
   const saveMessageToAPI = async (role: string, content: string) => {
@@ -125,15 +210,20 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Введите ваше сообщение..."
+              placeholder={isLoading ? "AI обрабатывает ваш ответ..." : "Введите ваше сообщение..."}
               className="flex-1"
+              disabled={isLoading}
             />
             <Button
               type="submit"
               size="icon"
-              disabled={!inputValue.trim()}
+              disabled={!inputValue.trim() || isLoading}
             >
-              <Send className="h-4 w-4" />
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </form>
@@ -208,15 +298,20 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Введите ваше сообщение..."
+              placeholder={isLoading ? "AI обрабатывает ваш ответ..." : "Введите ваше сообщение..."}
               className="flex-1"
+              disabled={isLoading}
             />
             <Button
               type="submit"
               size="icon"
-              disabled={!inputValue.trim()}
+              disabled={!inputValue.trim() || isLoading}
             >
-              <Send className="h-4 w-4" />
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </form>

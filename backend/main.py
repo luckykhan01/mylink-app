@@ -4,14 +4,17 @@ from sqlalchemy.orm import Session
 from typing import Optional
 import uvicorn
 from pathlib import Path
+from datetime import datetime
 
 from database import get_db, engine
 from models import Base, UserRole
 from schemas import (
     VacancyCreate, VacancyUpdate, VacancyResponse, VacancyListResponse,
     UserCreate, UserUpdate, UserResponse, UserListResponse, UserLogin,
-    JobApplicationCreate, JobApplicationUpdate, JobApplicationResponse
+    JobApplicationCreate, JobApplicationUpdate, JobApplicationResponse,
+    AIAnalysisRequest, AIAnalysisResponse, ChatMessageRequest, ChatMessageResponse
 )
+from ai_client import ai_client
 from crud import (
     get_vacancy, get_vacancies, create_vacancy, 
     update_vacancy, delete_vacancy, get_companies, get_locations,
@@ -347,6 +350,139 @@ async def upload_resume(
         "filename": file.filename,
         "application_id": application_id
     }
+
+# ===== ЭНДПОИНТЫ ДЛЯ AI-АНАЛИЗА =====
+
+@app.post("/applications/{application_id}/analyze", response_model=AIAnalysisResponse)
+async def analyze_application_with_ai(
+    application_id: int,
+    request: AIAnalysisRequest,
+    db: Session = Depends(get_db)
+):
+    """Анализ заявки с помощью AI-ассистента"""
+    # Получаем заявку
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    # Получаем вакансию
+    vacancy = get_vacancy(db, application.vacancy_id)
+    if not vacancy:
+        raise HTTPException(status_code=404, detail="Вакансия не найдена")
+    
+    # Подготавливаем тексты для анализа
+    cv_text = request.cv_text or application.resume_content or application.cover_letter or ""
+    vacancy_text = request.vacancy_text or f"{vacancy.title} - {vacancy.company}. {vacancy.description}"
+    
+    if not cv_text.strip():
+        raise HTTPException(status_code=400, detail="Недостаточно информации о кандидате для анализа")
+    
+    try:
+        # Вызываем AI-ассистента
+        analysis_result = await ai_client.analyze_application(
+            cv_text=cv_text,
+            vacancy_text=vacancy_text,
+            session_id=f"app_{application_id}"
+        )
+        
+        return AIAnalysisResponse(**analysis_result)
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при анализе: {str(e)}")
+
+@app.post("/applications/{application_id}/chat", response_model=ChatMessageResponse)
+async def send_chat_message(
+    application_id: int,
+    request: ChatMessageRequest,
+    db: Session = Depends(get_db)
+):
+    """Отправка сообщения в чат с кандидатом"""
+    # Получаем заявку
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    try:
+        # Отправляем сообщение в AI-ассистента
+        chat_result = await ai_client.chat_turn(
+            session_id=request.session_id,
+            message=request.message
+        )
+        
+        return ChatMessageResponse(**chat_result)
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при отправке сообщения: {str(e)}")
+
+@app.get("/applications/{application_id}/session/{session_id}")
+async def get_ai_session(
+    application_id: int,
+    session_id: str,
+    db: Session = Depends(get_db)
+):
+    """Получение информации о сессии AI-анализа"""
+    # Проверяем существование заявки
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    try:
+        # Получаем информацию о сессии от AI-ассистента
+        session_info = await ai_client.get_session(session_id)
+        return session_info
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Ошибка при получении сессии: {str(e)}")
+
+# ===== ЭНДПОИНТЫ ДЛЯ СООБЩЕНИЙ =====
+
+@app.post("/messages")
+async def create_message(
+    request: dict,
+    db: Session = Depends(get_db)
+):
+    """Создать сообщение в чате"""
+    application_id = request.get("application_id")
+    sender_type = request.get("sender_type")
+    content = request.get("content")
+    
+    if not application_id or not sender_type or not content:
+        raise HTTPException(status_code=400, detail="Missing required fields: application_id, sender_type, content")
+    
+    # Проверяем существование заявки
+    application = get_job_application(db, int(application_id))
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    # Создаем сообщение (пока просто возвращаем успех)
+    # В будущем можно добавить сохранение в базу данных
+    return {
+        "id": f"msg_{int(datetime.utcnow().timestamp() * 1000)}",
+        "application_id": int(application_id),
+        "sender_type": sender_type,
+        "content": content,
+        "created_at": datetime.utcnow().isoformat()
+    }
+
+@app.get("/messages")
+async def get_messages(
+    application_id: int = Query(description="ID заявки"),
+    db: Session = Depends(get_db)
+):
+    """Получить сообщения чата"""
+    # Проверяем существование заявки
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    # Возвращаем пустой список (в будущем можно добавить получение из БД)
+    return {"messages": []}
 
 if __name__ == "__main__":
     # Запуск сервера

@@ -79,6 +79,7 @@ export function ApplicationDialog({ open, onOpenChange, vacancy, userId }: Appli
         cover_letter: resumeFile ? `Resume: ${resumeFile.name}` : "",
       })
       setApplicationId(String(newApplication.id))
+      console.log('ApplicationDialog: applicationId set to:', String(newApplication.id))
       
       // Если есть резюме, загружаем его
       if (resumeFile) {
@@ -97,6 +98,11 @@ export function ApplicationDialog({ open, onOpenChange, vacancy, userId }: Appli
           setIsUploadingResume(false)
         }
       }
+      
+      // Запускаем AI-анализ после создания заявки
+      setTimeout(() => {
+        // Это будет обработано в ChatbotWidget через autoStart
+      }, 100)
       
       toast({
         title: "Отклик создан!",
@@ -172,6 +178,7 @@ export function ApplicationDialog({ open, onOpenChange, vacancy, userId }: Appli
                   vacancyId={String(vacancy.id)}
                   onAnalysisComplete={handleAnalysisComplete}
                   embedded={true}
+                  autoStart={true}
                 />
               </div>
             </div>

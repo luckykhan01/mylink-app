@@ -89,14 +89,17 @@ class ApiClient {
   }
 
   async register(data: RegisterData): Promise<LoginResponse> {
+    console.log('API register called with data:', data)
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: "POST",
       headers: this.getHeaders(),
       body: JSON.stringify(data),
     })
 
+    console.log('Register response status:', response.status)
     if (!response.ok) {
       const error = await response.json()
+      console.error('Register error:', error)
       throw new Error(error.detail || "Registration failed")
     }
 
@@ -364,6 +367,71 @@ class ApiClient {
     if (!response.ok) {
       const error = await response.json()
       throw new Error(error.detail || "Failed to upload resume")
+    }
+
+    return response.json()
+  }
+
+  // ===== AI ANALYSIS METHODS =====
+
+  async analyzeApplication(applicationId: number, cvText?: string, vacancyText?: string): Promise<{
+    session_id: string
+    relevance_percent: number
+    reasons: string[]
+    mismatches: Record<string, any>
+    followup_questions: string[]
+    summary_for_employer: string
+  }> {
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/analyze`, {
+      method: "POST",
+      headers: this.getHeaders(true),
+      body: JSON.stringify({
+        application_id: applicationId,
+        cv_text: cvText,
+        vacancy_text: vacancyText,
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.detail || "Failed to analyze application")
+    }
+
+    return response.json()
+  }
+
+  async sendChatMessage(applicationId: number, sessionId: string, message: string): Promise<{
+    session_id: string
+    bot_replies: string[]
+    relevance_percent: number
+    reasons: string[]
+    summary_for_employer: string
+  }> {
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/chat`, {
+      method: "POST",
+      headers: this.getHeaders(true),
+      body: JSON.stringify({
+        session_id: sessionId,
+        message,
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.detail || "Failed to send chat message")
+    }
+
+    return response.json()
+  }
+
+  async getAISession(applicationId: number, sessionId: string): Promise<any> {
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/session/${sessionId}`, {
+      headers: this.getHeaders(true),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.detail || "Failed to get AI session")
     }
 
     return response.json()

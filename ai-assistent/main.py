@@ -22,9 +22,10 @@ OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 if not OPENAI_API_KEY:
-    raise RuntimeError("Set OPENAI_API_KEY in environment (.env)")
+    raise ValueError("OPENAI_API_KEY environment variable is required")
 
 client = OpenAI(api_key=OPENAI_API_KEY)
+print("🤖 AI Assistant running with OpenAI API")
 app = FastAPI(title="AI Assistant (CV↔Vacancy)", version="0.1.0")
 
 # Система embeddings для семантического поиска
@@ -260,8 +261,15 @@ def extract_candidate(text: str) -> Candidate:
 9. Навыки: все технологии, инструменты, фреймворки
 10. Уровень: junior/middle/senior/lead
 
-Если какая-то информация не указана, используй null."""
+ВАЖНО: Для массивов (languages, skills) всегда возвращай пустой массив [] если данных нет, НЕ возвращай null."""
     data = _structured_extract("candidate_schema", schema, prompt)
+    
+    # Исправляем None значения для массивов
+    if data.get("languages") is None:
+        data["languages"] = []
+    if data.get("skills") is None:
+        data["skills"] = []
+    
     return Candidate(**data, source_text=text)
 
 def extract_vacancy(text: str) -> Vacancy:
@@ -302,8 +310,17 @@ def extract_vacancy(text: str) -> Vacancy:
 10. Желательные навыки: дополнительные навыки (nice to have)
 11. Уровень: junior/middle/senior/lead
 
-Если какая-то информация не указана, используй null."""
+ВАЖНО: Для массивов (languages_required, must_have_skills, nice_to_have_skills) всегда возвращай пустой массив [] если данных нет, НЕ возвращай null."""
     data = _structured_extract("vacancy_schema", schema, prompt)
+    
+    # Исправляем None значения для массивов
+    if data.get("languages_required") is None:
+        data["languages_required"] = []
+    if data.get("must_have_skills") is None:
+        data["must_have_skills"] = []
+    if data.get("nice_to_have_skills") is None:
+        data["nice_to_have_skills"] = []
+    
     return Vacancy(**data, source_text=text)
 
 def _semantic_normalize(text: str) -> str:
@@ -525,3 +542,7 @@ def get_session(session_id: str):
     sess = SESSIONS.get(session_id)
     if not sess: raise HTTPException(404, "session not found")
     return sess
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8001)

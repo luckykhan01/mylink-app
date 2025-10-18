@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from datetime import datetime
 from models import UserRole
 
@@ -118,3 +118,29 @@ class JobApplicationResponse(JobApplicationBase):
 
     class Config:
         from_attributes = True
+
+# ===== СХЕМЫ ДЛЯ AI-АНАЛИЗА =====
+
+class AIAnalysisRequest(BaseModel):
+    application_id: int
+    cv_text: Optional[str] = None
+    vacancy_text: Optional[str] = None
+
+class AIAnalysisResponse(BaseModel):
+    session_id: str
+    relevance_percent: int
+    reasons: List[str]
+    mismatches: Dict[str, Any]
+    followup_questions: List[str]
+    summary_for_employer: str
+
+class ChatMessageRequest(BaseModel):
+    session_id: str
+    message: str
+
+class ChatMessageResponse(BaseModel):
+    session_id: str
+    bot_replies: List[str]
+    relevance_percent: int
+    reasons: List[str]
+    summary_for_employer: str

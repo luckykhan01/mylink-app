@@ -39,7 +39,7 @@ export default function RegisterPage() {
         email: formData.email,
         password: formData.password,
         full_name: formData.full_name,
-        role: formData.role,
+        role: formData.role === "seeker" ? "job_seeker" : formData.role,
       })
       const loginResponse = await api.login(formData.email, formData.password)
       setUser(loginResponse.user)
