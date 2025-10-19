@@ -111,6 +111,7 @@ class JobApplicationResponse(JobApplicationBase):
     id: int
     status: str
     resume_path: Optional[str] = None
+    rejection_tags: Optional[str] = None  # Теги причин отклонения (CSV)
     created_at: datetime
     updated_at: Optional[datetime] = None
     job_seeker_id: int
@@ -146,9 +147,12 @@ class ChatMessageResponse(BaseModel):
     bot_reply: str  # Новый API - один ответ
     relevance_percent: int
     reasons: List[str]
+    rejection_tags: List[str] = []  # Теги причин отклонения
     summary_for_employer: str
     dialog_stage: Optional[str] = None
     is_completed: Optional[bool] = False
+    suggest_alternative_vacancy: Optional[bool] = False  # Предложить альтернативную вакансию
+    alternative_vacancy_reason: Optional[str] = None  # Причина предложения
     # Старое поле для обратной совместимости
     bot_replies: Optional[List[str]] = None
 

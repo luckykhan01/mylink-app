@@ -8,7 +8,7 @@ from datetime import datetime
 
 from database import get_db, engine
 from file_utils import extract_text_from_file
-from models import Base, UserRole, Message, EmployerCandidateMessage
+from models import Base, UserRole, Message, EmployerCandidateMessage, Vacancy
 from schemas import (
     VacancyCreate, VacancyUpdate, VacancyResponse, VacancyListResponse,
     UserCreate, UserUpdate, UserResponse, UserListResponse, UserLogin,
@@ -441,6 +441,12 @@ async def send_chat_message(
             message=request.message
         )
         
+        # Логирование для отладки
+        print(f"🔍 [DEBUG] Chat result keys: {chat_result.keys()}")
+        print(f"🔍 [DEBUG] suggest_alternative_vacancy: {chat_result.get('suggest_alternative_vacancy', False)}")
+        print(f"🔍 [DEBUG] is_completed: {chat_result.get('is_completed', False)}")
+        print(f"🔍 [DEBUG] relevance_percent: {chat_result.get('relevance_percent', None)}")
+        
         # Сохраняем ответ бота
         bot_message = Message(
             content=chat_result.get("bot_reply", ""),
@@ -450,14 +456,16 @@ async def send_chat_message(
         db.add(bot_message)
         db.commit()
         
-        # Если диалог завершен, сохраняем relevance_score, ai_summary и detailed_analysis
+        # Если диалог завершен, сохраняем relevance_score, ai_summary, detailed_analysis и rejection_tags
         if chat_result.get("is_completed") and chat_result.get("relevance_percent") is not None:
             relevance_score = chat_result["relevance_percent"] / 100.0
             ai_summary = chat_result.get("summary_for_employer", "")
             ai_detailed_analysis = chat_result.get("detailed_analysis", "")
+            rejection_tags = ",".join(chat_result.get("rejection_tags", []))  # Конвертируем список в CSV
             print(f"💾 Saving relevance_score: {relevance_score} ({chat_result['relevance_percent']}%) for application {application_id}")
             print(f"💾 Saving ai_summary: {ai_summary}")
             print(f"💾 Saving ai_detailed_analysis: {len(ai_detailed_analysis)} chars")
+            print(f"🏷️ Saving rejection_tags: {rejection_tags}")
             updated_app = update_job_application(
                 db,
                 application_id,
@@ -465,6 +473,7 @@ async def send_chat_message(
                     "relevance_score": relevance_score,
                     "ai_summary": ai_summary,
                     "ai_detailed_analysis": ai_detailed_analysis,
+                    "rejection_tags": rejection_tags,
                     "status": "reviewed"
                 }
             )
@@ -714,6 +723,41 @@ async def mark_message_as_read(
     
     return {"status": "ok", "message_id": message_id}
 
+
+@app.get("/vacancies/company/{vacancy_id}/similar")
+async def get_similar_company_vacancies(
+    vacancy_id: int,
+    db: Session = Depends(get_db)
+):
+    """Получить другие активные вакансии той же компании"""
+    # Получаем текущую вакансию
+    current_vacancy = get_vacancy(db, vacancy_id)
+    if not current_vacancy:
+        raise HTTPException(status_code=404, detail="Вакансия не найдена")
+    
+    # Получаем другие вакансии того же работодателя
+    similar_vacancies = db.query(Vacancy).filter(
+        Vacancy.employer_id == current_vacancy.employer_id,
+        Vacancy.id != vacancy_id,
+        Vacancy.is_active == True
+    ).all()
+    
+    return {
+        "current_vacancy_id": vacancy_id,
+        "company": current_vacancy.company,
+        "similar_vacancies": [
+            {
+                "id": v.id,
+                "title": v.title,
+                "company": v.company,
+                "location": v.location,
+                "description": v.description,
+                "salary_min": v.salary_min,
+                "salary_max": v.salary_max,
+            }
+            for v in similar_vacancies
+        ]
+    }
 
 if __name__ == "__main__":
     # Запуск сервера

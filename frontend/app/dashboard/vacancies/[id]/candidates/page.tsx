@@ -30,6 +30,7 @@ export default function CandidatesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [relevanceFilter, setRelevanceFilter] = useState<string>("all")
+  const [tagFilter, setTagFilter] = useState<string>("all")
   const [activeTab, setActiveTab] = useState<string>("all")
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null)
   const [chatMessages, setChatMessages] = useState<Message[]>([])
@@ -57,7 +58,7 @@ export default function CandidatesPage() {
 
   useEffect(() => {
     filterApplications()
-  }, [applications, statusFilter, relevanceFilter, activeTab])
+  }, [applications, statusFilter, relevanceFilter, tagFilter, activeTab])
 
   const loadData = async () => {
     setIsLoading(true)
@@ -98,6 +99,14 @@ export default function CandidatesPage() {
           default:
             return true
         }
+      })
+    }
+
+    // Фильтр по тегам отклонения
+    if (tagFilter !== "all") {
+      filtered = filtered.filter((app) => {
+        const tags = app.rejection_tags?.split(',').map(t => t.trim()) || []
+        return tags.includes(tagFilter)
       })
     }
 
@@ -359,6 +368,24 @@ export default function CandidatesPage() {
                     </SelectContent>
                   </Select>
                 </div>
+                <div>
+                  <label className="text-sm font-medium mb-2 block">Причина несоответствия</label>
+                  <Select value={tagFilter} onValueChange={setTagFilter}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Все причины</SelectItem>
+                      <SelectItem value="relocation">Проблемы с локацией/переездом</SelectItem>
+                      <SelectItem value="exp_gap">Недостаточный опыт</SelectItem>
+                      <SelectItem value="salary_mismatch">Несовпадение по зарплате</SelectItem>
+                      <SelectItem value="schedule_conflict">Несовпадение графика</SelectItem>
+                      <SelectItem value="skill_mismatch">Несовпадение навыков</SelectItem>
+                      <SelectItem value="language_barrier">Проблемы с языками</SelectItem>
+                      <SelectItem value="education_gap">Несовпадение образования</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -430,6 +457,27 @@ export default function CandidatesPage() {
                               <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
                                 {application.ai_summary}
                               </p>
+                              {application.rejection_tags && (
+                                <div className="flex flex-wrap gap-1 mt-2">
+                                  {application.rejection_tags.split(',').map((tag, idx) => {
+                                    const tagLabels: Record<string, string> = {
+                                      'relocation': 'Локация',
+                                      'exp_gap': 'Опыт',
+                                      'salary_mismatch': 'Зарплата',
+                                      'schedule_conflict': 'График',
+                                      'skill_mismatch': 'Навыки',
+                                      'language_barrier': 'Языки',
+                                      'education_gap': 'Образование'
+                                    }
+                                    const cleanTag = tag.trim()
+                                    return cleanTag ? (
+                                      <Badge key={idx} variant="outline" className="text-xs">
+                                        {tagLabels[cleanTag] || cleanTag}
+                                      </Badge>
+                                    ) : null
+                                  })}
+                                </div>
+                              )}
                             </div>
                           )}
 

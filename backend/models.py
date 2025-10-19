@@ -67,6 +67,7 @@ class JobApplication(Base):
     relevance_score = Column(Float, nullable=True)  # Оценка соответствия от 0.0 до 1.0
     ai_summary = Column(Text, nullable=True)  # Краткий вывод AI о кандидате
     ai_detailed_analysis = Column(Text, nullable=True)  # Детальный анализ от AI
+    rejection_tags = Column(String(500), nullable=True)  # Теги причин отклонения: relocation,exp_gap,salary_mismatch,schedule_conflict
     
     # Резюме
     resume_filename = Column(String(255), nullable=True)  # Имя файла резюме

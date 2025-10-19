@@ -65,6 +65,7 @@ export interface Application {
   relevance_score?: number
   ai_summary?: string
   ai_detailed_analysis?: string
+  rejection_tags?: string  // CSV строка тегов
   mismatch_reasons?: string[]
 }
 
@@ -440,6 +441,8 @@ class ApiClient {
     summary_for_employer: string
     dialog_stage?: string
     is_completed?: boolean
+    suggest_alternative_vacancy?: boolean
+    alternative_vacancy_reason?: string
     // Старое поле для обратной совместимости
     bot_replies?: string[]
   }> {
@@ -546,6 +549,22 @@ class ApiClient {
     if (!response.ok) {
       throw new Error("Failed to mark message as read")
     }
+  }
+
+  async getSimilarCompanyVacancies(vacancyId: number): Promise<{
+    current_vacancy_id: number
+    company: string
+    similar_vacancies: Vacancy[]
+  }> {
+    const response = await fetch(`${API_BASE_URL}/vacancies/company/${vacancyId}/similar`, {
+      headers: this.getHeaders(true),
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch similar vacancies")
+    }
+
+    return response.json()
   }
 }
 

@@ -101,6 +101,7 @@ B) Для работодателя, по завершении (после 4–8 
 [RESULT]
 match_percent: <целое_число_0..100>
 summary_one_liner: "<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>"
+rejection_tags: "<список тегов через запятую из следующих: relocation (проблемы с локацией/переездом), exp_gap (недостаточный опыт), salary_mismatch (несовпадение по зарплате), schedule_conflict (несовпадение графика/формата работы), skill_mismatch (несовпадение навыков), language_barrier (проблемы с языками), education_gap (несовпадение образования). Выбери ТОЛЬКО релевантные теги на основе несоответствий. Если кандидат подходит хорошо (>70%), оставь пустым.>"
 reasons: ["причина 1", "причина 2", ...]
 
 ПЕРВЫЙ ШАГ:
@@ -133,7 +134,10 @@ class ChatResponse(BaseModel):
     summary_for_employer: str
     dialog_stage: str  # "questioning", "completed"
     is_completed: bool
+    rejection_tags: List[str] = []  # Теги причин отклонения
     detailed_analysis: Optional[str] = None  # Детальный анализ (только при завершении)
+    suggest_alternative_vacancy: bool = False  # Предложить альтернативную вакансию
+    alternative_vacancy_reason: Optional[str] = None  # Причина предложения
 
 
 # ===== УТИЛИТЫ =====
@@ -157,7 +161,8 @@ def extract_result_from_message(message: str) -> Optional[Dict[str, Any]]:
         result = {
             "match_percent": 0,
             "summary_one_liner": "",
-            "reasons": []
+            "reasons": [],
+            "rejection_tags": []
         }
         
         for line in lines:
@@ -169,6 +174,13 @@ def extract_result_from_message(message: str) -> Optional[Dict[str, Any]]:
                     result["match_percent"] = 50
             elif line.startswith("summary_one_liner:"):
                 result["summary_one_liner"] = line.split(":", 1)[1].strip().strip('"')
+            elif line.startswith("rejection_tags:"):
+                # Парсим теги отклонения
+                tags_str = line.split(":", 1)[1].strip().strip('"')
+                if tags_str:
+                    # Разделяем по запятым и очищаем
+                    tags = [t.strip() for t in tags_str.split(",")]
+                    result["rejection_tags"] = [t for t in tags if t]
             elif line.startswith("reasons:"):
                 # Парсим список причин
                 reasons_str = line.split(":", 1)[1].strip()
@@ -353,6 +365,8 @@ async def chat_turn(request: ChatTurnRequest):
     result_data = extract_result_from_message(ai_response)
     print(f"🔍 [DEBUG] session_id={request.session_id}, question_count={session['question_count']}, result_data={result_data is not None}")
     
+    rejection_tags = []
+    
     if result_data or session["question_count"] >= 8:
         # Диалог завершен
         is_completed = True
@@ -362,15 +376,17 @@ async def chat_turn(request: ChatTurnRequest):
             relevance_percent = result_data["match_percent"]
             summary = result_data["summary_one_liner"]
             reasons = result_data["reasons"]
+            rejection_tags = result_data.get("rejection_tags", [])
             bot_reply = ai_response.split("[RESULT]")[0].strip()
             if not bot_reply:
                 bot_reply = "Спасибо за ответы! Я завершил анализ."
-            print(f"✅ [RESULT] found: {relevance_percent}% - {summary}")
+            print(f"✅ [RESULT] found: {relevance_percent}% - {summary}, tags: {rejection_tags}")
         else:
             # Принудительное завершение без [RESULT]
             relevance_percent = 60
             summary = "Кандидат ответил на вопросы, требуется дополнительная оценка"
             reasons = ["Диалог завершен по лимиту вопросов"]
+            rejection_tags = []
             bot_reply = "Спасибо за развернутые ответы! Я передам информацию работодателю."
             print(f"⚠️ Forced completion without [RESULT], using default: {relevance_percent}%")
         
@@ -383,6 +399,15 @@ async def chat_turn(request: ChatTurnRequest):
         relevance_percent = session.get("relevance_percent", 50)
         summary = session.get("summary", "Идет уточнение деталей")
         reasons = session.get("reasons", ["Требуется дополнительная информация"])
+    
+    # Определяем, нужно ли предложить альтернативную вакансию
+    suggest_alternative = False
+    alternative_reason = None
+    if is_completed and relevance_percent < 50:
+        # Если соответствие низкое, предлагаем альтернативу
+        suggest_alternative = True
+        alternative_reason = f"Соответствие текущей вакансии составляет {relevance_percent}%. Возможно, у компании есть более подходящие позиции."
+        print(f"💡 Low match ({relevance_percent}%), suggesting alternative vacancy")
     
     # Генерируем детальный анализ при завершении диалога
     detailed_analysis = ""
@@ -432,6 +457,7 @@ async def chat_turn(request: ChatTurnRequest):
     session["relevance_percent"] = relevance_percent
     session["summary"] = summary
     session["reasons"] = reasons
+    session["rejection_tags"] = rejection_tags
     session["detailed_analysis"] = detailed_analysis
     session["updated_at"] = datetime.utcnow().isoformat()
     save_sessions(sessions_store)
@@ -441,10 +467,13 @@ async def chat_turn(request: ChatTurnRequest):
         bot_reply=bot_reply,
         relevance_percent=relevance_percent,
         reasons=reasons,
+        rejection_tags=rejection_tags,
         summary_for_employer=summary,
         dialog_stage=dialog_stage,
         is_completed=is_completed,
-        detailed_analysis=detailed_analysis if is_completed else None
+        detailed_analysis=detailed_analysis if is_completed else None,
+        suggest_alternative_vacancy=suggest_alternative,
+        alternative_vacancy_reason=alternative_reason
     )
 
 @app.get("/sessions/{session_id}")

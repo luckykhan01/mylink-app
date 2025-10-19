@@ -27,6 +27,9 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
   const [analysisStarted, setAnalysisStarted] = useState(false) // Флаг что анализ уже запущен
   const [relevancePercent, setRelevancePercent] = useState<number | null>(null) // Текущая релевантность
   const [isDialogCompleted, setIsDialogCompleted] = useState(false) // Флаг завершения диалога
+  const [showAlternativeVacancies, setShowAlternativeVacancies] = useState(false) // Показать альтернативные вакансии
+  const [alternativeVacancies, setAlternativeVacancies] = useState<any[]>([]) // Список альтернативных вакансий
+  const [alternativeReason, setAlternativeReason] = useState<string>("") // Причина предложения
   const [localMessages, setLocalMessages] = useState<Array<{ id: string; role: string; text: string }>>([
     {
       id: 'welcome',
@@ -147,8 +150,51 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
         
         // Проверяем, завершен ли анализ
         if (chatResult.is_completed) {
+          console.log('✅ Dialog completed!')
+          console.log('🔍 Chat result:', chatResult)
+          console.log('🔍 suggest_alternative_vacancy:', chatResult.suggest_alternative_vacancy)
+          console.log('🔍 relevance_percent:', chatResult.relevance_percent)
+          console.log('🔍 vacancyId:', vacancyId)
+          
           setIsDialogCompleted(true)
           onAnalysisComplete?.(chatResult)
+          
+          // Проверяем, нужно ли предложить альтернативные вакансии
+          if (chatResult.suggest_alternative_vacancy && vacancyId) {
+            console.log('💡 Suggesting alternative vacancies')
+            console.log('🔍 Loading similar vacancies for vacancy ID:', vacancyId)
+            setAlternativeReason(chatResult.alternative_vacancy_reason || "")
+            // Загружаем альтернативные вакансии
+            try {
+              const similarVacancies = await api.getSimilarCompanyVacancies(Number(vacancyId))
+              console.log('📦 Similar vacancies response:', similarVacancies)
+              console.log('📊 Number of similar vacancies:', similarVacancies.similar_vacancies?.length || 0)
+              
+              if (similarVacancies.similar_vacancies && similarVacancies.similar_vacancies.length > 0) {
+                console.log('✅ Found alternative vacancies, adding to state')
+                setAlternativeVacancies(similarVacancies.similar_vacancies)
+                setShowAlternativeVacancies(true)
+                
+                // Добавляем сообщение о рекомендациях
+                const recommendationMessage = {
+                  id: `recommendation-${Date.now()}`,
+                  role: 'assistant',
+                  text: `${chatResult.alternative_vacancy_reason || "Возможно, вам больше подойдут другие вакансии этой компании:"}\n\nМы нашли ${similarVacancies.similar_vacancies.length} других вакансий от компании "${similarVacancies.company}", которые могут вам подойти лучше! Просмотрите их ниже. 👇`
+                }
+                setLocalMessages(prev => [...prev, recommendationMessage])
+                console.log('✅ Recommendation message added')
+              } else {
+                console.log('⚠️ No similar vacancies found')
+              }
+            } catch (error) {
+              console.error('❌ Failed to load alternative vacancies:', error)
+            }
+          } else {
+            console.log('⚠️ Not suggesting alternatives:', {
+              suggest: chatResult.suggest_alternative_vacancy,
+              hasVacancyId: !!vacancyId
+            })
+          }
         }
       } else {
         console.warn('No sessionId - using fallback responses')
@@ -315,12 +361,37 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
                   message.role === "user" ? "bg-primary text-primary-foreground" : "bg-muted",
                 )}
               >
-                <p className="text-sm leading-relaxed">
+                <p className="text-sm leading-relaxed whitespace-pre-wrap">
                   {message.text}
                 </p>
               </div>
             </div>
           ))}
+          
+          {/* Альтернативные вакансии */}
+          {showAlternativeVacancies && alternativeVacancies.length > 0 && (
+            <div className="space-y-3 mt-4">
+              {alternativeVacancies.map((vacancy) => (
+                <Card key={vacancy.id} className="p-4 bg-blue-50 border-blue-200">
+                  <h4 className="font-semibold text-sm mb-1">{vacancy.title}</h4>
+                  <p className="text-xs text-muted-foreground mb-2">
+                    {vacancy.location} • {vacancy.salary_min && vacancy.salary_max 
+                      ? `${vacancy.salary_min.toLocaleString()} - ${vacancy.salary_max.toLocaleString()} ₸` 
+                      : "Зарплата не указана"}
+                  </p>
+                  <p className="text-xs mb-3 line-clamp-2">{vacancy.description}</p>
+                  <Button 
+                    size="sm" 
+                    variant="default"
+                    className="w-full"
+                    onClick={() => window.open(`/vacancies/${vacancy.id}`, '_blank')}
+                  >
+                    Посмотреть вакансию →
+                  </Button>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 border-t">
