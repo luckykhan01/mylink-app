@@ -64,6 +64,9 @@ class JobApplication(Base):
     id = Column(Integer, primary_key=True, index=True)
     cover_letter = Column(Text, nullable=True)
     status = Column(String(50), default="pending")  # pending, reviewed, accepted, rejected
+    relevance_score = Column(Float, nullable=True)  # Оценка соответствия от 0.0 до 1.0
+    ai_summary = Column(Text, nullable=True)  # Краткий вывод AI о кандидате
+    ai_detailed_analysis = Column(Text, nullable=True)  # Детальный анализ от AI
     
     # Резюме
     resume_filename = Column(String(255), nullable=True)  # Имя файла резюме
@@ -80,5 +83,44 @@ class JobApplication(Base):
     vacancy_id = Column(Integer, ForeignKey("vacancies.id"), nullable=False)
     vacancy = relationship("Vacancy", back_populates="applications")
 
+    # Связь с сообщениями
+    messages = relationship("Message", back_populates="application", cascade="all, delete-orphan")
+
     def __repr__(self):
         return f"<JobApplication(id={self.id}, status='{self.status}')>"
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(Text, nullable=False)
+    sender_type = Column(String(20), nullable=False)  # "bot" or "job_seeker"
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    
+    # Связь с заявкой
+    application_id = Column(Integer, ForeignKey("job_applications.id"), nullable=False)
+    application = relationship("JobApplication", back_populates="messages")
+
+    def __repr__(self):
+        return f"<Message(id={self.id}, sender_type='{self.sender_type}')>"
+
+
+class EmployerCandidateMessage(Base):
+    """Сообщения между работодателем и кандидатом (после принятия заявки)"""
+    __tablename__ = "employer_candidate_messages"
+
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(Text, nullable=False)
+    sender_type = Column(String(20), nullable=False)  # "employer" or "job_seeker"
+    sender_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    is_read = Column(Boolean, default=False)
+    
+    # Связь с заявкой
+    application_id = Column(Integer, ForeignKey("job_applications.id"), nullable=False)
+    
+    # Связь с отправителем
+    sender = relationship("User", foreign_keys=[sender_id])
+
+    def __repr__(self):
+        return f"<EmployerCandidateMessage(id={self.id}, sender_type='{self.sender_type}')>"

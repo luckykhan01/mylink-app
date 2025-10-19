@@ -108,9 +108,6 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
     setLocalMessages(prev => [...prev, userMessage])
     setQuestionCount(prev => prev + 1)
     
-    // Сохраняем в базу через API
-    saveMessageToAPI('user', inputValue)
-    
     const userInput = inputValue
     setInputValue("")
     setIsLoading(true)
@@ -131,7 +128,6 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
             text: chatResult.bot_reply
           }
           setLocalMessages(prev => [...prev, botMessage])
-          saveMessageToAPI('assistant', chatResult.bot_reply)
         } else if (chatResult.bot_replies && chatResult.bot_replies.length > 0) {
           // Обратная совместимость со старым API
           chatResult.bot_replies.forEach((reply, index) => {
@@ -141,7 +137,6 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
               text: reply
             }
             setLocalMessages(prev => [...prev, botMessage])
-            saveMessageToAPI('assistant', reply)
           })
         }
         
@@ -176,7 +171,6 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
             text: randomResponse
           }
           setLocalMessages(prev => [...prev, botMessage])
-          saveMessageToAPI('assistant', botMessage.text)
         }, 1000)
       }
     } catch (error: any) {
@@ -190,22 +184,9 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
           text: `Спасибо за ваш ответ! Расскажите еще что-нибудь о себе. (Ошибка: ${error.message || 'Unknown'})`
         }
         setLocalMessages(prev => [...prev, botMessage])
-        saveMessageToAPI('assistant', botMessage.text)
       }, 1000)
     } finally {
       setIsLoading(false)
-    }
-  }
-  
-  const saveMessageToAPI = async (role: string, content: string) => {
-    try {
-      await api.createMessage(
-        Number(applicationId), 
-        role === 'user' ? 'job_seeker' : 'bot', 
-        content
-      )
-    } catch (error) {
-      console.error('Failed to save message:', error)
     }
   }
 
@@ -228,17 +209,6 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground">Сообщений:</span>
               <span className="font-medium">{questionCount}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">Соответствие:</span>
-              <span className={cn(
-                "font-semibold",
-                relevancePercent === null ? "text-gray-400" : 
-                relevancePercent >= 70 ? "text-green-600" : 
-                relevancePercent >= 40 ? "text-amber-600" : "text-red-600"
-              )}>
-                {relevancePercent !== null ? `${relevancePercent}%` : '0%'}
-              </span>
             </div>
           </div>
         </div>

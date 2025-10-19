@@ -8,9 +8,12 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Separator } from "@/components/ui/separator"
-import { api, type Application, type Vacancy } from "@/lib/api"
+import { api, type Application, type Vacancy, type EmployerCandidateMessage } from "@/lib/api"
 import { useAuth } from "@/lib/auth-context"
-import { ArrowLeft, Briefcase, MapPin, Clock } from "lucide-react"
+import { ArrowLeft, Briefcase, MapPin, Clock, MessageSquare, Send } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 import { formatDistanceToNow } from "date-fns"
 import { ru } from "date-fns/locale"
 import Link from "next/link"
@@ -24,6 +27,10 @@ export default function ApplicationDetailPage() {
   const [vacancy, setVacancy] = useState<Vacancy | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [analysis, setAnalysis] = useState<any>(null)
+  const [employerMessages, setEmployerMessages] = useState<EmployerCandidateMessage[]>([])
+  const [isMessagesDialogOpen, setIsMessagesDialogOpen] = useState(false)
+  const [newMessage, setNewMessage] = useState("")
+  const [isSendingMessage, setIsSendingMessage] = useState(false)
 
   useEffect(() => {
     if (!authLoading) {
@@ -34,6 +41,13 @@ export default function ApplicationDetailPage() {
       loadApplication()
     }
   }, [user, authLoading, params.id])
+
+  // Автоматически загружаем сообщения когда статус меняется на accepted или rejected
+  useEffect(() => {
+    if (application && (application.status === "accepted" || application.status === "rejected")) {
+      loadEmployerMessages()
+    }
+  }, [application?.status])
 
   const loadApplication = async () => {
     setIsLoading(true)
@@ -74,16 +88,38 @@ export default function ApplicationDetailPage() {
 
   const handleAnalysisComplete = async (analysisData: any) => {
     setAnalysis(analysisData)
+    loadApplication()
+  }
+
+  const loadEmployerMessages = async () => {
+    if (!application) return
     try {
-      await api.updateApplication(application!.id, {
-        relevance_score: analysisData.relevanceScore / 100,
-        mismatch_reasons: analysisData.mismatchReasons,
-        status: "reviewed",
-      })
-      loadApplication()
+      const messages = await api.getEmployerCandidateMessages(application.id)
+      setEmployerMessages(messages)
     } catch (error) {
-      console.error("[v0] Failed to update application:", error)
+      console.error("Failed to load employer messages:", error)
+      setEmployerMessages([])
     }
+  }
+
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !application || isSendingMessage || !user) return
+
+    setIsSendingMessage(true)
+    try {
+      const message = await api.sendEmployerCandidateMessage(application.id, newMessage, user.id)
+      setEmployerMessages((prev) => [...prev, message])
+      setNewMessage("")
+    } catch (error) {
+      console.error("Failed to send message:", error)
+    } finally {
+      setIsSendingMessage(false)
+    }
+  }
+
+  const openMessagesDialog = () => {
+    loadEmployerMessages()
+    setIsMessagesDialogOpen(true)
   }
 
   if (authLoading || isLoading) {
@@ -140,6 +176,32 @@ export default function ApplicationDetailPage() {
             </Link>
           </Button>
 
+          {/* Уведомление о новых сообщениях */}
+          {employerMessages.length > 0 && (
+            <Card className="mb-6 bg-blue-50 border-blue-200">
+              <CardContent className="py-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <MessageSquare className="h-5 w-5 text-blue-600" />
+                    <div>
+                      <p className="font-semibold text-blue-900">
+                        {application?.status === "accepted" 
+                          ? "У вас новое сообщение от работодателя!" 
+                          : "Работодатель ответил по вашей заявке"}
+                      </p>
+                      <p className="text-sm text-blue-700">
+                        {employerMessages.length} {employerMessages.length === 1 ? "сообщение" : "сообщений"}
+                      </p>
+                    </div>
+                  </div>
+                  <Button onClick={openMessagesDialog}>
+                    Открыть чат
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           <div className="space-y-6">
             <Card>
               <CardHeader>
@@ -157,9 +219,6 @@ export default function ApplicationDetailPage() {
                   </div>
                   <div className="flex flex-col gap-2">
                     {getStatusBadge(application.status)}
-                    {application.relevance_score !== undefined && (
-                      <Badge variant="outline">Релевантность: {Math.round(application.relevance_score * 100)}%</Badge>
-                    )}
                   </div>
                 </div>
               </CardHeader>
@@ -211,9 +270,17 @@ export default function ApplicationDetailPage() {
                 {vacancy && (
                   <>
                     <Separator />
-                    <Button asChild>
-                      <Link href={`/vacancies/${vacancy.id}`}>Посмотреть полное описание вакансии</Link>
-                    </Button>
+                    <div className="flex gap-3">
+                      {(application.status === "accepted" || application.status === "rejected") && (
+                        <Button variant="outline" onClick={openMessagesDialog}>
+                          <MessageSquare className="h-4 w-4 mr-2" />
+                          {application.status === "accepted" ? "Сообщения от работодателя" : "Посмотреть ответ"}
+                        </Button>
+                      )}
+                      <Button asChild>
+                        <Link href={`/vacancies/${vacancy.id}`}>Посмотреть полное описание вакансии</Link>
+                      </Button>
+                    </div>
                   </>
                 )}
               </CardContent>
@@ -281,6 +348,73 @@ export default function ApplicationDetailPage() {
           onAnalysisComplete={handleAnalysisComplete}
         />
       )}
+
+      {/* Диалог сообщений от работодателя */}
+      <Dialog open={isMessagesDialogOpen} onOpenChange={setIsMessagesDialogOpen}>
+        <DialogContent className="max-w-2xl h-[80vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>
+              {application?.status === "accepted" ? "Сообщения от работодателя" : "Ответ по вашей заявке"}
+            </DialogTitle>
+            <DialogDescription>
+              {vacancy && `${vacancy.company} - ${vacancy.title}`}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex-1 overflow-y-auto space-y-4 py-4 px-2">
+            {employerMessages.length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">Нет сообщений</p>
+            ) : (
+              employerMessages.map((message, index) => (
+                <div
+                  key={`${message.id}-${index}`}
+                  className={cn(
+                    "flex",
+                    message.sender_type === "job_seeker" ? "justify-end" : "justify-start"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "max-w-[80%] rounded-lg px-4 py-2",
+                      message.sender_type === "job_seeker"
+                        ? "bg-primary text-primary-foreground"
+                        : message.sender_type === "system"
+                        ? "bg-amber-50 border border-amber-200 text-amber-900"
+                        : "bg-muted"
+                    )}
+                  >
+                    {message.sender_name && message.sender_type === "employer" && (
+                      <p className="text-xs font-semibold mb-1">{message.sender_name}</p>
+                    )}
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                    <p className="text-xs opacity-70 mt-1">
+                      {formatDistanceToNow(new Date(message.created_at), { addSuffix: true, locale: ru })}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          {application?.status === "accepted" && (
+            <div className="flex gap-2 pt-4 border-t">
+              <Input
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault()
+                    handleSendMessage()
+                  }
+                }}
+                placeholder="Введите сообщение..."
+                disabled={isSendingMessage}
+              />
+              <Button onClick={handleSendMessage} disabled={!newMessage.trim() || isSendingMessage}>
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

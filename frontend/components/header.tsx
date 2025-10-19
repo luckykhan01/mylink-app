@@ -36,7 +36,7 @@ export function Header() {
                   Дашборд
                 </Link>
               )}
-              {user.role === "seeker" && (
+              {user.role === "job_seeker" && (
                 <Link href="/applications" className="text-sm font-medium hover:text-primary transition-colors">
                   Мои отклики
                 </Link>

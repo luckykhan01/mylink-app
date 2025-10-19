@@ -8,12 +8,13 @@ from datetime import datetime
 
 from database import get_db, engine
 from file_utils import extract_text_from_file
-from models import Base, UserRole
+from models import Base, UserRole, Message, EmployerCandidateMessage
 from schemas import (
     VacancyCreate, VacancyUpdate, VacancyResponse, VacancyListResponse,
     UserCreate, UserUpdate, UserResponse, UserListResponse, UserLogin,
     JobApplicationCreate, JobApplicationUpdate, JobApplicationResponse,
-    AIAnalysisRequest, AIAnalysisResponse, ChatMessageRequest, ChatMessageResponse
+    AIAnalysisRequest, AIAnalysisResponse, ChatMessageRequest, ChatMessageResponse,
+    EmployerCandidateMessageCreate, EmployerCandidateMessageResponse, ApplicationActionRequest
 )
 from ai_client import ai_client
 from crud import (
@@ -396,6 +397,15 @@ async def analyze_application_with_ai(
             session_id=f"app_{application_id}"
         )
         
+        # Сохраняем первое сообщение бота
+        bot_message = Message(
+            content=analysis_result.get("bot_reply", ""),
+            sender_type="bot",
+            application_id=application_id
+        )
+        db.add(bot_message)
+        db.commit()
+        
         return AIAnalysisResponse(**analysis_result)
     
     except HTTPException:
@@ -416,11 +426,49 @@ async def send_chat_message(
         raise HTTPException(status_code=404, detail="Заявка не найдена")
     
     try:
+        # Сохраняем сообщение кандидата
+        user_message = Message(
+            content=request.message,
+            sender_type="job_seeker",
+            application_id=application_id
+        )
+        db.add(user_message)
+        db.commit()
+        
         # Отправляем сообщение в AI-ассистента
         chat_result = await ai_client.chat_turn(
             session_id=request.session_id,
             message=request.message
         )
+        
+        # Сохраняем ответ бота
+        bot_message = Message(
+            content=chat_result.get("bot_reply", ""),
+            sender_type="bot",
+            application_id=application_id
+        )
+        db.add(bot_message)
+        db.commit()
+        
+        # Если диалог завершен, сохраняем relevance_score, ai_summary и detailed_analysis
+        if chat_result.get("is_completed") and chat_result.get("relevance_percent") is not None:
+            relevance_score = chat_result["relevance_percent"] / 100.0
+            ai_summary = chat_result.get("summary_for_employer", "")
+            ai_detailed_analysis = chat_result.get("detailed_analysis", "")
+            print(f"💾 Saving relevance_score: {relevance_score} ({chat_result['relevance_percent']}%) for application {application_id}")
+            print(f"💾 Saving ai_summary: {ai_summary}")
+            print(f"💾 Saving ai_detailed_analysis: {len(ai_detailed_analysis)} chars")
+            updated_app = update_job_application(
+                db,
+                application_id,
+                {
+                    "relevance_score": relevance_score,
+                    "ai_summary": ai_summary,
+                    "ai_detailed_analysis": ai_detailed_analysis,
+                    "status": "reviewed"
+                }
+            )
+            print(f"✅ Updated application: {updated_app.id}, relevance_score: {updated_app.relevance_score}")
         
         return ChatMessageResponse(**chat_result)
     
@@ -471,14 +519,22 @@ async def create_message(
     if not application:
         raise HTTPException(status_code=404, detail="Заявка не найдена")
     
-    # Создаем сообщение (пока просто возвращаем успех)
-    # В будущем можно добавить сохранение в базу данных
+    # Создаем сообщение
+    message = Message(
+        content=content,
+        sender_type=sender_type,
+        application_id=int(application_id)
+    )
+    db.add(message)
+    db.commit()
+    db.refresh(message)
+    
     return {
-        "id": f"msg_{int(datetime.utcnow().timestamp() * 1000)}",
-        "application_id": int(application_id),
-        "sender_type": sender_type,
-        "content": content,
-        "created_at": datetime.utcnow().isoformat()
+        "id": str(message.id),
+        "application_id": message.application_id,
+        "sender_type": message.sender_type,
+        "content": message.content,
+        "created_at": message.created_at.isoformat()
     }
 
 @app.get("/messages")
@@ -492,8 +548,172 @@ async def get_messages(
     if not application:
         raise HTTPException(status_code=404, detail="Заявка не найдена")
     
-    # Возвращаем пустой список (в будущем можно добавить получение из БД)
-    return {"messages": []}
+    # Получаем сообщения из базы данных
+    messages = db.query(Message).filter(Message.application_id == application_id).order_by(Message.created_at).all()
+    
+    return {
+        "messages": [
+            {
+                "id": str(msg.id),
+                "application_id": msg.application_id,
+                "sender_type": msg.sender_type,
+                "content": msg.content,
+                "created_at": msg.created_at.isoformat()
+            }
+            for msg in messages
+        ]
+    }
+
+
+# ===== ЭНДПОИНТЫ ДЛЯ ДЕЙСТВИЙ С ЗАЯВКАМИ =====
+
+@app.post("/applications/{application_id}/action")
+async def handle_application_action(
+    application_id: int,
+    action_request: ApplicationActionRequest,
+    db: Session = Depends(get_db)
+):
+    """Принять или отклонить заявку"""
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    if action_request.action == "reject":
+        # Отклонить заявку
+        update_job_application(db, application_id, {"status": "rejected"})
+        
+        # Отправить автоматическое сообщение кандидату
+        reject_message = EmployerCandidateMessage(
+            content="Спасибо за ваш интерес к нашей компании! К сожалению, на данный момент мы не можем продолжить рассмотрение вашей кандидатуры. Желаем вам успехов в поиске работы!",
+            sender_type="system",
+            sender_id=application.vacancy.employer_id,
+            application_id=application_id,
+            is_read=False
+        )
+        db.add(reject_message)
+        db.commit()
+        
+        return {"status": "rejected", "message": "Заявка отклонена"}
+    
+    elif action_request.action == "accept":
+        # Принять заявку
+        update_job_application(db, application_id, {"status": "accepted"})
+        
+        # Отправить приветственное сообщение от работодателя
+        welcome_message_content = action_request.message or "Поздравляем! Вы прошли на следующий этап. Мы свяжемся с вами в ближайшее время для уточнения деталей."
+        
+        welcome_message = EmployerCandidateMessage(
+            content=welcome_message_content,
+            sender_type="employer",
+            sender_id=application.vacancy.employer_id,
+            application_id=application_id,
+            is_read=False
+        )
+        db.add(welcome_message)
+        db.commit()
+        
+        return {"status": "accepted", "message": "Заявка принята"}
+    
+    else:
+        raise HTTPException(status_code=400, detail="Неверное действие")
+
+
+# ===== ЭНДПОИНТЫ ДЛЯ ЧАТА РАБОТОДАТЕЛЬ-КАНДИДАТ =====
+
+@app.get("/applications/{application_id}/employer-chat")
+async def get_employer_candidate_messages(
+    application_id: int,
+    db: Session = Depends(get_db)
+):
+    """Получить сообщения чата между работодателем и кандидатом"""
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    messages = db.query(EmployerCandidateMessage).filter(
+        EmployerCandidateMessage.application_id == application_id
+    ).order_by(EmployerCandidateMessage.created_at).all()
+    
+    return {
+        "messages": [
+            {
+                "id": msg.id,
+                "content": msg.content,
+                "sender_type": msg.sender_type,
+                "sender_id": msg.sender_id,
+                "sender_name": msg.sender.full_name if msg.sender else "Система",
+                "application_id": msg.application_id,
+                "created_at": msg.created_at.isoformat(),
+                "is_read": msg.is_read
+            }
+            for msg in messages
+        ]
+    }
+
+
+@app.post("/applications/{application_id}/employer-chat")
+async def send_employer_candidate_message(
+    application_id: int,
+    message_data: EmployerCandidateMessageCreate,
+    sender_user_id: int = Query(description="ID отправителя сообщения"),
+    db: Session = Depends(get_db)
+):
+    """Отправить сообщение в чате работодатель-кандидат"""
+    application = get_job_application(db, application_id)
+    if not application:
+        raise HTTPException(status_code=404, detail="Заявка не найдена")
+    
+    # Определяем тип отправителя
+    is_employer = sender_user_id == application.vacancy.employer_id
+    is_job_seeker = sender_user_id == application.job_seeker_id
+    
+    if not is_employer and not is_job_seeker:
+        raise HTTPException(status_code=403, detail="Вы не можете отправлять сообщения в этом чате")
+    
+    new_message = EmployerCandidateMessage(
+        content=message_data.content,
+        sender_type="employer" if is_employer else "job_seeker",
+        sender_id=sender_user_id,
+        application_id=application_id,
+        is_read=False
+    )
+    
+    db.add(new_message)
+    db.commit()
+    db.refresh(new_message)
+    
+    return {
+        "id": new_message.id,
+        "content": new_message.content,
+        "sender_type": new_message.sender_type,
+        "sender_id": new_message.sender_id,
+        "sender_name": new_message.sender.full_name if new_message.sender else "Неизвестно",
+        "application_id": new_message.application_id,
+        "created_at": new_message.created_at.isoformat(),
+        "is_read": new_message.is_read
+    }
+
+
+@app.patch("/applications/{application_id}/employer-chat/{message_id}/read")
+async def mark_message_as_read(
+    application_id: int,
+    message_id: int,
+    db: Session = Depends(get_db)
+):
+    """Отметить сообщение как прочитанное"""
+    message = db.query(EmployerCandidateMessage).filter(
+        EmployerCandidateMessage.id == message_id,
+        EmployerCandidateMessage.application_id == application_id
+    ).first()
+    
+    if not message:
+        raise HTTPException(status_code=404, detail="Сообщение не найдено")
+    
+    message.is_read = True
+    db.commit()
+    
+    return {"status": "ok", "message_id": message_id}
+
 
 if __name__ == "__main__":
     # Запуск сервера

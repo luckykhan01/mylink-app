@@ -8,15 +8,16 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { api, type Application, type Vacancy } from "@/lib/api"
+import { api, type Application, type Vacancy, type EmployerCandidateMessage } from "@/lib/api"
 import { useAuth } from "@/lib/auth-context"
-import { Briefcase, MapPin, Clock, MessageSquare } from "lucide-react"
+import { Briefcase, MapPin, Clock, MessageSquare, Bell } from "lucide-react"
 import { formatDistanceToNow } from "date-fns"
 import { ru } from "date-fns/locale"
 import Link from "next/link"
 
 interface ApplicationWithVacancy extends Application {
   vacancy?: Vacancy
+  messageCount?: number
 }
 
 export default function ApplicationsPage() {
@@ -52,12 +53,24 @@ export default function ApplicationsPage() {
 
       const applicationsData = response.applications as Application[]
 
-      // Load vacancy details for each application
+      // Load vacancy details and message count for each application
       const applicationsWithVacancies = await Promise.all(
         applicationsData.map(async (app) => {
           try {
             const vacancy = await api.getVacancy(app.vacancy_id)
-            return { ...app, vacancy }
+            
+            // Загружаем количество сообщений для принятых/отклоненных заявок
+            let messageCount = 0
+            if (app.status === "accepted" || app.status === "rejected") {
+              try {
+                const messages = await api.getEmployerCandidateMessages(app.id)
+                messageCount = messages.length
+              } catch (error) {
+                console.error(`Failed to load messages for application ${app.id}:`, error)
+              }
+            }
+            
+            return { ...app, vacancy, messageCount }
           } catch (error) {
             console.error(`[v0] Failed to load vacancy ${app.vacancy_id}:`, error)
             return app
@@ -213,9 +226,10 @@ export default function ApplicationsPage() {
                           </div>
                           <div className="flex flex-col items-end gap-2">
                             {getStatusBadge(application.status)}
-                            {application.relevance_score !== undefined && (
-                              <Badge variant="outline">
-                                Релевантность: {Math.round(application.relevance_score * 100)}%
+                            {application.messageCount && application.messageCount > 0 && (
+                              <Badge className="bg-blue-600">
+                                <Bell className="h-3 w-3 mr-1" />
+                                {application.messageCount} {application.messageCount === 1 ? "сообщение" : "сообщений"}
                               </Badge>
                             )}
                           </div>
@@ -256,7 +270,7 @@ export default function ApplicationsPage() {
                             </div>
                           )}
 
-                          <div className="flex gap-2">
+                          <div className="flex flex-wrap gap-2">
                             {application.vacancy && (
                               <Button variant="outline" size="sm" asChild>
                                 <Link href={`/vacancies/${application.vacancy.id}`}>Посмотреть вакансию</Link>
@@ -268,6 +282,19 @@ export default function ApplicationsPage() {
                                 Чат с AI-ботом
                               </Link>
                             </Button>
+                            {application.messageCount && application.messageCount > 0 && (
+                              <Button 
+                                variant="default" 
+                                size="sm" 
+                                className="bg-blue-600 hover:bg-blue-700"
+                                asChild
+                              >
+                                <Link href={`/applications/${application.id}`}>
+                                  <Bell className="h-4 w-4 mr-2" />
+                                  {application.status === "accepted" ? "Открыть чат" : "Посмотреть ответ"}
+                                </Link>
+                              </Button>
+                            )}
                           </div>
                         </div>
                       </CardContent>

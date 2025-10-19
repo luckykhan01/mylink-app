@@ -62,6 +62,10 @@ export interface Application {
   vacancy_id: number
   vacancy?: Vacancy
   job_seeker?: Partial<User>
+  relevance_score?: number
+  ai_summary?: string
+  ai_detailed_analysis?: string
+  mismatch_reasons?: string[]
 }
 
 export interface Message {
@@ -70,6 +74,17 @@ export interface Message {
   sender_type: "bot" | "user"
   created_at: string
   application_id: string
+}
+
+export interface EmployerCandidateMessage {
+  id: number
+  content: string
+  sender_type: "employer" | "job_seeker" | "system"
+  sender_id: number
+  sender_name?: string
+  application_id: number
+  created_at: string
+  is_read: boolean
 }
 
 class ApiClient {
@@ -317,7 +332,7 @@ class ApiClient {
     return locations
   }
 
-  async getMessages(applicationId: string): Promise<Message[]> {
+  async getMessages(applicationId: string | number): Promise<Message[]> {
     const response = await fetch(`${API_BASE_URL}/messages?application_id=${applicationId}`, {
       headers: this.getHeaders(true),
     })
@@ -456,6 +471,81 @@ class ApiClient {
     }
 
     return response.json()
+  }
+
+  // ===== APPLICATION ACTIONS =====
+
+  async handleApplicationAction(
+    applicationId: number,
+    action: "accept" | "reject",
+    message?: string
+  ): Promise<{ status: string; message: string }> {
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/action`, {
+      method: "POST",
+      headers: this.getHeaders(true),
+      body: JSON.stringify({
+        action,
+        message,
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.detail || "Failed to handle application action")
+    }
+
+    return response.json()
+  }
+
+  // ===== EMPLOYER-CANDIDATE CHAT =====
+
+  async getEmployerCandidateMessages(applicationId: number): Promise<EmployerCandidateMessage[]> {
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/employer-chat`, {
+      headers: this.getHeaders(true),
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch employer-candidate messages")
+    }
+
+    const data = await response.json()
+    return data.messages || []
+  }
+
+  async sendEmployerCandidateMessage(
+    applicationId: number,
+    content: string,
+    senderUserId: number
+  ): Promise<EmployerCandidateMessage> {
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/employer-chat?sender_user_id=${senderUserId}`, {
+      method: "POST",
+      headers: this.getHeaders(true),
+      body: JSON.stringify({
+        application_id: applicationId,
+        content,
+      }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.detail || "Failed to send message")
+    }
+
+    return response.json()
+  }
+
+  async markMessageAsRead(applicationId: number, messageId: number): Promise<void> {
+    const response = await fetch(
+      `${API_BASE_URL}/applications/${applicationId}/employer-chat/${messageId}/read`,
+      {
+        method: "PATCH",
+        headers: this.getHeaders(true),
+      }
+    )
+
+    if (!response.ok) {
+      throw new Error("Failed to mark message as read")
+    }
   }
 }
 

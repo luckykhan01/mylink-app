@@ -9,9 +9,12 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useAuth } from "@/lib/auth-context"
-import { api, type Vacancy, type Application, type Message } from "@/lib/api"
-import { ArrowLeft, AlertCircle, MessageSquare } from "lucide-react"
+import { api, type Vacancy, type Application, type Message, type EmployerCandidateMessage } from "@/lib/api"
+import { ArrowLeft, AlertCircle, MessageSquare, Bot, Check, X, Send, FileText } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { toast } from "@/components/ui/use-toast"
 import Link from "next/link"
 import { formatDistanceToNow } from "date-fns"
 import { ru } from "date-fns/locale"
@@ -27,9 +30,16 @@ export default function CandidatesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [relevanceFilter, setRelevanceFilter] = useState<string>("all")
+  const [activeTab, setActiveTab] = useState<string>("all")
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null)
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [employerChatMessages, setEmployerChatMessages] = useState<EmployerCandidateMessage[]>([])
+  const [isEmployerChatOpen, setIsEmployerChatOpen] = useState(false)
+  const [newMessage, setNewMessage] = useState("")
+  const [isSendingMessage, setIsSendingMessage] = useState(false)
+  const [isDetailedAnalysisOpen, setIsDetailedAnalysisOpen] = useState(false)
+  const [detailedAnalysisContent, setDetailedAnalysisContent] = useState("")
 
   useEffect(() => {
     if (!authLoading) {
@@ -47,7 +57,7 @@ export default function CandidatesPage() {
 
   useEffect(() => {
     filterApplications()
-  }, [applications, statusFilter, relevanceFilter])
+  }, [applications, statusFilter, relevanceFilter, activeTab])
 
   const loadData = async () => {
     setIsLoading(true)
@@ -67,10 +77,14 @@ export default function CandidatesPage() {
   const filterApplications = () => {
     let filtered = [...applications]
 
-    if (statusFilter !== "all") {
-      filtered = filtered.filter((app) => app.status === statusFilter)
+    // Фильтр по вкладкам
+    if (activeTab === "accepted") {
+      filtered = filtered.filter((app) => app.status === "accepted")
+    } else if (activeTab === "rejected") {
+      filtered = filtered.filter((app) => app.status === "rejected")
     }
 
+    // Дополнительный фильтр по релевантности
     if (relevanceFilter !== "all") {
       filtered = filtered.filter((app) => {
         const score = (app.relevance_score || 0) * 100
@@ -90,6 +104,14 @@ export default function CandidatesPage() {
     setFilteredApplications(filtered)
   }
 
+  // Получить количество кандидатов по статусу
+  const getCandidateCount = (status: string) => {
+    if (status === "all") return applications.length
+    if (status === "accepted") return applications.filter((app) => app.status === "accepted").length
+    if (status === "rejected") return applications.filter((app) => app.status === "rejected").length
+    return 0
+  }
+
   const handleViewChat = async (application: Application) => {
     setSelectedApplication(application)
     setIsChatOpen(true)
@@ -98,12 +120,89 @@ export default function CandidatesPage() {
       setChatMessages(messages)
     } catch (error) {
       console.error("[v0] Failed to load chat messages:", error)
+      setChatMessages([])
     }
   }
 
+  const handleAccept = async (application: Application) => {
+    try {
+      await api.handleApplicationAction(application.id, "accept")
+      toast({
+        title: "Заявка принята",
+        description: "Теперь вы можете начать общение с кандидатом",
+      })
+      // Открываем чат работодателя с кандидатом
+      setSelectedApplication(application)
+      loadEmployerChat(application.id)
+      setIsEmployerChatOpen(true)
+      // Обновляем список заявок
+      loadData()
+    } catch (error) {
+      console.error("Failed to accept application:", error)
+      toast({
+        title: "Ошибка",
+        description: "Не удалось принять заявку",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleReject = async (application: Application) => {
+    try {
+      await api.handleApplicationAction(application.id, "reject")
+      toast({
+        title: "Заявка отклонена",
+        description: "Кандидату отправлено уведомление",
+      })
+      // Обновляем список заявок
+      loadData()
+    } catch (error) {
+      console.error("Failed to reject application:", error)
+      toast({
+        title: "Ошибка",
+        description: "Не удалось отклонить заявку",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const loadEmployerChat = async (applicationId: number) => {
+    try {
+      const messages = await api.getEmployerCandidateMessages(applicationId)
+      setEmployerChatMessages(messages)
+    } catch (error) {
+      console.error("Failed to load employer chat:", error)
+      setEmployerChatMessages([])
+    }
+  }
+
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() || !selectedApplication || isSendingMessage || !user) return
+
+    setIsSendingMessage(true)
+    try {
+      const message = await api.sendEmployerCandidateMessage(selectedApplication.id, newMessage, user.id)
+      setEmployerChatMessages((prev) => [...prev, message])
+      setNewMessage("")
+    } catch (error) {
+      console.error("Failed to send message:", error)
+      toast({
+        title: "Ошибка",
+        description: "Не удалось отправить сообщение",
+        variant: "destructive",
+      })
+    } finally {
+      setIsSendingMessage(false)
+    }
+  }
+
+  const handleViewDetailedAnalysis = (application: Application) => {
+    setDetailedAnalysisContent(application.ai_detailed_analysis || "Детальный анализ не доступен")
+    setIsDetailedAnalysisOpen(true)
+  }
+
   const getRelevanceBadge = (score?: number) => {
-    if (!score) return <Badge variant="secondary">Не оценено</Badge>
-    const percentage = Math.round(score * 100)
+    const percentage = Math.round((score || 0) * 100)
     if (percentage >= 70) {
       return <Badge className="bg-green-600">Высокая: {percentage}%</Badge>
     } else if (percentage >= 40) {
@@ -226,28 +325,26 @@ export default function CandidatesPage() {
             </Card>
           </div>
 
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="all">
+                Все кандидаты ({getCandidateCount("all")})
+              </TabsTrigger>
+              <TabsTrigger value="accepted" className="text-green-600 data-[state=active]:text-green-700">
+                Принятые ({getCandidateCount("accepted")})
+              </TabsTrigger>
+              <TabsTrigger value="rejected" className="text-red-600 data-[state=active]:text-red-700">
+                Отклоненные ({getCandidateCount("rejected")})
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+
           <Card className="mb-6">
             <CardHeader>
-              <CardTitle>Фильтры</CardTitle>
+              <CardTitle>Дополнительные фильтры</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 md:grid-cols-3">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Статус</label>
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">Все статусы</SelectItem>
-                      <SelectItem value="pending">В обработке</SelectItem>
-                      <SelectItem value="reviewed">Просмотрено</SelectItem>
-                      <SelectItem value="accepted">Принято</SelectItem>
-                      <SelectItem value="rejected">Отклонено</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
+              <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <label className="text-sm font-medium mb-2 block">Релевантность</label>
                   <Select value={relevanceFilter} onValueChange={setRelevanceFilter}>
@@ -268,7 +365,12 @@ export default function CandidatesPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Кандидаты ({filteredApplications.length})</CardTitle>
+              <CardTitle>
+                {activeTab === "all" && "Все кандидаты"}
+                {activeTab === "accepted" && "Принятые кандидаты"}
+                {activeTab === "rejected" && "Отклоненные кандидаты"}
+                {" "}({filteredApplications.length})
+              </CardTitle>
               <CardDescription>Отклики отсортированы по релевантности</CardDescription>
             </CardHeader>
             <CardContent>
@@ -307,6 +409,30 @@ export default function CandidatesPage() {
                             </div>
                           )}
 
+                          {application.ai_summary && (
+                            <div className="mb-4">
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className="text-sm font-medium flex items-center gap-2">
+                                  <Bot className="h-4 w-4" />
+                                  Анализ AI
+                                </h4>
+                                {application.ai_detailed_analysis && (
+                                  <Button 
+                                    size="sm" 
+                                    variant="outline"
+                                    onClick={() => handleViewDetailedAnalysis(application)}
+                                  >
+                                    <FileText className="h-4 w-4 mr-2" />
+                                    Подробнее
+                                  </Button>
+                                )}
+                              </div>
+                              <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                                {application.ai_summary}
+                              </p>
+                            </div>
+                          )}
+
                           {application.mismatch_reasons && application.mismatch_reasons.length > 0 && (
                             <div className="mb-4">
                               <h4 className="text-sm font-medium mb-2 flex items-center gap-2 text-orange-600">
@@ -327,14 +453,44 @@ export default function CandidatesPage() {
                           <div className="flex gap-2">
                             <Button size="sm" variant="outline" onClick={() => handleViewChat(application)}>
                               <MessageSquare className="h-4 w-4 mr-2" />
-                              Просмотреть чат
+                              Просмотреть чат с AI
                             </Button>
-                            <Button size="sm" variant="outline">
-                              Принять
-                            </Button>
-                            <Button size="sm" variant="ghost">
-                              Отклонить
-                            </Button>
+                            {application.status === "accepted" ? (
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                onClick={() => {
+                                  setSelectedApplication(application)
+                                  loadEmployerChat(application.id)
+                                  setIsEmployerChatOpen(true)
+                                }}
+                              >
+                                <MessageSquare className="h-4 w-4 mr-2" />
+                                Написать кандидату
+                              </Button>
+                            ) : (
+                              <>
+                                <Button 
+                                  size="sm" 
+                                  variant="outline" 
+                                  className="bg-green-50 hover:bg-green-100"
+                                  onClick={() => handleAccept(application)}
+                                  disabled={application.status === "rejected"}
+                                >
+                                  <Check className="h-4 w-4 mr-2" />
+                                  Принять
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost"
+                                  onClick={() => handleReject(application)}
+                                  disabled={application.status === "rejected"}
+                                >
+                                  <X className="h-4 w-4 mr-2" />
+                                  Отклонить
+                                </Button>
+                              </>
+                            )}
                           </div>
                         </CardContent>
                       </Card>
@@ -347,20 +503,20 @@ export default function CandidatesPage() {
       </main>
 
       <Dialog open={isChatOpen} onOpenChange={setIsChatOpen}>
-        <DialogContent className="max-w-2xl max-h-[80vh]">
+        <DialogContent className="max-w-2xl h-[80vh] flex flex-col">
           <DialogHeader>
             <DialogTitle>История чата с кандидатом</DialogTitle>
             <DialogDescription>
               {selectedApplication && `Кандидат #${selectedApplication.job_seeker_id}`}
             </DialogDescription>
           </DialogHeader>
-          <div className="flex-1 overflow-y-auto space-y-4 py-4">
+          <div className="flex-1 overflow-y-auto space-y-4 py-4 px-2">
             {chatMessages.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">Нет сообщений в чате</p>
             ) : (
-              chatMessages.map((message) => (
+              chatMessages.map((message, index) => (
                 <div
-                  key={message.id}
+                  key={`${message.id}-${index}`}
                   className={cn("flex", message.sender_type === "job_seeker" ? "justify-end" : "justify-start")}
                 >
                   <div
@@ -369,7 +525,7 @@ export default function CandidatesPage() {
                       message.sender_type === "job_seeker" ? "bg-primary text-primary-foreground" : "bg-muted",
                     )}
                   >
-                    <p className="text-sm leading-relaxed">{message.content}</p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                     <p className="text-xs opacity-70 mt-1">
                       {formatDistanceToNow(new Date(message.created_at), { addSuffix: true, locale: ru })}
                     </p>
@@ -377,6 +533,93 @@ export default function CandidatesPage() {
                 </div>
               ))
             )}
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Диалог чата между работодателем и кандидатом */}
+      <Dialog open={isEmployerChatOpen} onOpenChange={setIsEmployerChatOpen}>
+        <DialogContent className="max-w-2xl h-[80vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Чат с кандидатом</DialogTitle>
+            <DialogDescription>
+              {selectedApplication && selectedApplication.job_seeker && 
+                `${selectedApplication.job_seeker.full_name || `Кандидат #${selectedApplication.job_seeker_id}`}`
+              }
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex-1 overflow-y-auto space-y-4 py-4 px-2">
+            {employerChatMessages.length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">
+                Начните общение с кандидатом
+              </p>
+            ) : (
+              employerChatMessages.map((message, index) => (
+                <div
+                  key={`${message.id}-${index}`}
+                  className={cn(
+                    "flex",
+                    message.sender_type === "employer" ? "justify-end" : "justify-start"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "max-w-[80%] rounded-lg px-4 py-2",
+                      message.sender_type === "employer"
+                        ? "bg-primary text-primary-foreground"
+                        : message.sender_type === "system"
+                        ? "bg-amber-50 border border-amber-200"
+                        : "bg-muted"
+                    )}
+                  >
+                    {message.sender_name && message.sender_type !== "employer" && (
+                      <p className="text-xs font-semibold mb-1">{message.sender_name}</p>
+                    )}
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+                    <p className="text-xs opacity-70 mt-1">
+                      {formatDistanceToNow(new Date(message.created_at), { addSuffix: true, locale: ru })}
+                    </p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          <div className="flex gap-2 pt-4 border-t">
+            <Input
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  handleSendMessage()
+                }
+              }}
+              placeholder="Введите сообщение..."
+              disabled={isSendingMessage}
+            />
+            <Button onClick={handleSendMessage} disabled={!newMessage.trim() || isSendingMessage}>
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Диалог детального анализа от AI */}
+      <Dialog open={isDetailedAnalysisOpen} onOpenChange={setIsDetailedAnalysisOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Bot className="h-5 w-5" />
+              Детальный анализ кандидата
+            </DialogTitle>
+            <DialogDescription>
+              Подробный отчет от AI-ассистента SmartBot
+            </DialogDescription>
+          </DialogHeader>
+          <div className="prose prose-sm max-w-none">
+            <div className="whitespace-pre-wrap text-sm leading-relaxed">
+              {detailedAnalysisContent}
+            </div>
           </div>
         </DialogContent>
       </Dialog>

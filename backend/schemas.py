@@ -151,3 +151,31 @@ class ChatMessageResponse(BaseModel):
     is_completed: Optional[bool] = False
     # Старое поле для обратной совместимости
     bot_replies: Optional[List[str]] = None
+
+
+# ===== СХЕМЫ ДЛЯ ЧАТА РАБОТОДАТЕЛЬ-КАНДИДАТ =====
+
+class EmployerCandidateMessageCreate(BaseModel):
+    content: str
+    application_id: int
+
+class EmployerCandidateMessageResponse(BaseModel):
+    id: int
+    content: str
+    sender_type: str
+    sender_id: int
+    application_id: int
+    created_at: datetime
+    is_read: bool
+    sender_name: Optional[str] = None  # Имя отправителя
+
+    class Config:
+        from_attributes = True
+
+
+# ===== СХЕМЫ ДЛЯ ДЕЙСТВИЙ С ЗАЯВКАМИ =====
+
+class ApplicationActionRequest(BaseModel):
+    """Запрос на принятие/отклонение заявки"""
+    action: str  # "accept" or "reject"
+    message: Optional[str] = None  # Сообщение при принятии
