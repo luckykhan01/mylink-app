@@ -14,6 +14,12 @@ import openai
 from openai import OpenAI
 import redis
 
+# LangChain imports
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+from langchain_community.chat_message_histories import RedisChatMessageHistory
+
 app = FastAPI(
     title="SmartBot AI Assistant",
     description="AI-ассистент для первичного скрининга кандидатов",
@@ -35,6 +41,19 @@ if not openai_api_key:
     print("WARNING: OPENAI_API_KEY not found in environment variables")
     
 client = OpenAI(api_key=openai_api_key) if openai_api_key else None
+
+# Инициализация LangChain LLM
+llm = None
+if openai_api_key:
+    try:
+        llm = ChatOpenAI(
+            model="gpt-4o-mini",
+            temperature=0.7,
+            openai_api_key=openai_api_key
+        )
+        print("✅ LangChain ChatOpenAI initialized")
+    except Exception as e:
+        print(f"❌ Failed to initialize LangChain: {e}")
 
 # Инициализация Redis
 redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
@@ -93,6 +112,14 @@ def get_all_session_ids() -> List[str]:
         print(f"Error getting session IDs: {e}")
         return []
 
+def get_langchain_memory(session_id: str) -> RedisChatMessageHistory:
+    """Получить LangChain memory для сессии из Redis"""
+    return RedisChatMessageHistory(
+        session_id=f"langchain:{session_id}",
+        url=redis_url,
+        ttl=86400  # 24 hours
+    )
+
 # Системный промпт SmartBot
 SYSTEM_PROMPT = """Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.
 
@@ -145,6 +172,20 @@ reasons: ["причина 1", "причина 2", ...]
 — Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.
 — После 4-8 вопросов: отправь вежливое сообщение "Спасибо за отклик! Мы свяжемся с вами в ближайшее время." и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."""
 
+# ===== LANGCHAIN PROMPT TEMPLATES =====
+
+# Prompt template для начала диалога
+START_CHAT_PROMPT = ChatPromptTemplate.from_messages([
+    ("system", SYSTEM_PROMPT + "\n\n<JOB_DESCRIPTION>\n{vacancy_text}\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\n{cv_text}\n</CANDIDATE_RESUME>"),
+    ("human", "Я хочу откликнуться на эту вакансию. Готов ответить на ваши вопросы.")
+])
+
+# Prompt template для продолжения диалога
+CONTINUE_CHAT_PROMPT = ChatPromptTemplate.from_messages([
+    ("system", SYSTEM_PROMPT + "\n\n<JOB_DESCRIPTION>\n{vacancy_text}\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\n{cv_text}\n</CANDIDATE_RESUME>\n\nВопросов задано: {question_count}/8"),
+    MessagesPlaceholder(variable_name="chat_history"),
+    ("human", "{user_message}")
+])
 
 # ===== МОДЕЛИ ДАННЫХ =====
 
@@ -231,7 +272,7 @@ def extract_result_from_message(message: str) -> Optional[Dict[str, Any]]:
         return None
 
 def call_openai(messages: List[Dict[str, str]], max_tokens: int = 500) -> str:
-    """Вызов OpenAI API"""
+    """Вызов OpenAI API (legacy метод, используется как fallback)"""
     if not client:
         # Fallback если нет ключа
         return "Спасибо за ответ! Расскажите еще что-нибудь о себе."
@@ -247,6 +288,34 @@ def call_openai(messages: List[Dict[str, str]], max_tokens: int = 500) -> str:
     except Exception as e:
         print(f"OpenAI API error: {e}")
         raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
+
+def call_langchain(
+    prompt_template: ChatPromptTemplate,
+    variables: Dict[str, Any],
+    chat_history: Optional[List] = None
+) -> str:
+    """Вызов LLM через LangChain с поддержкой chat history"""
+    if not llm:
+        # Fallback на старый метод
+        print("⚠️ LangChain not available, using legacy OpenAI client")
+        return call_openai([{"role": "system", "content": str(variables)}])
+    
+    try:
+        # Подготавливаем переменные
+        if chat_history is not None:
+            variables["chat_history"] = chat_history
+        
+        # Форматируем промпт
+        messages = prompt_template.format_messages(**variables)
+        
+        # Вызываем LLM
+        response = llm.invoke(messages)
+        
+        return response.content
+    except Exception as e:
+        print(f"❌ LangChain Error: {e}")
+        # Fallback на старый метод
+        return call_openai([{"role": "system", "content": str(variables)}])
 
 
 # ===== ЭНДПОИНТЫ =====
