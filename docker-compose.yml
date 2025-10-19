@@ -51,6 +51,7 @@ services:
       - ./ai-assistent:/app
     environment:
       - PYTHONPATH=/app
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     networks:
       - mylink-network
     restart: unless-stopped

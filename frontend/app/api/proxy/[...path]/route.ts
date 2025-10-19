@@ -44,10 +44,15 @@ async function proxyRequest(
   const fullUrl = queryString ? `${url}?${queryString}` : url
 
   try {
+    console.log(`[Proxy] ${method} ${fullUrl}`)
+    
     const headers: HeadersInit = {}
     
-    // Копируем важные заголовки
+    // Получаем Content-Type
     const contentType = request.headers.get('content-type')
+    const isMultipartFormData = contentType?.includes('multipart/form-data')
+    
+    // Для multipart/form-data копируем Content-Type header с boundary
     if (contentType) {
       headers['Content-Type'] = contentType
     }
@@ -58,24 +63,34 @@ async function proxyRequest(
     }
 
     // Получаем тело запроса для POST/PUT
-    let body = undefined
+    let body: any = undefined
     if (method === 'POST' || method === 'PUT') {
-      body = await request.text()
+      if (isMultipartFormData) {
+        // Для FormData используем arrayBuffer для точной передачи бинарных данных
+        const buffer = await request.arrayBuffer()
+        body = Buffer.from(buffer)
+      } else {
+        // Для JSON используем text()
+        body = await request.text()
+      }
     }
 
     const response = await fetch(fullUrl, {
       method,
       headers,
       body,
+      signal: AbortSignal.timeout(30000), // 30 секунд таймаут
     })
 
     const data = await response.json()
     
+    console.log(`[Proxy] Response status: ${response.status}`)
+    
     return NextResponse.json(data, { status: response.status })
-  } catch (error) {
-    console.error('Proxy error:', error)
+  } catch (error: any) {
+    console.error('[Proxy] Error:', error.message, error.cause)
     return NextResponse.json(
-      { error: 'Failed to proxy request' },
+      { error: 'Failed to proxy request', details: error.message },
       { status: 500 }
     )
   }

@@ -274,7 +274,7 @@ export default function ApplicationDetailPage() {
         </div>
       </main>
 
-      {application && vacancy && !analysis && (
+      {application && vacancy && (
         <ChatbotWidget
           applicationId={String(application.id)}
           vacancyId={String(vacancy.id)}

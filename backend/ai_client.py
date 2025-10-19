@@ -59,6 +59,25 @@ class AIAssistantClient:
         except httpx.HTTPStatusError as e:
             raise HTTPException(status_code=e.response.status_code, detail=f"Ошибка AI Assistant: {e.response.text}")
     
+    async def start_chat(self, vacancy_text: str, cv_text: Optional[str] = None, session_id: Optional[str] = None) -> Dict[str, Any]:
+        """Начинает новый диалог с кандидатом"""
+        try:
+            async with httpx.AsyncClient(timeout=self.timeout) as client:
+                response = await client.post(
+                    f"{self.base_url}/chat/start",
+                    json={
+                        "vacancy_text": vacancy_text,
+                        "cv_text": cv_text,
+                        "session_id": session_id
+                    }
+                )
+                response.raise_for_status()
+                return response.json()
+        except httpx.RequestError as e:
+            raise HTTPException(status_code=503, detail=f"AI Assistant недоступен: {str(e)}")
+        except httpx.HTTPStatusError as e:
+            raise HTTPException(status_code=e.response.status_code, detail=f"Ошибка AI Assistant: {e.response.text}")
+    
     async def chat_turn(self, session_id: str, message: str) -> Dict[str, Any]:
         """Отправка сообщения в чат с кандидатом"""
         try:

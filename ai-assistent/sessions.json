@@ -1,0 +1,1809 @@
+{
+  "persistent_test": {
+    "created_at": "2025-10-18T21:32:59.128343",
+    "candidate": {
+      "full_name": "Иван Петров",
+      "city": null,
+      "experience_years": 5.0,
+      "position": "",
+      "education": null,
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [
+        "Python"
+      ],
+      "seniority": null,
+      "source_text": "Иван Петров, 5 лет опыта в Python"
+    },
+    "vacancy": {
+      "title": "Python Developer",
+      "city": "",
+      "min_experience_years": 3.0,
+      "required_position": "Python Developer",
+      "education_required": "",
+      "languages_required": [],
+      "salary_min": 0,
+      "salary_max": 0,
+      "employment_type": "",
+      "must_have_skills": [],
+      "nice_to_have_skills": [],
+      "seniority": "middle",
+      "source_text": "Python Developer, требуется 3+ года опыта"
+    },
+    "chat": [
+      {
+        "role": "candidate",
+        "text": "Я работаю в Санкт-Петербурге",
+        "ts": "2025-10-18T21:33:54.899414"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:33:56.009499"
+      },
+      {
+        "role": "candidate",
+        "text": "Python разработчик",
+        "ts": "2025-10-18T21:34:09.032445"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:34:09.034742"
+      },
+      {
+        "role": "candidate",
+        "text": "Высшее техническое",
+        "ts": "2025-10-18T21:34:09.113119"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:34:09.114600"
+      },
+      {
+        "role": "candidate",
+        "text": "Русский, Английский B2",
+        "ts": "2025-10-18T21:34:09.155847"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:34:09.157094"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [
+      "position"
+    ],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_analysis": {
+      "relevance": 20,
+      "mismatches": {},
+      "reasons": [],
+      "summary": "Релевантность: 20%. Кандидат: Иван Петров, позиция: —, город: —. Опыт: 5.0 лет; образование: —. Существенных несоответствий не выявлено."
+    }
+  },
+  "debug_test": {
+    "created_at": "2025-10-18T21:35:01.739124",
+    "candidate": {
+      "full_name": "Имя Фамилия",
+      "city": null,
+      "experience_years": null,
+      "position": "Senior Python Developer",
+      "education": null,
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [],
+      "seniority": null,
+      "source_text": null
+    },
+    "vacancy": {
+      "title": "Python Developer",
+      "city": "null",
+      "min_experience_years": null,
+      "required_position": "Python Developer",
+      "education_required": "null",
+      "languages_required": [],
+      "salary_min": null,
+      "salary_max": null,
+      "employment_type": "null",
+      "must_have_skills": [],
+      "nice_to_have_skills": [],
+      "seniority": "null",
+      "source_text": "Python Developer"
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Как вас зовут?",
+        "ts": "2025-10-18T21:35:01.745729"
+      },
+      {
+        "role": "candidate",
+        "text": "Python разработчик",
+        "ts": "2025-10-18T21:35:01.769764"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:35:02.489042"
+      },
+      {
+        "role": "candidate",
+        "text": "Senior Python Developer",
+        "ts": "2025-10-18T21:35:25.543306"
+      },
+      {
+        "role": "bot",
+        "text": "Сколько лет у вас опыта работы в вашей области?",
+        "ts": "2025-10-18T21:35:26.361864"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [
+      "full_name",
+      "position"
+    ],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {},
+      "reasons": [],
+      "summary": "Релевантность: 0%. Кандидат: Имя Фамилия, позиция: —, город: —. Опыт: — лет; образование: —. Существенных несоответствий не выявлено."
+    }
+  },
+  "final_test": {
+    "created_at": "2025-10-18T21:36:01.741419",
+    "candidate": {
+      "full_name": "Имя Фамилия",
+      "city": null,
+      "experience_years": null,
+      "position": null,
+      "education": null,
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [],
+      "seniority": null,
+      "source_text": null
+    },
+    "vacancy": {
+      "title": "Python Developer",
+      "city": "null",
+      "min_experience_years": null,
+      "required_position": "Python Developer",
+      "education_required": "null",
+      "languages_required": [],
+      "salary_min": null,
+      "salary_max": null,
+      "employment_type": "null",
+      "must_have_skills": [],
+      "nice_to_have_skills": [],
+      "seniority": "null",
+      "source_text": "Python Developer"
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Как вас зовут?",
+        "ts": "2025-10-18T21:36:01.746936"
+      },
+      {
+        "role": "candidate",
+        "text": "Python разработчик",
+        "ts": "2025-10-18T21:36:01.775978"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:36:02.402425"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [
+      "full_name"
+    ],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {},
+      "reasons": [],
+      "summary": "Релевантность: 0%. Кандидат: Имя Фамилия, позиция: —, город: —. Опыт: — лет; образование: —. Существенных несоответствий не выявлено."
+    }
+  },
+  "working_test": {
+    "created_at": "2025-10-18T21:37:11.938126",
+    "candidate": {
+      "full_name": "Иван Петров",
+      "city": null,
+      "experience_years": 5.0,
+      "position": "Python разработчик",
+      "education": null,
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [],
+      "seniority": null,
+      "source_text": null
+    },
+    "vacancy": {
+      "title": "Python Developer",
+      "city": "Москва",
+      "min_experience_years": 3.0,
+      "required_position": "Python Developer",
+      "education_required": "",
+      "languages_required": [],
+      "salary_min": 0,
+      "salary_max": 0,
+      "employment_type": "фуллтайм",
+      "must_have_skills": [],
+      "nice_to_have_skills": [],
+      "seniority": "middle",
+      "source_text": "Python Developer, требуется 3+ года опыта, Москва"
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Как вас зовут?",
+        "ts": "2025-10-18T21:37:11.943803"
+      },
+      {
+        "role": "candidate",
+        "text": "Иван Петров",
+        "ts": "2025-10-18T21:37:11.978916"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:37:12.635681"
+      },
+      {
+        "role": "candidate",
+        "text": "Python разработчик",
+        "ts": "2025-10-18T21:37:12.699633"
+      },
+      {
+        "role": "bot",
+        "text": "Сколько лет у вас опыта работы в вашей области?",
+        "ts": "2025-10-18T21:37:14.034595"
+      },
+      {
+        "role": "candidate",
+        "text": "5 лет",
+        "ts": "2025-10-18T21:37:14.080344"
+      },
+      {
+        "role": "bot",
+        "text": "В каком городе вы проживаете?",
+        "ts": "2025-10-18T21:37:14.662660"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [
+      "full_name",
+      "position",
+      "experience_years"
+    ],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_analysis": {
+      "relevance": 20,
+      "mismatches": {
+        "position": {
+          "expected": "Python Developer",
+          "actual": "Python разработчик"
+        }
+      },
+      "reasons": [
+        "Должность отличается: требуется Python Developer, указано Python разработчик."
+      ],
+      "summary": "Релевантность: 20%. Кандидат: Иван Петров, позиция: Python разработчик, город: —. Опыт: 5.0 лет; образование: —. Причины несоответствий: Должность отличается: требуется Python Developer, указано Python разработчик."
+    }
+  },
+  "app_16": {
+    "created_at": "2025-10-18T21:38:00.969996",
+    "candidate": {
+      "full_name": null,
+      "city": null,
+      "experience_years": null,
+      "position": null,
+      "education": null,
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [],
+      "seniority": null,
+      "source_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически."
+    },
+    "vacancy": {
+      "title": "Frontend - Baisal",
+      "city": "null",
+      "min_experience_years": 5.0,
+      "required_position": "Python разработчик",
+      "education_required": "null",
+      "languages_required": [],
+      "salary_min": 300000,
+      "salary_max": 450000,
+      "employment_type": "фуллтайм",
+      "must_have_skills": [
+        "Python 3.8+",
+        "FastAPI",
+        "Django",
+        "PostgreSQL",
+        "Redis",
+        "Docker"
+      ],
+      "nice_to_have_skills": [],
+      "seniority": "senior",
+      "source_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб."
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Как вас зовут?",
+        "ts": "2025-10-18T21:38:00.977874"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {
+        "skills": {
+          "missing": [
+            "Python 3.8+",
+            "FastAPI",
+            "Django",
+            "PostgreSQL",
+            "Redis",
+            "Docker"
+          ]
+        }
+      },
+      "reasons": [
+        "Не хватает ключевых навыков: Python 3.8+, FastAPI, Django, PostgreSQL, Redis, Docker."
+      ],
+      "summary": "Релевантность: 0%. Кандидат: —, позиция: —, город: —. Опыт: — лет; образование: —. Причины несоответствий: Не хватает ключевых навыков: Python 3.8+, FastAPI, Django, PostgreSQL, Redis, Docker."
+    }
+  },
+  "app_17": {
+    "created_at": "2025-10-18T21:39:28.280077",
+    "candidate": {
+      "full_name": "Байсал ",
+      "city": "Астана",
+      "experience_years": 4.0,
+      "position": "студент",
+      "education": "Назарбаев Университет, компьютерные науки",
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [
+        "c++",
+        "fastapi"
+      ],
+      "seniority": null,
+      "source_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически."
+    },
+    "vacancy": {
+      "title": "Frontend - Baisal",
+      "city": "null",
+      "min_experience_years": 5.0,
+      "required_position": "Python разработчик",
+      "education_required": "null",
+      "languages_required": [],
+      "salary_min": 300000,
+      "salary_max": 450000,
+      "employment_type": "фуллтайм",
+      "must_have_skills": [
+        "Python 3.8+",
+        "FastAPI",
+        "Django",
+        "PostgreSQL",
+        "Redis",
+        "Docker"
+      ],
+      "nice_to_have_skills": [],
+      "seniority": "senior",
+      "source_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб."
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Как вас зовут?",
+        "ts": "2025-10-18T21:39:28.285394"
+      },
+      {
+        "role": "candidate",
+        "text": "Байсал",
+        "ts": "2025-10-18T21:39:36.969357"
+      },
+      {
+        "role": "bot",
+        "text": "Какая у вас текущая должность или специальность?",
+        "ts": "2025-10-18T21:39:37.821316"
+      },
+      {
+        "role": "candidate",
+        "text": "студент",
+        "ts": "2025-10-18T21:39:44.805325"
+      },
+      {
+        "role": "bot",
+        "text": "Сколько лет у вас опыта работы в вашей области?",
+        "ts": "2025-10-18T21:39:45.578218"
+      },
+      {
+        "role": "candidate",
+        "text": "4",
+        "ts": "2025-10-18T21:39:50.768741"
+      },
+      {
+        "role": "bot",
+        "text": "В каком городе вы проживаете?",
+        "ts": "2025-10-18T21:39:51.427628"
+      },
+      {
+        "role": "candidate",
+        "text": "Астана",
+        "ts": "2025-10-18T21:39:55.736058"
+      },
+      {
+        "role": "bot",
+        "text": "Расскажите о вашем образовании (учебное заведение, специальность)?",
+        "ts": "2025-10-18T21:39:56.237649"
+      },
+      {
+        "role": "candidate",
+        "text": "Назарбаев Университет, компьютерные науки",
+        "ts": "2025-10-18T21:40:15.367280"
+      },
+      {
+        "role": "bot",
+        "text": "Какими ключевыми навыками и технологиями вы владеете?",
+        "ts": "2025-10-18T21:40:16.302494"
+      },
+      {
+        "role": "candidate",
+        "text": "c++, fastapi",
+        "ts": "2025-10-18T21:40:24.795952"
+      },
+      {
+        "role": "bot",
+        "text": "Какие языки вы знаете и на каком уровне?",
+        "ts": "2025-10-18T21:40:25.595529"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [
+      "full_name",
+      "position",
+      "experience_years",
+      "city",
+      "education",
+      "skills"
+    ],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {
+        "city": {
+          "expected": "null",
+          "actual": "Астана"
+        },
+        "experience": {
+          "expected_min_years": 5.0,
+          "actual_years": 4.0
+        },
+        "position": {
+          "expected": "Python разработчик",
+          "actual": "студент"
+        },
+        "education": {
+          "expected": "null",
+          "actual": "Назарбаев Университет, компьютерные науки"
+        },
+        "skills": {
+          "missing": [
+            "Python 3.8+",
+            "FastAPI",
+            "Django",
+            "PostgreSQL",
+            "Redis",
+            "Docker"
+          ]
+        }
+      },
+      "reasons": [
+        "Город отличается: вакансия — null, кандидат — Астана.",
+        "Опыт меньше требуемого: нужно от 5.0 лет, у кандидата 4.0.",
+        "Должность отличается: требуется Python разработчик, указано студент.",
+        "Образование не совпадает: требуется null, у кандидата Назарбаев Университет, компьютерные науки.",
+        "Не хватает ключевых навыков: Python 3.8+, FastAPI, Django, PostgreSQL, Redis, Docker."
+      ],
+      "summary": "Релевантность: 0%. Кандидат: Байсал , позиция: студент, город: Астана. Опыт: 4.0 лет; образование: Назарбаев Университет, компьютерные науки. Причины несоответствий: Город отличается: вакансия — null, кандидат — Астана.; Опыт меньше требуемого: нужно от 5.0 лет, у кандидата 4.0.; Должность отличается: требуется Python разработчик, указано студент.; Образование не совпадает: требуется null, у кандидата Назарбаев Университет, компьютерные науки.; Не хватает ключевых навыков: Python 3.8+, FastAPI, Django, PostgreSQL, Redis, Docker."
+    }
+  },
+  "dynamic_test": {
+    "created_at": "2025-10-18T22:03:24.794059",
+    "candidate": {
+      "full_name": null,
+      "city": null,
+      "experience_years": null,
+      "position": null,
+      "education": null,
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [],
+      "seniority": null,
+      "source_text": null
+    },
+    "vacancy": {
+      "title": "Senior Python Developer",
+      "city": "Москва",
+      "min_experience_years": 5.0,
+      "required_position": "Senior Python Developer",
+      "education_required": "",
+      "languages_required": [],
+      "salary_min": 300000,
+      "salary_max": 400000,
+      "employment_type": "фуллтайм",
+      "must_have_skills": [
+        "FastAPI",
+        "Docker",
+        "PostgreSQL"
+      ],
+      "nice_to_have_skills": [],
+      "seniority": "senior",
+      "source_text": "Senior Python Developer в Москве, зарплата 300000-400000, требуется 5+ лет опыта, FastAPI, Docker, PostgreSQL"
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Как вас зовут и какое полное имя вы указываете в резюме?",
+        "ts": "2025-10-18T22:03:25.539356"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_asked_field": "full_name",
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {
+        "skills": {
+          "missing": [
+            "FastAPI",
+            "Docker",
+            "PostgreSQL"
+          ]
+        }
+      },
+      "reasons": [
+        "Не хватает ключевых навыков: FastAPI, Docker, PostgreSQL."
+      ],
+      "summary": "Релевантность: 0%. Кандидат: —, позиция: —, город: —. Опыт: — лет; образование: —. Причины несоответствий: Не хватает ключевых навыков: FastAPI, Docker, PostgreSQL."
+    }
+  },
+  "app_1": {
+    "created_at": "2025-10-18T22:05:35.552593",
+    "candidate": {
+      "full_name": "Иван Петров",
+      "city": null,
+      "experience_years": 5.0,
+      "position": null,
+      "education": null,
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [
+        "Python"
+      ],
+      "seniority": null,
+      "source_text": "Иван Петров, 5 лет Python"
+    },
+    "vacancy": {
+      "title": "Python Developer",
+      "city": "null",
+      "min_experience_years": null,
+      "required_position": "Python Developer",
+      "education_required": "null",
+      "languages_required": [],
+      "salary_min": null,
+      "salary_max": null,
+      "employment_type": "null",
+      "must_have_skills": [],
+      "nice_to_have_skills": [],
+      "seniority": "null",
+      "source_text": "Python Developer"
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Можешь рассказать, какая у тебя сейчас должность или специальность, и чем ты занимаешься в своей текущей роли?",
+        "ts": "2025-10-18T22:05:37.164922"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_asked_field": "position",
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {},
+      "reasons": [],
+      "summary": "Релевантность: 0%. Кандидат: Иван Петров, позиция: —, город: —. Опыт: 5.0 лет; образование: —. Существенных несоответствий не выявлено."
+    }
+  },
+  "test_full": {
+    "created_at": "2025-10-18T22:06:17.682938",
+    "candidate": {
+      "full_name": "Бакыт",
+      "city": "Алматы",
+      "experience_years": 3.0,
+      "position": "Бакыт Турсынхан",
+      "education": "информация об образовании отсутствует",
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL"
+      ],
+      "seniority": null,
+      "source_text": "Бакыт, 3 года Python, Алматы, знаю FastAPI и PostgreSQL"
+    },
+    "vacancy": {
+      "title": "Senior Python Developer",
+      "city": "Москва",
+      "min_experience_years": 5.0,
+      "required_position": "Senior Python Developer",
+      "education_required": "",
+      "languages_required": [],
+      "salary_min": 300000,
+      "salary_max": 400000,
+      "employment_type": "фуллтайм",
+      "must_have_skills": [
+        "FastAPI",
+        "Docker",
+        "PostgreSQL"
+      ],
+      "nice_to_have_skills": [],
+      "seniority": "senior",
+      "source_text": "Senior Python Developer, Москва, 300000-400000, требуется 5+ лет, FastAPI, Docker, PostgreSQL"
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Можешь рассказать о своей текущей должности и опыте работы с Python, особенно с такими технологиями, как FastAPI и Docker?",
+        "ts": "2025-10-18T22:06:18.552691"
+      },
+      {
+        "role": "candidate",
+        "text": "Бакыт Турсынхан",
+        "ts": "2025-10-18T22:06:20.662227"
+      },
+      {
+        "role": "bot",
+        "text": "Какое у вас образование и в какой специальности вы учились?",
+        "ts": "2025-10-18T22:06:22.461201"
+      },
+      {
+        "role": "candidate",
+        "text": "Senior Python Developer",
+        "ts": "2025-10-18T22:06:25.273725"
+      },
+      {
+        "role": "bot",
+        "text": "Какой уровень владения английским языком у вас, и используете ли вы его в своей работе с Python и связанными технологиями?",
+        "ts": "2025-10-18T22:06:27.423905"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [
+      "position",
+      "education"
+    ],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_asked_field": "languages",
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {
+        "city": {
+          "expected": "Москва",
+          "actual": "Алматы"
+        },
+        "experience": {
+          "expected_min_years": 5.0,
+          "actual_years": 3.0
+        },
+        "position": {
+          "expected": "Senior Python Developer",
+          "actual": "Бакыт Турсынхан"
+        },
+        "skills": {
+          "missing": [
+            "Docker"
+          ]
+        }
+      },
+      "reasons": [
+        "Город отличается: вакансия — Москва, кандидат — Алматы.",
+        "Опыт меньше требуемого: нужно от 5.0 лет, у кандидата 3.0.",
+        "Должность отличается: требуется Senior Python Developer, указано Бакыт Турсынхан.",
+        "Не хватает ключевых навыков: Docker."
+      ],
+      "summary": "Релевантность: 0%. Кандидат: Бакыт, позиция: Бакыт Турсынхан, город: Алматы. Опыт: 3.0 лет; образование: —. Причины несоответствий: Город отличается: вакансия — Москва, кандидат — Алматы.; Опыт меньше требуемого: нужно от 5.0 лет, у кандидата 3.0.; Должность отличается: требуется Senior Python Developer, указано Бакыт Турсынхан.; Не хватает ключевых навыков: Docker."
+    }
+  },
+  "app_18": {
+    "created_at": "2025-10-18T22:09:35.862294",
+    "candidate": {
+      "full_name": "Байсал Хан",
+      "city": "город",
+      "experience_years": 0.0,
+      "position": "нет",
+      "education": "кбту",
+      "languages": [],
+      "salary_expectation": null,
+      "employment_type": null,
+      "skills": [
+        "fastapi"
+      ],
+      "seniority": null,
+      "source_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически."
+    },
+    "vacancy": {
+      "title": "Frontend - Baisal",
+      "city": "",
+      "min_experience_years": 5.0,
+      "required_position": "Python разработчик",
+      "education_required": "",
+      "languages_required": [],
+      "salary_min": 300000,
+      "salary_max": 450000,
+      "employment_type": "фуллтайм",
+      "must_have_skills": [
+        "Python 3.8+",
+        "FastAPI",
+        "Django",
+        "PostgreSQL",
+        "Redis",
+        "Docker"
+      ],
+      "nice_to_have_skills": [],
+      "seniority": "senior",
+      "source_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб."
+    },
+    "chat": [
+      {
+        "role": "bot",
+        "text": "Здравствуйте! Я помогу вам с подбором на вакансию. Для начала мне нужно узнать о вас больше. Как вас зовут и каково ваше полное имя?",
+        "ts": "2025-10-18T22:09:36.611163"
+      },
+      {
+        "role": "candidate",
+        "text": "Байсал Хан",
+        "ts": "2025-10-18T22:09:50.356903"
+      },
+      {
+        "role": "bot",
+        "text": "Могу узнать, какая у вас текущая должность или специальность, и как она связана с разработкой на Python?",
+        "ts": "2025-10-18T22:09:51.935434"
+      },
+      {
+        "role": "candidate",
+        "text": "нет",
+        "ts": "2025-10-18T22:10:02.444819"
+      },
+      {
+        "role": "bot",
+        "text": "Сколько лет опыта работы с Python и связанными технологиями у вас есть?",
+        "ts": "2025-10-18T22:10:03.832682"
+      },
+      {
+        "role": "candidate",
+        "text": "нет опыта",
+        "ts": "2025-10-18T22:10:11.819184"
+      },
+      {
+        "role": "bot",
+        "text": "В каком городе вы проживаете, и рассматриваете ли вы возможность работы удаленно или на месте?",
+        "ts": "2025-10-18T22:10:13.332167"
+      },
+      {
+        "role": "candidate",
+        "text": "можно удаленно",
+        "ts": "2025-10-18T22:10:22.952653"
+      },
+      {
+        "role": "bot",
+        "text": "Могли бы вы рассказать о вашем образовании, включая вуз и специальность? Это поможет нам лучше понять ваш профессиональный путь.",
+        "ts": "2025-10-18T22:10:24.479448"
+      },
+      {
+        "role": "candidate",
+        "text": "кбту",
+        "ts": "2025-10-18T22:10:32.132119"
+      },
+      {
+        "role": "bot",
+        "text": "Какие из технологий, таких как Python, FastAPI или Django, вы использовали в своих предыдущих проектах, и как они помогли вам в разработке?",
+        "ts": "2025-10-18T22:10:34.074197"
+      },
+      {
+        "role": "candidate",
+        "text": "fastapi",
+        "ts": "2025-10-18T22:10:40.682384"
+      },
+      {
+        "role": "bot",
+        "text": "Какой уровень владения английским языком у вас, и есть ли у вас опыт работы с документацией или общением на этом языке в контексте разработки?",
+        "ts": "2025-10-18T22:10:42.257681"
+      }
+    ],
+    "dialog_stage": "gathering_data",
+    "asked_fields": [
+      "full_name",
+      "position",
+      "experience_years",
+      "city",
+      "education",
+      "skills"
+    ],
+    "asked_mismatches": [],
+    "prospects_asked": [],
+    "last_asked_field": "languages",
+    "last_analysis": {
+      "relevance": 0,
+      "mismatches": {
+        "experience": {
+          "expected_min_years": 5.0,
+          "actual_years": 0.0
+        },
+        "position": {
+          "expected": "Python разработчик",
+          "actual": "нет"
+        },
+        "skills": {
+          "missing": [
+            "Python 3.8+",
+            "FastAPI",
+            "Django",
+            "PostgreSQL",
+            "Redis",
+            "Docker"
+          ]
+        }
+      },
+      "reasons": [
+        "Опыт меньше требуемого: нужно от 5.0 лет, у кандидата 0.0.",
+        "Должность отличается: требуется Python разработчик, указано нет.",
+        "Не хватает ключевых навыков: Python 3.8+, FastAPI, Django, PostgreSQL, Redis, Docker."
+      ],
+      "summary": "Релевантность: 0%. Кандидат: Байсал Хан, позиция: нет, город: город. Опыт: 0.0 лет; образование: кбту. Причины несоответствий: Опыт меньше требуемого: нужно от 5.0 лет, у кандидата 0.0.; Должность отличается: требуется Python разработчик, указано нет.; Не хватает ключевых навыков: Python 3.8+, FastAPI, Django, PostgreSQL, Redis, Docker."
+    }
+  },
+  "session_1760827229.706093": {
+    "session_id": "session_1760827229.706093",
+    "vacancy_text": "\n    Senior Python Developer\n    \n    Требования:\n    - Опыт работы с Python 5+ лет\n    - Знание Django, FastAPI\n    - Опыт работы с PostgreSQL\n    - Git, Docker\n    - Английский язык - B2+\n    \n    Локация: Алматы (офис)\n    Зарплата: 500,000 - 700,000 тг\n    ",
+    "cv_text": "\n    Иван Петров\n    Python разработчик\n    \n    Опыт работы: 3 года\n    Навыки: Python, Django, PostgreSQL, Git\n    Английский: B1\n    Локация: Астана\n    ",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) Если видишь явный блокер (например, кандидат не готов к переезду, а вакансия только офис в Алматы), задай 1 уточнение; при подтверждении — заверши скрининг без лишних вопросов.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый влиятельный уточняющий вопрос (или, если всё очевидно, переходи сразу к [RESULT]).\n— Жди ответа кандидата и при необходимости задай ещё 1–2 вопроса (макс. 5). Затем сформируй [RESULT]."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\n\n    Senior Python Developer\n    \n    Требования:\n    - Опыт работы с Python 5+ лет\n    - Знание Django, FastAPI\n    - Опыт работы с PostgreSQL\n    - Git, Docker\n    - Английский язык - B2+\n    \n    Локация: Алматы (офис)\n    Зарплата: 500,000 - 700,000 тг\n    \n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\n\n    Иван Петров\n    Python разработчик\n    \n    Опыт работы: 3 года\n    Навыки: Python, Django, PostgreSQL, Git\n    Английский: B1\n    Локация: Астана\n    \n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик, Иван! Уточню один момент: готовы ли вы улучшить уровень английского до B2+ на испытательном сроке? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "Да, я готов переехать в Алматы и готов подтянуть английский до B2"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ! У вас 3 года опыта, а в вакансии требуется 5+. Готовы ли вы быстро улучшить свои навыки Python и Django во время работы? [Да/Нет]"
+      }
+    ],
+    "question_count": 1,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T22:40:31.321138",
+    "updated_at": "2025-10-18T22:40:32.450577"
+  },
+  "app_19": {
+    "session_id": "app_19",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) Если видишь явный блокер (например, кандидат не готов к переезду, а вакансия только офис в Алматы), задай 1 уточнение; при подтверждении — заверши скрининг без лишних вопросов.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый влиятельный уточняющий вопрос (или, если всё очевидно, переходи сразу к [RESULT]).\n— Жди ответа кандидата и при необходимости задай ещё 1–2 вопроса (макс. 5). Затем сформируй [RESULT]."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Могу задать вам один уточняющий вопрос. \n\nКакой у вас опыт работы с Python и связанными технологиями (FastAPI/Django, PostgreSQL, Redis, Docker)? Пожалуйста, укажите количество лет."
+      },
+      {
+        "role": "user",
+        "content": "2 года"
+      },
+      {
+        "role": "assistant",
+        "content": "Благодарю за ответ. К сожалению, требуется минимум 5 лет опыта работы с Python и связанными технологиями. \n\nНа основе этой информации я завершаю скрининг.\n\n[RESULT]\nmatch_percent: 0\nsummary_one_liner: \"Не подходит: недостаточно опыта работы с Python.\"\nreasons: [\"Недостаточный опыт работы с Python (требуется 5 лет, есть 2 года).\"]"
+      }
+    ],
+    "question_count": 1,
+    "is_completed": true,
+    "relevance_percent": 0,
+    "summary": "Не подходит: недостаточно опыта работы с Python.",
+    "reasons": [
+      "Недостаточный опыт работы с Python (требуется 5 лет",
+      "есть 2 года)."
+    ],
+    "created_at": "2025-10-18T22:42:59.733466",
+    "updated_at": "2025-10-18T22:43:22.015410"
+  },
+  "app_20": {
+    "session_id": "app_20",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) Если видишь явный блокер (например, кандидат не готов к переезду, а вакансия только офис в Алматы), задай 1 уточнение; при подтверждении — заверши скрининг без лишних вопросов.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый влиятельный уточняющий вопрос (или, если всё очевидно, переходи сразу к [RESULT]).\n— Жди ответа кандидата и при необходимости задай ещё 1–2 вопроса (макс. 5). Затем сформируй [RESULT]."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Пожалуйста, расскажите, какой у вас опыт работы с Python и используемыми технологиями (FastAPI/Django, PostgreSQL, Redis, Docker)?"
+      },
+      {
+        "role": "user",
+        "content": "3"
+      },
+      {
+        "role": "assistant",
+        "content": "Вижу, что у вас опыта работы с Python и необходимыми технологиями меньше 5 лет. Готовы быстро подтянуть навыки на испытательном сроке? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "Нет"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ. К сожалению, с вашим опытом и текущими навыками вы не подходите под требования вакансии. \n\n[RESULT]\nmatch_percent: 20\nsummary_one_liner: \"Не подходит: недостаточно опыта работы с Python и технологиями.\"\nreasons: [\"недостаточный опыт работы с Python и необходимыми технологиями\", \"не готов к обучению во время испытательного срока\"]"
+      }
+    ],
+    "question_count": 2,
+    "is_completed": true,
+    "relevance_percent": 20,
+    "summary": "Не подходит: недостаточно опыта работы с Python и технологиями.",
+    "reasons": [
+      "недостаточный опыт работы с Python и необходимыми технологиями",
+      "не готов к обучению во время испытательного срока"
+    ],
+    "created_at": "2025-10-18T22:44:46.058511",
+    "updated_at": "2025-10-18T22:45:11.543334"
+  },
+  "app_21": {
+    "session_id": "app_21",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) Если видишь явный блокер (например, кандидат не готов к переезду, а вакансия только офис в Алматы), задай 1 уточнение; при подтверждении — заверши скрининг без лишних вопросов.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый влиятельный уточняющий вопрос (или, если всё очевидно, переходи сразу к [RESULT]).\n— Жди ответа кандидата и при необходимости задай ещё 1–2 вопроса (макс. 5). Затем сформируй [RESULT]."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Пожалуйста, уточните, какой у вас опыт работы с Python и какие технологии вы использовали?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T22:49:03.937004",
+    "updated_at": "2025-10-18T22:49:03.937023"
+  },
+  "app_22": {
+    "session_id": "app_22",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) Если видишь явный блокер (например, кандидат не готов к переезду, а вакансия только офис в Алматы), задай 1 уточнение; при подтверждении — заверши скрининг без лишних вопросов.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый влиятельный уточняющий вопрос (или, если всё очевидно, переходи сразу к [RESULT]).\n— Жди ответа кандидата и при необходимости задай ещё 1–2 вопроса (макс. 5). Затем сформируй [RESULT]."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! У меня нет доступа к вашему резюме, поэтому не могу проанализировать его. Пожалуйста, расскажите о вашем опыте работы с Python и ключевыми технологиями, указанными в вакансии (FastAPI/Django, PostgreSQL, Redis, Docker). Сколько лет вы работаете с этими технологиями?"
+      },
+      {
+        "role": "user",
+        "content": "2"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ! У вас 2 года опыта, а требуется 5 лет. Готовы ли вы быстро повысить свой уровень в этих технологиях на испытательном сроке? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "Да"
+      },
+      {
+        "role": "assistant",
+        "content": "Благодарю за ответ. Исходя из вашего опыта и готовности развиваться, я оцениваю ваше соответствие вакансии как 40%. \n\n[RESULT]\nmatch_percent: 40\nsummary_one_liner: \"Не подходит: опыт работы с Python менее 5 лет.\"\nreasons: [\"Недостаточный опыт работы с Python\", \"Необходимо 5 лет опыта, у кандидата только 2 года\"]"
+      }
+    ],
+    "question_count": 2,
+    "is_completed": true,
+    "relevance_percent": 40,
+    "summary": "Не подходит: опыт работы с Python менее 5 лет.",
+    "reasons": [
+      "Недостаточный опыт работы с Python",
+      "Необходимо 5 лет опыта",
+      "у кандидата только 2 года"
+    ],
+    "created_at": "2025-10-18T22:50:56.883193",
+    "updated_at": "2025-10-18T22:51:08.122654"
+  },
+  "app_23": {
+    "session_id": "app_23",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) Если видишь явный блокер (например, кандидат не готов к переезду, а вакансия только офис в Алматы), задай 1 уточнение; при подтверждении — заверши скрининг без лишних вопросов.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый влиятельный уточняющий вопрос (или, если всё очевидно, переходи сразу к [RESULT]).\n— Жди ответа кандидата и при необходимости задай ещё 1–2 вопроса (макс. 5). Затем сформируй [RESULT]."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! У меня нет возможности просмотреть ваше резюме. Пожалуйста, уточните, сколько лет у вас опыта работы с Python? [0–1 год/1–3 года/3–5 лет/5+ лет]"
+      },
+      {
+        "role": "user",
+        "content": "1-3 года"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ! К сожалению, для этой вакансии требуется опыт работы от 5 лет. \n\n[RESULT]\nmatch_percent: 20\nsummary_one_liner: \"Не подходит: недостаточный опыт работы с Python.\"\nreasons: [\"недостаточный опыт работы с Python\"]"
+      }
+    ],
+    "question_count": 1,
+    "is_completed": true,
+    "relevance_percent": 20,
+    "summary": "Не подходит: недостаточный опыт работы с Python.",
+    "reasons": [
+      "недостаточный опыт работы с Python"
+    ],
+    "created_at": "2025-10-18T22:53:11.163204",
+    "updated_at": "2025-10-18T22:53:21.724866"
+  },
+  "app_24": {
+    "session_id": "app_24",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) Если видишь явный блокер (например, кандидат не готов к переезду, а вакансия только офис в Алматы), задай 1 уточнение; при подтверждении — заверши скрининг без лишних вопросов.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый влиятельный уточняющий вопрос (или, если всё очевидно, переходи сразу к [RESULT]).\n— Жди ответа кандидата и при необходимости задай ещё 1–2 вопроса (макс. 5). Затем сформируй [RESULT]."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Пожалуйста, расскажите, какой у вас опыт работы с Python и связанными технологиями (FastAPI/Django, PostgreSQL, Redis, Docker)?"
+      },
+      {
+        "role": "user",
+        "content": "5 лет"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ! Уточните, пожалуйста, какой стек технологий вы использовали в своих проектах: Python 3.8+, FastAPI или Django?"
+      },
+      {
+        "role": "user",
+        "content": "fastapi"
+      },
+      {
+        "role": "assistant",
+        "content": "Отлично! Уточните, пожалуйста, готовы ли вы к удалённой работе или вам нужна офисная работа? [Удалённая/Офисная]"
+      },
+      {
+        "role": "user",
+        "content": "удаленная"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ! Последний вопрос: у вас есть опыт работы с PostgreSQL и Redis? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "нет"
+      },
+      {
+        "role": "assistant",
+        "content": "Благодарю за ответы! Учитывая ваш опыт с FastAPI и Python, но отсутствие опыта с PostgreSQL и Redis, я оцениваю вашу релевантность для этой вакансии следующим образом:\n\n[RESULT]\nmatch_percent: 70\nsummary_one_liner: \"Подходит на 70%, требуется опыт с PostgreSQL и Redis.\"\nreasons: [\"имеется 5 лет опыта с Python и FastAPI\", \"нет опыта с PostgreSQL и Redis\"]"
+      }
+    ],
+    "question_count": 4,
+    "is_completed": true,
+    "relevance_percent": 70,
+    "summary": "Подходит на 70%, требуется опыт с PostgreSQL и Redis.",
+    "reasons": [
+      "имеется 5 лет опыта с Python и FastAPI",
+      "нет опыта с PostgreSQL и Redis"
+    ],
+    "created_at": "2025-10-18T22:55:47.435722",
+    "updated_at": "2025-10-18T22:56:23.505951"
+  },
+  "session_1760828479.017821": {
+    "session_id": "session_1760828479.017821",
+    "vacancy_text": "Senior Python Developer. Требования: 5+ лет опыта, офис в Алматы (релокация обязательна), английский B2+",
+    "cv_text": "Иван Петров. Python Developer, 3 года опыта. Живу в Москве.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат не подходит по критичному критерию, все равно задай ВСЕ важные вопросы (до 3-5). НЕ завершай диалог преждевременно.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата и при необходимости задай ещё вопросы (макс. 5 вопросов).\n— После всех вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nSenior Python Developer. Требования: 5+ лет опыта, офис в Алматы (релокация обязательна), английский B2+\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nИван Петров. Python Developer, 3 года опыта. Живу в Москве.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия. \n\nКак вы относитесь к переезду в Алматы? [Готов к переезду/Не готов]"
+      },
+      {
+        "role": "user",
+        "content": "Нет, не готов переезжать в Алматы"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ. К сожалению, без готовности к переезду в Алматы, вы не сможете соответствовать требованиям вакансии. \n\nСпасибо за отклик! Мы свяжемся с вами в ближайшее время.\n\n[RESULT]\nmatch_percent: 20\nsummary_one_liner: \"Не подходит: не готов к переезду.\"\nreasons: [\"Нет готовности к переезду\", \"Недостаточный опыт работы\"]"
+      }
+    ],
+    "question_count": 1,
+    "is_completed": true,
+    "relevance_percent": 20,
+    "summary": "Не подходит: не готов к переезду.",
+    "reasons": [
+      "Нет готовности к переезду",
+      "Недостаточный опыт работы"
+    ],
+    "created_at": "2025-10-18T23:01:22.342232",
+    "updated_at": "2025-10-18T23:01:24.654642"
+  },
+  "app_25": {
+    "session_id": "app_25",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Поскольку текст резюме не удалось извлечь, мне нужно уточнить: у вас есть опыт работы с Python 3.8+, FastAPI или Django? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "нет"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответ. Уточню ещё один момент: сколько лет у вас опыта работы в программировании на Python? [0-1 год/1-3 года/3-5 лет/5+ лет]"
+      },
+      {
+        "role": "user",
+        "content": "0-1 год"
+      },
+      {
+        "role": "assistant",
+        "content": "Благодарю за информацию! Последний вопрос: готовы ли вы изучать FastAPI или Django в случае необходимости? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "нет"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Мы свяжемся с вами в ближайшее время. \n\n[RESULT]\nmatch_percent: 10\nsummary_one_liner: \"Не подходит: недостаточно опыта и знаний в требуемых технологиях.\"\nreasons: [\"Нет опыта с Python 3.8+, FastAPI/Django\", \"Опыт работы менее 1 года\", \"Не готов учить новые технологии\"]"
+      }
+    ],
+    "question_count": 3,
+    "is_completed": true,
+    "relevance_percent": 10,
+    "summary": "Не подходит: недостаточно опыта и знаний в требуемых технологиях.",
+    "reasons": [
+      "Нет опыта с Python 3.8+",
+      "FastAPI/Django",
+      "Опыт работы менее 1 года",
+      "Не готов учить новые технологии"
+    ],
+    "created_at": "2025-10-18T23:02:26.367577",
+    "updated_at": "2025-10-18T23:02:48.601121"
+  },
+  "app_26": {
+    "session_id": "app_26",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия. \n\nСколько лет у вас опыта работы с Python и связанными технологиями, указанными в вакансии? [0–3 лет/3–5 лет/5–10 лет/10+ лет]"
+      },
+      {
+        "role": "user",
+        "content": "0-3"
+      },
+      {
+        "role": "assistant",
+        "content": "Благодарю за ответ. Уточню ещё один важный момент: вы знакомы с такими технологиями, как FastAPI или Django? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "да"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за информацию! Последний вопрос: готовы ли вы рассмотреть удалённую работу или требуется работа в офисе? [Удалённая/Офис]"
+      },
+      {
+        "role": "user",
+        "content": "офис"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за ответы! Теперь подведу итоги.\n\n[RESULT]\nmatch_percent: 40\nsummary_one_liner: \"Не подходит: требуется больше опыта работы с Python.\"\nreasons: [\"недостаточный опыт работы с Python (0-3 года)\", \"требуется опыт от 5 лет\", \"необходимый стек технологий может быть недостаточно освоен\"]"
+      }
+    ],
+    "question_count": 3,
+    "is_completed": true,
+    "relevance_percent": 40,
+    "summary": "Не подходит: требуется больше опыта работы с Python.",
+    "reasons": [
+      "недостаточный опыт работы с Python (0-3 года)",
+      "требуется опыт от 5 лет",
+      "необходимый стек технологий может быть недостаточно освоен"
+    ],
+    "created_at": "2025-10-18T23:06:28.584337",
+    "updated_at": "2025-10-18T23:06:51.898774"
+  },
+  "app_27": {
+    "session_id": "app_27",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Можете, пожалуйста, рассказать о вашем опыте работы с Python и связанными технологиями?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T23:37:36.794329",
+    "updated_at": "2025-10-18T23:37:36.794351"
+  },
+  "app_28": {
+    "session_id": "app_28",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Пожалуйста, укажите, какой у вас опыт работы с Python, FastAPI и Django? [0-1 год/1-3 года/3-5 лет/5+ лет]"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T23:41:34.310075",
+    "updated_at": "2025-10-18T23:41:34.310156"
+  },
+  "app_29": {
+    "session_id": "app_29",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: BaisalTursynkhan_CV_f.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из резюме. Могу попросить вас сообщить о вашем опыте работы с Python и связанными технологиями? Например, сколько лет вы работаете с Python и использовали ли FastAPI или Django?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T23:45:12.708242",
+    "updated_at": "2025-10-18T23:45:12.708257"
+  },
+  "app_30": {
+    "session_id": "app_30",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Пожалуйста, расскажите о вашем опыте работы с Python. Сколько лет вы работаете с этим языком?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T23:49:18.261528",
+    "updated_at": "2025-10-18T23:49:18.261557"
+  },
+  "app_31": {
+    "session_id": "app_31",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Пожалуйста, уточните, какой у вас опыт работы с Python и связанными технологиями (FastAPI/Django, PostgreSQL, Redis, Docker)?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T23:51:07.725619",
+    "updated_at": "2025-10-18T23:51:07.725652"
+  },
+  "app_32": {
+    "session_id": "app_32",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Поскольку я не смог извлечь текст из резюме, мне нужно уточнить: у вас есть опыт работы с Python 3.8+ и каким-либо из фреймворков (FastAPI или Django)? [Да/Нет]"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T23:52:11.550778",
+    "updated_at": "2025-10-18T23:52:11.550784"
+  },
+  "app_33": {
+    "session_id": "app_33",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Поскольку я не смог извлечь информацию из резюме кандидата, уточню: какой у вас опыт работы с Python и в каких проектах вы его использовали?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-18T23:53:50.537987",
+    "updated_at": "2025-10-18T23:53:50.538006"
+  },
+  "app_34": {
+    "session_id": "app_34",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Пожалуйста, расскажите о вашем опыте работы с Python и ключевыми технологиями, указанными в вакансии (FastAPI/Django, PostgreSQL, Redis, Docker)?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:07:01.593771",
+    "updated_at": "2025-10-19T00:07:01.593786"
+  },
+  "app_35": {
+    "session_id": "app_35",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из резюме. Можете, пожалуйста, предоставить основную информацию о вашем опыте работы с Python и технологиями, указанными в вакансии?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:08:42.712901",
+    "updated_at": "2025-10-19T00:08:42.712925"
+  },
+  "app_36": {
+    "session_id": "app_36",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Поскольку я не смог извлечь текст из резюме, можете, пожалуйста, рассказать о вашем опыте работы с Python и сопутствующими технологиями? Какой у вас общий опыт в разработке?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:10:26.053810",
+    "updated_at": "2025-10-19T00:10:26.053827"
+  },
+  "app_37": {
+    "session_id": "app_37",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из резюме. Пожалуйста, расскажите о вашем опыте работы с Python и используемыми технологиями (FastAPI, Django, PostgreSQL и т.д.)."
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:11:41.870933",
+    "updated_at": "2025-10-19T00:11:41.871036"
+  },
+  "app_38": {
+    "session_id": "app_38",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст резюме из загруженного файла. Можете, пожалуйста, предоставить основные данные о вашем опыте работы, навыках и технологиях, с которыми вы работали? Это поможет мне лучше оценить ваше соответствие вакансии."
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:12:53.579717",
+    "updated_at": "2025-10-19T00:12:53.579735"
+  },
+  "app_39": {
+    "session_id": "app_39",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Можете, пожалуйста, кратко описать свой опыт работы с Python и технологиями, указанными в вакансии?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:15:08.732601",
+    "updated_at": "2025-10-19T00:15:08.732634"
+  },
+  "app_40": {
+    "session_id": "app_40",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст из вашего резюме. Могли бы вы рассказать о вашем опыте работы с Python и используемыми технологиями, такими как FastAPI или Django?"
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:17:20.111422",
+    "updated_at": "2025-10-19T00:17:20.111462"
+  },
+  "app_41": {
+    "session_id": "app_41",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Резюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nРезюме загружено: AdletDautbekCV.pdf. Текст не удалось извлечь автоматически.\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! К сожалению, я не смог извлечь текст резюме. Пожалуйста, напишите основные пункты вашего опыта и навыков, чтобы я смог лучше понять, подходите ли вы под вакансию."
+      }
+    ],
+    "question_count": 0,
+    "is_completed": false,
+    "relevance_percent": 50,
+    "summary": "Идет уточнение деталей",
+    "reasons": [
+      "Требуется дополнительная информация"
+    ],
+    "created_at": "2025-10-19T00:19:36.654098",
+    "updated_at": "2025-10-19T00:19:36.654158"
+  },
+  "app_42": {
+    "session_id": "app_42",
+    "vacancy_text": "Frontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.",
+    "cv_text": "Adlet Dautbek\n +7-707-327-97-89\n# adlet.dautbekk@gmail.com\nï linkedin.com/in/adletdautbek\n§ github.com/adoque\nEducation\nNazarbayev University\nAug 2023 – June 2027(expected)\nBachelor of Science in Computer Science\nAstana, Kazakhstan\nRelevant coursework: Linear Algebra, Machine Learning, Artificial Intelligence, Database Systems\nExperience\nNetworks Energy, Software Engineer | Java, Spring Boot, Hibernate, Kafka, Kubernetes\nAug 2025 – Present\nDeveloper in transport, logistics, and railway automation systems.\nAstana, Kazakhstan\n• Developed backend services using Spring Boot with Hibernate/JPA for persistence.\n• Optimized railway route planning by applying graph algorithms, reducing computation time by 35% and enabling\nfaster scheduling.\n• Containerized and deployed 4 microservices on Kubernetes with Helm, reducing setup time from hours to\nminutes and enabling faster feature delivery.\n• Implemented event-driven pipelines with Apache Kafka, processing 100k+ messages daily with fault tolerance.\n(manual ack + DLQ)\n• Designed and optimized relational schemas in PostgreSQL, reducing query latency by 40% through indexing and\nnormalization.\nAchievements\nICPC Kazakhstan Sub-Regional/Northern Eurasian Contest | C++\nDec 2023\n• Won 3rd Degree diploma in Northern Eurasia Finals\n• Placed top 7 among 64 Central Asia teams\nKazakh Republican Olympiad in Informatics | C++\nMar 2022\n• Won Silver Medal\n• Qualified through all stages to the final round, placing 8th out of 2000+ applicants (top 0.4%)\nInternational Zhautykov Olympiad in Informatics | C++\nJan 2022\n• Won Bronze Medal\n• Qualified to the final stage and represented the national team, competing among 500+ participants from 15 countries\nProjects\nDota 2 Assistant Website | Python, JavaScript, FastAPI, TypeScript, Gemini 2.5 Pro API\nGitHub Link\n• Developed a web application to help beginner Dota 2 players choose heroes and learn gameplay strategies.\n• Implemented an interactive chatbot powered by Gemini 2.5 Pro API to provide hero-specific tips and pick\nsuggestions.\n• Built a backend using FastAPI for handling chatbot logic and hero data, and a TypeScript frontend for dynamic UI\nrendering.\nLeadership / Extracurricular\nNazarbayev University Association for Computing Machinery Student Chapter\nFall 2023 – Present\nBoard Member\nNazarbayev University\n• Organized weekly Coding Competitions within the college as a part of ICPC Special Interest Group for 150+ students\n• Created problem sets for women’s Hack Day and CodeW 2024, empowering 100+ female participants and contributing\nto engagement of women in STEM\nQuadrat.KZ\nApr 2023 – Dec 2023\nCompetitive Programming Coach\nAstana, Kazakhstan\n• Guided 50+ students to master competitive programming concepts, building strong foundations in algorithms and\nproblem-solving\n• Led 2–3 weekly lessons in C++ and Python, focusing on key programming concepts and efficient coding strategies\n• Prepared 100+ practice problems and contests, reinforcing algorithms and data structures through hands-on\nproblem-solving\nTechnical Skills\nLanguages: C++, Java, Python, JavaScript, TypeScript, SQL\nFrameworks: Spring Boot, Hibernate, PostgreSQL, Kafka, Docker, Kubernetes, Helm, FastAPI",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.\n\nВХОД:\n1) Описание вакансии: <JOB_DESCRIPTION>\n2) Резюме кандидата: <CANDIDATE_RESUME>\nОба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском\n\nТОН КОММУНИКАЦИИ (Tone of Voice):\n— Дружелюбно, профессионально и понятно.\n— Простые, короткие фразы. Без канцелярита и шаблонов.\n— Вежливо и уважительно, без давления, нейтрально.\n— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.\n\nЦЕЛЬ:\nБыстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.\n\nПРАВИЛА ВЗАИМОДЕЙСТВИЯ:\n1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).\n2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.\n3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].\n4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.\n5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.\n6) Держи каждое сообщение кратким. Пример тона:\n   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»\n   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»\n   — «Благодарю за ответ, учту при анализе.»\n7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" Затем в том же ответе добавь [RESULT] с оценкой.\n\nЛОГИКА ОЦЕНКИ:\n— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.\n— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).\n— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.\n\nФОРМАТ РАБОТЫ:\nA) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.\nB) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:\n\n[RESULT]\nmatch_percent: <целое_число_0..100>\nsummary_one_liner: \"<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>\"\nreasons: [\"причина 1\", \"причина 2\", ...]\n\nПЕРВЫЙ ШАГ:\n— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.\n— Сформулируй 1 первый самый важный уточняющий вопрос.\n— Жди ответа кандидата.\n— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.\n— После 2-5 вопросов: отправь вежливое сообщение \"Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\" и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."
+      },
+      {
+        "role": "user",
+        "content": "<JOB_DESCRIPTION>\nFrontend - Baisal. Ищем опытного Python разработчика для работы над высоконагруженными системами. Требования: Python 3.8+, FastAPI/Django, PostgreSQL, Redis, Docker, опыт работы от 5 лет. Зарплата: 300000-450000 руб.\n</JOB_DESCRIPTION>\n\n<CANDIDATE_RESUME>\nAdlet Dautbek\n +7-707-327-97-89\n# adlet.dautbekk@gmail.com\nï linkedin.com/in/adletdautbek\n§ github.com/adoque\nEducation\nNazarbayev University\nAug 2023 – June 2027(expected)\nBachelor of Science in Computer Science\nAstana, Kazakhstan\nRelevant coursework: Linear Algebra, Machine Learning, Artificial Intelligence, Database Systems\nExperience\nNetworks Energy, Software Engineer | Java, Spring Boot, Hibernate, Kafka, Kubernetes\nAug 2025 – Present\nDeveloper in transport, logistics, and railway automation systems.\nAstana, Kazakhstan\n• Developed backend services using Spring Boot with Hibernate/JPA for persistence.\n• Optimized railway route planning by applying graph algorithms, reducing computation time by 35% and enabling\nfaster scheduling.\n• Containerized and deployed 4 microservices on Kubernetes with Helm, reducing setup time from hours to\nminutes and enabling faster feature delivery.\n• Implemented event-driven pipelines with Apache Kafka, processing 100k+ messages daily with fault tolerance.\n(manual ack + DLQ)\n• Designed and optimized relational schemas in PostgreSQL, reducing query latency by 40% through indexing and\nnormalization.\nAchievements\nICPC Kazakhstan Sub-Regional/Northern Eurasian Contest | C++\nDec 2023\n• Won 3rd Degree diploma in Northern Eurasia Finals\n• Placed top 7 among 64 Central Asia teams\nKazakh Republican Olympiad in Informatics | C++\nMar 2022\n• Won Silver Medal\n• Qualified through all stages to the final round, placing 8th out of 2000+ applicants (top 0.4%)\nInternational Zhautykov Olympiad in Informatics | C++\nJan 2022\n• Won Bronze Medal\n• Qualified to the final stage and represented the national team, competing among 500+ participants from 15 countries\nProjects\nDota 2 Assistant Website | Python, JavaScript, FastAPI, TypeScript, Gemini 2.5 Pro API\nGitHub Link\n• Developed a web application to help beginner Dota 2 players choose heroes and learn gameplay strategies.\n• Implemented an interactive chatbot powered by Gemini 2.5 Pro API to provide hero-specific tips and pick\nsuggestions.\n• Built a backend using FastAPI for handling chatbot logic and hero data, and a TypeScript frontend for dynamic UI\nrendering.\nLeadership / Extracurricular\nNazarbayev University Association for Computing Machinery Student Chapter\nFall 2023 – Present\nBoard Member\nNazarbayev University\n• Organized weekly Coding Competitions within the college as a part of ICPC Special Interest Group for 150+ students\n• Created problem sets for women’s Hack Day and CodeW 2024, empowering 100+ female participants and contributing\nto engagement of women in STEM\nQuadrat.KZ\nApr 2023 – Dec 2023\nCompetitive Programming Coach\nAstana, Kazakhstan\n• Guided 50+ students to master competitive programming concepts, building strong foundations in algorithms and\nproblem-solving\n• Led 2–3 weekly lessons in C++ and Python, focusing on key programming concepts and efficient coding strategies\n• Prepared 100+ practice problems and contests, reinforcing algorithms and data structures through hands-on\nproblem-solving\nTechnical Skills\nLanguages: C++, Java, Python, JavaScript, TypeScript, SQL\nFrameworks: Spring Boot, Hibernate, PostgreSQL, Kafka, Docker, Kubernetes, Helm, FastAPI\n</CANDIDATE_RESUME>\n\nПроанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия. \n\nУ вас есть опыт работы с Python 3.8+ и фреймворками FastAPI или Django? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "Да"
+      },
+      {
+        "role": "assistant",
+        "content": "Благодарю за ответ! Уточню ещё один момент: готовы ли вы работать в офисе или вам подходит удалённый формат? [Офис/Удалённо]"
+      },
+      {
+        "role": "user",
+        "content": "Офис"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за информацию! Последний вопрос: у вас есть опыт работы с Redis? [Да/Нет]"
+      },
+      {
+        "role": "user",
+        "content": "Да"
+      },
+      {
+        "role": "assistant",
+        "content": "Спасибо за отклик! Мы свяжемся с вами в ближайшее время.\n\n[RESULT]  \nmatch_percent: 90  \nsummary_one_liner: \"Подходит на 90%, опыт соответствует требованиям.\"  \nreasons: [\"Опыт работы с Python и фреймворками\", \"Готов работать в офисе\", \"Опыт с Redis\"]"
+      }
+    ],
+    "question_count": 3,
+    "is_completed": true,
+    "relevance_percent": 90,
+    "summary": "Подходит на 90%, опыт соответствует требованиям.",
+    "reasons": [
+      "Опыт работы с Python и фреймворками",
+      "Готов работать в офисе",
+      "Опыт с Redis"
+    ],
+    "created_at": "2025-10-19T00:23:54.841926",
+    "updated_at": "2025-10-19T00:24:47.838828"
+  }
+}

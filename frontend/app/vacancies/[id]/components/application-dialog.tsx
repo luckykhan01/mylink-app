@@ -30,12 +30,14 @@ export function ApplicationDialog({ open, onOpenChange, vacancy, userId }: Appli
   const [isCreating, setIsCreating] = useState(false)
   const [resumeFile, setResumeFile] = useState<File | null>(null)
   const [isUploadingResume, setIsUploadingResume] = useState(false)
+  const [isAnalysisCompleted, setIsAnalysisCompleted] = useState(false)
 
   useEffect(() => {
     if (!open) {
       // Сбрасываем состояние при закрытии диалога
       setApplicationId(null)
       setResumeFile(null)
+      setIsAnalysisCompleted(false)
     }
   }, [open])
 
@@ -81,14 +83,57 @@ export function ApplicationDialog({ open, onOpenChange, vacancy, userId }: Appli
       setApplicationId(String(newApplication.id))
       console.log('ApplicationDialog: applicationId set to:', String(newApplication.id))
       
-      // Если есть резюме, загружаем его
+      // Если есть резюме, загружаем его НАПРЯМУЮ из браузера с использованием XMLHttpRequest
       if (resumeFile) {
         setIsUploadingResume(true)
         try {
-          await api.uploadResume(newApplication.id, resumeFile)
-          console.log("Resume uploaded successfully:", resumeFile.name)
+          console.log('🚀 [BROWSER] Uploading file:', resumeFile.name, 'Size:', resumeFile.size)
+          
+          // Используем XMLHttpRequest вместо fetch, чтобы Next.js не перехватывал запрос
+          console.log('🔍 [DEBUG] typeof XMLHttpRequest:', typeof XMLHttpRequest)
+          console.log('🔍 [DEBUG] window exists:', typeof window !== 'undefined')
+          
+          await new Promise<void>((resolve, reject) => {
+            const xhr = new XMLHttpRequest()
+            const formData = new FormData()
+            formData.append("file", resumeFile)
+            
+            const token = localStorage.getItem("access_token")
+            const directUrl = `http://localhost:8000/applications/${newApplication.id}/upload-resume`
+            
+            console.log('🌐 [XHR] Direct upload to:', directUrl)
+            console.log('🌐 [XHR] File size before send:', resumeFile.size)
+            
+            xhr.open('POST', directUrl, true)
+            if (token) {
+              xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+            }
+            
+            xhr.upload.onprogress = (e) => {
+              console.log(`📊 [XHR] Upload progress: ${e.loaded}/${e.total}`)
+            }
+            
+            xhr.onload = () => {
+              console.log('📡 [XHR] Response status:', xhr.status)
+              console.log('📡 [XHR] Response text:', xhr.responseText)
+              if (xhr.status >= 200 && xhr.status < 300) {
+                console.log('✅ Resume uploaded successfully')
+                resolve()
+              } else {
+                reject(new Error(`Upload failed with status ${xhr.status}`))
+              }
+            }
+            
+            xhr.onerror = (e) => {
+              console.error('❌ [XHR] Network error:', e)
+              reject(new Error('Network error during upload'))
+            }
+            
+            console.log('🚀 [XHR] Sending request...')
+            xhr.send(formData)
+          })
         } catch (error) {
-          console.error("Failed to upload resume:", error)
+          console.error("❌ Failed to upload resume:", error)
           toast({
             title: "Предупреждение",
             description: "Не удалось загрузить резюме, но отклик создан. Вы можете загрузить резюме позже.",
@@ -124,20 +169,43 @@ export function ApplicationDialog({ open, onOpenChange, vacancy, userId }: Appli
     createApplication()
   }
 
-  const handleAnalysisComplete = (analysis: any) => {
+  const handleAnalysisComplete = async (analysis: any) => {
+    console.log('Analysis completed:', analysis)
+    
+    // Сохраняем результаты анализа
+    if (applicationId && analysis) {
+      try {
+        // Можно сохранить релевантность и результаты в БД через API
+        console.log(`Relevance: ${analysis.relevance_percent}%`)
+        console.log('Reasons:', analysis.reasons)
+        console.log('Summary:', analysis.summary_for_employer)
+      } catch (error) {
+        console.error('Failed to save analysis:', error)
+      }
+    }
+    
     toast({
       title: "Интервью завершено!",
-      description: "Спасибо за ответы. Работодатель получит уведомление о вашем отклике.",
+      description: `Ваш результат: ${analysis.relevance_percent || 0}% соответствия. Работодатель получит уведомление о вашем отклике.`,
     })
-    if (applicationId) {
-      router.push(`/applications/${applicationId}`)
-    }
-    onOpenChange(false)
+    
+    setIsAnalysisCompleted(true)
+    
+    // Не закрываем диалог автоматически - пользователь сам закроет его кнопкой X
+    // if (applicationId) {
+    //   router.push(`/applications/${applicationId}`)
+    // }
+    // onOpenChange(false)
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] p-0 gap-0">
+      <DialogContent className="sm:max-w-[600px] p-0 gap-0" onInteractOutside={(e) => {
+        // Предотвращаем закрытие диалога при клике вне области
+        if (applicationId) {
+          e.preventDefault()
+        }
+      }}>
         <DialogHeader className="p-6 pb-4">
           <DialogTitle>Откликнуться на вакансию</DialogTitle>
           <DialogDescription>
@@ -181,6 +249,29 @@ export function ApplicationDialog({ open, onOpenChange, vacancy, userId }: Appli
                   autoStart={true}
                 />
               </div>
+              
+              {isAnalysisCompleted && (
+                <div className="flex gap-3 pt-4">
+                  <Button
+                    onClick={() => onOpenChange(false)}
+                    className="flex-1"
+                  >
+                    Закрыть
+                  </Button>
+                  {applicationId && (
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        router.push(`/applications/${applicationId}`)
+                        onOpenChange(false)
+                      }}
+                      className="flex-1"
+                    >
+                      Перейти к заявке
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
           ) : (
             <div className="space-y-6">

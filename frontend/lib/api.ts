@@ -349,6 +349,8 @@ class ApiClient {
   }
 
   async uploadResume(applicationId: number, file: File): Promise<{ message: string; filename: string }> {
+    console.log('📁 Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type)
+    
     const formData = new FormData()
     formData.append("file", file)
 
@@ -357,12 +359,24 @@ class ApiClient {
     if (token) {
       headers["Authorization"] = `Bearer ${token}`
     }
+    // НЕ устанавливаем Content-Type для FormData - браузер сделает это автоматически с boundary
 
-    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/upload-resume`, {
+    // Для загрузки файлов ОБЯЗАТЕЛЬНО используем прямое подключение к бэкенду
+    // Next.js прокси не может корректно передавать multipart/form-data
+    const uploadUrl = `http://localhost:8000/applications/${applicationId}/upload-resume`
+    
+    console.log('🌐 [CLIENT] Direct upload to:', uploadUrl)
+    console.log('🌐 Window exists:', typeof window !== "undefined")
+    
+    const response = await fetch(uploadUrl, {
       method: "POST",
       headers,
       body: formData,
+      mode: 'cors',
+      credentials: 'omit'
     })
+
+    console.log('📡 Response status:', response.status)
 
     if (!response.ok) {
       const error = await response.json()
@@ -378,15 +392,18 @@ class ApiClient {
     session_id: string
     relevance_percent: number
     reasons: string[]
-    mismatches: Record<string, any>
-    followup_questions: string[]
     summary_for_employer: string
+    bot_reply?: string
+    dialog_stage?: string
+    is_completed?: boolean
+    // Старые поля для обратной совместимости
+    mismatches?: Record<string, any>
+    followup_questions?: string[]
   }> {
     const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/analyze`, {
       method: "POST",
       headers: this.getHeaders(true),
       body: JSON.stringify({
-        application_id: applicationId,
         cv_text: cvText,
         vacancy_text: vacancyText,
       }),
@@ -402,10 +419,14 @@ class ApiClient {
 
   async sendChatMessage(applicationId: number, sessionId: string, message: string): Promise<{
     session_id: string
-    bot_replies: string[]
+    bot_reply: string
     relevance_percent: number
     reasons: string[]
     summary_for_employer: string
+    dialog_stage?: string
+    is_completed?: boolean
+    // Старое поле для обратной совместимости
+    bot_replies?: string[]
   }> {
     const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/chat`, {
       method: "POST",

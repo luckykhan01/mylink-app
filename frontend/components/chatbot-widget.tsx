@@ -24,6 +24,9 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
   const [questionCount, setQuestionCount] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [sessionId, setSessionId] = useState<string | null>(null)
+  const [analysisStarted, setAnalysisStarted] = useState(false) // Флаг что анализ уже запущен
+  const [relevancePercent, setRelevancePercent] = useState<number | null>(null) // Текущая релевантность
+  const [isDialogCompleted, setIsDialogCompleted] = useState(false) // Флаг завершения диалога
   const [localMessages, setLocalMessages] = useState<Array<{ id: string; role: string; text: string }>>([
     {
       id: 'welcome',
@@ -34,40 +37,57 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
 
   // Автоматически запускаем анализ при загрузке если autoStart = true
   useEffect(() => {
-    console.log('useEffect triggered:', { autoStart, sessionId, applicationId })
-    if (autoStart && !sessionId && applicationId && applicationId !== '') {
+    console.log('useEffect triggered:', { autoStart, sessionId, analysisStarted, applicationId })
+    if (autoStart && !analysisStarted && applicationId && applicationId !== '') {
       console.log('Starting AI analysis for application:', applicationId)
       startAIAnalysis()
     }
-  }, [autoStart, sessionId, applicationId])
+  }, [autoStart, analysisStarted, applicationId])
 
   const startAIAnalysis = async () => {
     console.log('startAIAnalysis called with applicationId:', applicationId)
+    if (analysisStarted) {
+      console.log('Analysis already started, skipping...')
+      return
+    }
+    
     setIsLoading(true)
+    setAnalysisStarted(true) // Устанавливаем флаг сразу чтобы избежать повторных вызовов
+    
     try {
       console.log('Calling api.analyzeApplication...')
       const analysis = await api.analyzeApplication(Number(applicationId))
       console.log('AI Analysis response:', analysis)
       setSessionId(analysis.session_id)
+      setRelevancePercent(analysis.relevance_percent) // Сохраняем релевантность
       
-      // Добавляем вопросы от AI в чат
-      if (analysis.followup_questions && analysis.followup_questions.length > 0) {
-        const aiQuestions = analysis.followup_questions.map((question, index) => ({
-          id: `ai-question-${index}`,
+      // Новый API возвращает один вопрос (bot_reply) вместо массива
+      if (analysis.bot_reply) {
+        const aiMessage = {
+          id: `ai-question-0`,
           role: 'assistant',
-          text: question
-        }))
-        setLocalMessages(prev => [...prev, ...aiQuestions])
+          text: analysis.bot_reply
+        }
+        setLocalMessages(prev => [...prev, aiMessage])
+      } else if (analysis.followup_questions && analysis.followup_questions.length > 0) {
+        // Обратная совместимость со старым API
+        const firstQuestion = {
+          id: `ai-question-0`,
+          role: 'assistant',
+          text: analysis.followup_questions[0]
+        }
+        setLocalMessages(prev => [...prev, firstQuestion])
       }
       
       console.log('AI Analysis completed:', analysis)
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to start AI analysis:', error)
+      console.error('Error details:', error.message, error.response)
       // Fallback к локальным сообщениям
       const fallbackMessage = {
         id: 'fallback',
         role: 'assistant',
-        text: 'Извините, AI-анализ временно недоступен. Пожалуйста, расскажите о себе в свободной форме.'
+        text: `Извините, AI-анализ временно недоступен (${error.message || 'Unknown error'}). Пожалуйста, расскажите о себе в свободной форме.`
       }
       setLocalMessages(prev => [...prev, fallbackMessage])
     } finally {
@@ -77,7 +97,7 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!inputValue.trim() || isLoading) return
+    if (!inputValue.trim() || isLoading || isDialogCompleted) return
 
     // Добавляем сообщение пользователя в локальный массив
     const userMessage = {
@@ -96,26 +116,47 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
     setIsLoading(true)
     
     try {
+      console.log('handleSubmit - sessionId:', sessionId, 'userInput:', userInput)
       if (sessionId) {
+        console.log('Sending message to AI assistant...')
         // Отправляем сообщение в AI-ассистента
         const chatResult = await api.sendChatMessage(Number(applicationId), sessionId, userInput)
+        console.log('AI response:', chatResult)
         
-        // Добавляем ответы бота
-        chatResult.bot_replies.forEach((reply, index) => {
+        // Новый API возвращает один ответ (bot_reply) вместо массива
+        if (chatResult.bot_reply) {
           const botMessage = {
-            id: `bot-${Date.now()}-${index}`,
+            id: `bot-${Date.now()}`,
             role: 'assistant',
-            text: reply
+            text: chatResult.bot_reply
           }
           setLocalMessages(prev => [...prev, botMessage])
-          saveMessageToAPI('assistant', reply)
-        })
+          saveMessageToAPI('assistant', chatResult.bot_reply)
+        } else if (chatResult.bot_replies && chatResult.bot_replies.length > 0) {
+          // Обратная совместимость со старым API
+          chatResult.bot_replies.forEach((reply, index) => {
+            const botMessage = {
+              id: `bot-${Date.now()}-${index}`,
+              role: 'assistant',
+              text: reply
+            }
+            setLocalMessages(prev => [...prev, botMessage])
+            saveMessageToAPI('assistant', reply)
+          })
+        }
+        
+        // Обновляем релевантность
+        if (chatResult.relevance_percent !== undefined) {
+          setRelevancePercent(chatResult.relevance_percent)
+        }
         
         // Проверяем, завершен ли анализ
-        if (chatResult.relevance_percent >= 80 || questionCount >= 5) {
+        if (chatResult.is_completed) {
+          setIsDialogCompleted(true)
           onAnalysisComplete?.(chatResult)
         }
       } else {
+        console.warn('No sessionId - using fallback responses')
         // Fallback к локальным ответам если нет сессии
         setTimeout(() => {
           const botResponses = [
@@ -138,14 +179,15 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
           saveMessageToAPI('assistant', botMessage.text)
         }, 1000)
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to send message to AI:', error)
+      console.error('Error details:', error.message, error.response)
       // Fallback к локальным ответам
       setTimeout(() => {
         const botMessage = {
           id: `bot-${Date.now()}`,
           role: 'assistant',
-          text: 'Спасибо за ваш ответ! Расскажите еще что-нибудь о себе.'
+          text: `Спасибо за ваш ответ! Расскажите еще что-нибудь о себе. (Ошибка: ${error.message || 'Unknown'})`
         }
         setLocalMessages(prev => [...prev, botMessage])
         saveMessageToAPI('assistant', botMessage.text)
@@ -182,9 +224,22 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
         </div>
 
         <div className="px-4 py-2 bg-muted/50 border-b">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">Сообщений отправлено</span>
-            <span className="font-medium">{questionCount}</span>
+          <div className="flex items-center justify-between text-sm gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Сообщений:</span>
+              <span className="font-medium">{questionCount}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-muted-foreground">Соответствие:</span>
+              <span className={cn(
+                "font-semibold",
+                relevancePercent === null ? "text-gray-400" : 
+                relevancePercent >= 70 ? "text-green-600" : 
+                relevancePercent >= 40 ? "text-amber-600" : "text-red-600"
+              )}>
+                {relevancePercent !== null ? `${relevancePercent}%` : '0%'}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -206,18 +261,23 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 border-t">
+          {isDialogCompleted && (
+            <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+              ✅ Диалог завершен. Анализ передан работодателю. Спасибо за ответы!
+            </div>
+          )}
           <div className="flex gap-2">
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder={isLoading ? "AI обрабатывает ваш ответ..." : "Введите ваше сообщение..."}
+              placeholder={isDialogCompleted ? "Диалог завершен" : isLoading ? "AI обрабатывает ваш ответ..." : "Введите ваше сообщение..."}
               className="flex-1"
-              disabled={isLoading}
+              disabled={isLoading || isDialogCompleted}
             />
             <Button
               type="submit"
               size="icon"
-              disabled={!inputValue.trim() || isLoading}
+              disabled={!inputValue.trim() || isLoading || isDialogCompleted}
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -294,18 +354,23 @@ export function ChatbotWidget({ applicationId, vacancyId, onAnalysisComplete, em
         </div>
 
         <form onSubmit={handleSubmit} className="p-4 border-t">
+          {isDialogCompleted && (
+            <div className="mb-3 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-800">
+              ✅ Диалог завершен. Анализ передан работодателю. Спасибо за ответы!
+            </div>
+          )}
           <div className="flex gap-2">
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder={isLoading ? "AI обрабатывает ваш ответ..." : "Введите ваше сообщение..."}
+              placeholder={isDialogCompleted ? "Диалог завершен" : isLoading ? "AI обрабатывает ваш ответ..." : "Введите ваше сообщение..."}
               className="flex-1"
-              disabled={isLoading}
+              disabled={isLoading || isDialogCompleted}
             />
             <Button
               type="submit"
               size="icon"
-              disabled={!inputValue.trim() || isLoading}
+              disabled={!inputValue.trim() || isLoading || isDialogCompleted}
             >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

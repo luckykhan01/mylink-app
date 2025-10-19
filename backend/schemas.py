@@ -122,7 +122,6 @@ class JobApplicationResponse(JobApplicationBase):
 # ===== СХЕМЫ ДЛЯ AI-АНАЛИЗА =====
 
 class AIAnalysisRequest(BaseModel):
-    application_id: int
     cv_text: Optional[str] = None
     vacancy_text: Optional[str] = None
 
@@ -130,9 +129,13 @@ class AIAnalysisResponse(BaseModel):
     session_id: str
     relevance_percent: int
     reasons: List[str]
-    mismatches: Dict[str, Any]
-    followup_questions: List[str]
     summary_for_employer: str
+    bot_reply: Optional[str] = None  # Новый API - один вопрос
+    dialog_stage: Optional[str] = None
+    is_completed: Optional[bool] = False
+    # Старые поля для обратной совместимости
+    mismatches: Optional[Dict[str, Any]] = None
+    followup_questions: Optional[List[str]] = None
 
 class ChatMessageRequest(BaseModel):
     session_id: str
@@ -140,7 +143,11 @@ class ChatMessageRequest(BaseModel):
 
 class ChatMessageResponse(BaseModel):
     session_id: str
-    bot_replies: List[str]
+    bot_reply: str  # Новый API - один ответ
     relevance_percent: int
     reasons: List[str]
     summary_for_employer: str
+    dialog_stage: Optional[str] = None
+    is_completed: Optional[bool] = False
+    # Старое поле для обратной совместимости
+    bot_replies: Optional[List[str]] = None

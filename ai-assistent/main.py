@@ -1,548 +1,459 @@
-import os
-import uuid
-import json
-import pickle
-from typing import List, Optional, Dict, Any, Tuple
-from datetime import datetime
-from pathlib import Path
-
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-
+"""
+SmartBot - AI-ассистент для автоматизированного скрининга кандидатов
+"""
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any
+import uvicorn
+import os
+from datetime import datetime
+import json
+from pathlib import Path
+import openai
 from openai import OpenAI
-from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+app = FastAPI(
+    title="SmartBot AI Assistant",
+    description="AI-ассистент для первичного скрининга кандидатов",
+    version="1.0.0"
+)
 
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-
-if not OPENAI_API_KEY:
-    raise ValueError("OPENAI_API_KEY environment variable is required")
-
-client = OpenAI(api_key=OPENAI_API_KEY)
-print("🤖 AI Assistant running with OpenAI API")
-app = FastAPI(title="AI Assistant (CV↔Vacancy)", version="0.1.0")
-
-# Система embeddings для семантического поиска
-EMBEDDINGS_CACHE_FILE = Path("embeddings_cache.pkl")
-SIMILARITY_THRESHOLD = 0.8  # Порог схожести для синонимов
-
-class EmbeddingsManager:
-    def __init__(self):
-        self.cache = self._load_cache()
-        self.embedding_model = "text-embedding-3-small"
-    
-    def _load_cache(self) -> Dict[str, np.ndarray]:
-        """Загружает кэш embeddings"""
-        if EMBEDDINGS_CACHE_FILE.exists():
-            try:
-                with open(EMBEDDINGS_CACHE_FILE, 'rb') as f:
-                    return pickle.load(f)
-            except:
-                return {}
-        return {}
-    
-    def _save_cache(self):
-        """Сохраняет кэш embeddings"""
-        with open(EMBEDDINGS_CACHE_FILE, 'wb') as f:
-            pickle.dump(self.cache, f)
-    
-    def get_embedding(self, text: str) -> np.ndarray:
-        """Получает embedding для текста"""
-        if text in self.cache:
-            return self.cache[text]
-        
-        try:
-            response = client.embeddings.create(
-                model=self.embedding_model,
-                input=text
-            )
-            embedding = np.array(response.data[0].embedding)
-            self.cache[text] = embedding
-            self._save_cache()
-            return embedding
-        except Exception as e:
-            print(f"Error getting embedding for '{text}': {e}")
-            return np.zeros(1536)  # Размер embedding для text-embedding-3-small
-    
-    def are_similar(self, text1: str, text2: str) -> bool:
-        """Проверяет, являются ли два текста семантически похожими"""
-        if not text1 or not text2:
-            return False
-        
-        # Нормализация
-        text1 = text1.strip().lower()
-        text2 = text2.strip().lower()
-        
-        # Точное совпадение
-        if text1 == text2:
-            return True
-        
-        # Семантическое сравнение
-        emb1 = self.get_embedding(text1)
-        emb2 = self.get_embedding(text2)
-        
-        similarity = cosine_similarity([emb1], [emb2])[0][0]
-        return similarity >= SIMILARITY_THRESHOLD
-    
-    def find_best_match(self, target: str, candidates: List[str]) -> Optional[str]:
-        """Находит лучший семантический матч среди кандидатов"""
-        if not target or not candidates:
-            return None
-        
-        target_emb = self.get_embedding(target.strip().lower())
-        best_match = None
-        best_similarity = 0
-        
-        for candidate in candidates:
-            if not candidate:
-                continue
-                
-            candidate_emb = self.get_embedding(candidate.strip().lower())
-            similarity = cosine_similarity([target_emb], [candidate_emb])[0][0]
-            
-            if similarity > best_similarity and similarity >= SIMILARITY_THRESHOLD:
-                best_similarity = similarity
-                best_match = candidate
-        
-        return best_match
-
-# Глобальный менеджер embeddings
-embeddings_manager = EmbeddingsManager()
-
-# --- CORS для фронта/бэка (добавь сюда свои домены) ---
+# Настройка CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ALLOW_ORIGINS", "*").split(","),
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-SESSIONS: Dict[str, Dict[str, Any]] = {}
+# Инициализация OpenAI клиента
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    print("WARNING: OPENAI_API_KEY not found in environment variables")
+    
+client = OpenAI(api_key=openai_api_key) if openai_api_key else None
 
-class Candidate(BaseModel):
-    full_name: Optional[str] = None
-    city: Optional[str] = None
-    experience_years: Optional[float] = Field(None, ge=0)
-    position: Optional[str] = None
-    education: Optional[str] = None
-    languages: List[str] = Field(default_factory=list)
-    salary_expectation: Optional[int] = Field(None, ge=0)
-    employment_type: Optional[str] = None
-    skills: List[str] = Field(default_factory=list)
-    seniority: Optional[str] = None
-    source_text: Optional[str] = None
+# Хранилище сессий (в продакшене лучше использовать Redis или БД)
+SESSIONS_FILE = Path("sessions.json")
 
-class Vacancy(BaseModel):
-    title: Optional[str] = None
-    city: Optional[str] = None
-    min_experience_years: Optional[float] = Field(None, ge=0)
-    required_position: Optional[str] = None
-    education_required: Optional[str] = None
-    languages_required: List[str] = Field(default_factory=list)
-    salary_min: Optional[int] = Field(None, ge=0)
-    salary_max: Optional[int] = Field(None, ge=0)
-    employment_type: Optional[str] = None
-    must_have_skills: List[str] = Field(default_factory=list)
-    nice_to_have_skills: List[str] = Field(default_factory=list)
-    seniority: Optional[str] = None
-    source_text: Optional[str] = None
+def load_sessions() -> Dict[str, Any]:
+    """Загружает сессии из файла"""
+    if SESSIONS_FILE.exists():
+        try:
+            with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception as e:
+            print(f"Error loading sessions: {e}")
+            return {}
+    return {}
 
-    @field_validator("salary_max")
-    @classmethod
-    def check_salary(cls, v, info):
-        if v is not None and info.data.get("salary_min") is not None and v < info.data["salary_min"]:
-            raise ValueError("salary_max must be >= salary_min")
-        return v
+def save_sessions(sessions: Dict[str, Any]):
+    """Сохраняет сессии в файл"""
+    try:
+        with open(SESSIONS_FILE, "w", encoding="utf-8") as f:
+            json.dump(sessions, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Error saving sessions: {e}")
 
-class ParseRequest(BaseModel):
-    text: str
-    kind: str  # "cv" | "vacancy"
+sessions_store = load_sessions()
 
-class AnalyzeRequest(BaseModel):
-    cv: Optional[Candidate] = None
-    vacancy: Optional[Vacancy] = None
-    cv_text: Optional[str] = None
-    vacancy_text: Optional[str] = None
-    session_id: Optional[str] = None
+# Системный промпт SmartBot
+SYSTEM_PROMPT = """Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.
 
-class AnalyzeResult(BaseModel):
+ВХОД:
+1) Описание вакансии: <JOB_DESCRIPTION>
+2) Резюме кандидата: <CANDIDATE_RESUME>
+Оба текста могут быть на русском или английском. Определи язык кандидата по резюме и переведи их в русский язык и отвечай на русском
+
+ТОН КОММУНИКАЦИИ (Tone of Voice):
+— Дружелюбно, профессионально и понятно.
+— Простые, короткие фразы. Без канцелярита и шаблонов.
+— Вежливо и уважительно, без давления, нейтрально.
+— Эмпатично при уточнениях: признавай усилия кандидата и избегай категоричности.
+
+ЦЕЛЬ:
+Быстро выявить соответствие вакансии и кандидата. Если есть пробелы или несоответствия между вакансией и резюме, задать немного (до 3–5) точных уточняющих вопросов, по одному за раз, без затягивания диалога. После ответов — выдать оценку релевантности в процентах и одно предложение-вывод.
+
+ПРАВИЛА ВЗАИМОДЕЙСТВИЯ:
+1) Сперва проанализируй вакансию и резюме. Найди самые критичные критерии (примерно по убыванию важности): ключевые навыки/стек, годы опыта на нужных задачах, локация/релокация, график/формат (офис/гибрид/удалёнка), языки (RU/EN/др.), образование/сертификаты (если явно требуются), правовой статус/разрешение на работу (если указано в вакансии), уровень компенсации (если задан в вакансии).
+2) Задавай только необходимые вопросы, которые реально меняют оценку. Не спрашивай то, что уже есть в резюме или вакансии.
+3) Формулируй вопросы максимально конкретно и коротко (1–2 предложения). Где уместно — предлагай варианты ответа (кнопки/чекбоксы) в скобках: [Да/Нет], [Готов к переезду/Не готов], [0–6 мес/6–12 мес/12+ мес], [Город: …].
+4) ВАЖНО: Даже если видишь, что кандидат НЕ подходит по критичному критерию (например, не готов к переезду), все равно задай минимум 2-3 важных вопроса. НЕ завершай диалог после первого же блокирующего ответа. Собери полную информацию о кандидате.
+5) Избегай чувствительных/дискриминационных тем. Не спрашивай возраст, семейное положение, взгляды, здоровье и т.д.
+6) Держи каждое сообщение кратким. Пример тона:
+   — «Спасибо за отклик! Уточню пару моментов, чтобы понять, подойдёт ли вам вакансия.»
+   — «Вижу, что опыт чуть меньше требуемого. Готовы быстро подтянуть навык X на испытательном сроке? [Да/Нет]»
+   — «Благодарю за ответ, учту при анализе.»
+7) ЗАВЕРШЕНИЕ ДИАЛОГА: После всех вопросов (или когда собрал достаточно информации), отправь вежливое прощальное сообщение: "Спасибо за отклик! Мы свяжемся с вами в ближайшее время." Затем в том же ответе добавь [RESULT] с оценкой.
+
+ЛОГИКА ОЦЕНКИ:
+— Вычисли процент соответствия (0–100) эвристически, учитывая вес критериев из п.1. Если данных мало, попроси 1–3 уточнения и только затем выдай оценку.
+— Не завышай оценку при критичных несоответствиях (локация, ключевой стек, обязательный язык).
+— Если информация неоднозначна, трактуй как «неизвестно» и задавай 1 прицельный вопрос.
+
+ФОРМАТ РАБОТЫ:
+A) Кандидату показываешь только короткие, уважительные вопросы и мини-реплики.
+B) Для работодателя, по завершении (после 0–5 уточнений) выдай итог в следующем формате:
+
+[RESULT]
+match_percent: <целое_число_0..100>
+summary_one_liner: "<одно краткое предложение на языке работодателя (по умолчанию RU): Пример — 'Подходит на 90%, требуется уточнение по опыту бэкенда.' или 'Не подходит: не готов к переезду.'>"
+reasons: ["причина 1", "причина 2", ...]
+
+ПЕРВЫЙ ШАГ:
+— Прочитай <JOB_DESCRIPTION> и <CANDIDATE_RESUME>.
+— Сформулируй 1 первый самый важный уточняющий вопрос.
+— Жди ответа кандидата.
+— Задай минимум 2-3 важных вопроса, даже если первый ответ показывает несоответствие.
+— После 2-5 вопросов: отправь вежливое сообщение "Спасибо за отклик! Мы свяжемся с вами в ближайшее время." и добавь [RESULT] с оценкой в ТОМ ЖЕ сообщении."""
+
+
+# ===== МОДЕЛИ ДАННЫХ =====
+
+class ChatStartRequest(BaseModel):
+    """Запрос на начало диалога с кандидатом"""
+    vacancy_text: str = Field(..., description="Описание вакансии")
+    cv_text: Optional[str] = Field(None, description="Текст резюме кандидата (если есть)")
+    session_id: Optional[str] = Field(None, description="ID сессии (если нужно продолжить)")
+
+class ChatTurnRequest(BaseModel):
+    """Запрос на продолжение диалога"""
+    session_id: str = Field(..., description="ID сессии")
+    message_from_candidate: str = Field(..., description="Сообщение от кандидата")
+
+class ChatResponse(BaseModel):
+    """Ответ AI-ассистента"""
     session_id: str
+    bot_reply: str
     relevance_percent: int
     reasons: List[str]
-    mismatches: Dict[str, Dict[str, Any]]
-    followup_questions: List[str]
-    candidate: Candidate
-    vacancy: Vacancy
     summary_for_employer: str
+    dialog_stage: str  # "questioning", "completed"
+    is_completed: bool
 
-class ChatTurn(BaseModel):
-    session_id: str
-    message_from_candidate: str
 
-class ChatResult(BaseModel):
-    session_id: str
-    bot_replies: List[str]
-    relevance_percent: int
-    reasons: List[str]
-    summary_for_employer: str
+# ===== УТИЛИТЫ =====
 
-def _structured_extract(schema_name: str, schema: Dict[str, Any], prompt: str) -> Dict[str, Any]:
-    # Улучшенный системный промпт
-    system_prompt = f"""Ты - эксперт по анализу резюме и вакансий. Твоя задача - точно извлечь структурированную информацию из текста.
-
-ВАЖНЫЕ ПРИНЦИПЫ:
-1. Будь максимально точным и внимательным к деталям
-2. Если информация отсутствует, используй null или пустые значения
-3. Для массивов (навыки, языки) извлекай все упомянутые элементы
-4. Для чисел (опыт, зарплата) извлекай точные значения
-5. Нормализуй данные (например, "full-time" → "фуллтайм")
-6. Учитывай контекст и синонимы
-
-ПРАВИЛА ИЗВЛЕЧЕНИЯ:
-- Опыт работы: извлекай в годах (float), например 2.5 лет
-- Зарплата: извлекай в числовом формате без валюты
-- Навыки: извлекай все упомянутые технологии и инструменты
-- Языки: извлекай все упомянутые языки с уровнем (если указан)
-- Тип занятости: нормализуй к стандартным формам (фуллтайм, парттайм, фриланс, контракт)
-
-Верни результат строго в формате JSON согласно схеме."""
-
-    resp = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": prompt}
-        ],
-        response_format={"type": "json_schema", "json_schema": {"name": schema_name, "schema": schema}},
-        temperature=0.1,  # Низкая температура для более точного извлечения
-    )
-    import json
-    return json.loads(resp.choices[0].message.content)
-
-def extract_candidate(text: str) -> Candidate:
-    schema = {
-        "type": "object",
-        "properties": {
-            "full_name": {"type": "string"},
-            "city": {"type": "string"},
-            "experience_years": {"type": "number"},
-            "position": {"type": "string"},
-            "education": {"type": "string"},
-            "languages": {"type": "array", "items": {"type": "string"}},
-            "salary_expectation": {"type": "integer"},
-            "employment_type": {"type": "string"},
-            "skills": {"type": "array", "items": {"type": "string"}},
-            "seniority": {"type": "string"}
-        },
-        "required": [],
-        "additionalProperties": False
-    }
-    prompt = f"""Проанализируй резюме кандидата и извлеки структурированную информацию.
-
-ТЕКСТ РЕЗЮМЕ:
-{text}
-
-ИНСТРУКЦИИ ПО ИЗВЛЕЧЕНИЮ:
-1. Полное имя: извлеки ФИО если указано
-2. Город: извлеки город проживания/работы
-3. Опыт работы: количество лет опыта (float, например 2.5)
-4. Позиция: должность/специальность
-5. Образование: уровень образования, вуз, специальность
-6. Языки: все упомянутые языки с уровнем (например, "английский B2")
-7. Зарплата: ожидаемая зарплата в числовом формате
-8. Тип занятости: фуллтайм/парттайм/фриланс/контракт/стажировка
-9. Навыки: все технологии, инструменты, фреймворки
-10. Уровень: junior/middle/senior/lead
-
-ВАЖНО: Для массивов (languages, skills) всегда возвращай пустой массив [] если данных нет, НЕ возвращай null."""
-    data = _structured_extract("candidate_schema", schema, prompt)
+def extract_result_from_message(message: str) -> Optional[Dict[str, Any]]:
+    """
+    Извлекает [RESULT] из сообщения AI
+    Формат:
+    [RESULT]
+    match_percent: 85
+    summary_one_liner: "Подходит на 85%, есть опыт"
+    reasons: ["опыт 3 года", "знает Python"]
+    """
+    if "[RESULT]" not in message:
+        return None
     
-    # Исправляем None значения для массивов
-    if data.get("languages") is None:
-        data["languages"] = []
-    if data.get("skills") is None:
-        data["skills"] = []
-    
-    return Candidate(**data, source_text=text)
-
-def extract_vacancy(text: str) -> Vacancy:
-    schema = {
-        "type": "object",
-        "properties": {
-            "title": {"type": "string"},
-            "city": {"type": "string"},
-            "min_experience_years": {"type": "number"},
-            "required_position": {"type": "string"},
-            "education_required": {"type": "string"},
-            "languages_required": {"type": "array", "items": {"type": "string"}},
-            "salary_min": {"type": "integer"},
-            "salary_max": {"type": "integer"},
-            "employment_type": {"type": "string"},
-            "must_have_skills": {"type": "array", "items": {"type": "string"}},
-            "nice_to_have_skills": {"type": "array", "items": {"type": "string"}},
-            "seniority": {"type": "string"}
-        },
-        "required": [],
-        "additionalProperties": False
-    }
-    prompt = f"""Проанализируй описание вакансии и извлеки структурированную информацию.
-
-ТЕКСТ ВАКАНСИИ:
-{text}
-
-ИНСТРУКЦИИ ПО ИЗВЛЕЧЕНИЮ:
-1. Название: заголовок вакансии
-2. Город: город работы
-3. Минимальный опыт: минимальные требования к опыту в годах (float)
-4. Требуемая позиция: должность/специальность
-5. Образование: требования к образованию
-6. Языки: требуемые языки с уровнем
-7. Зарплата: диапазон зарплаты (min и max в числовом формате)
-8. Тип занятости: фуллтайм/парттайм/фриланс/контракт/стажировка
-9. Обязательные навыки: ключевые технологии и инструменты
-10. Желательные навыки: дополнительные навыки (nice to have)
-11. Уровень: junior/middle/senior/lead
-
-ВАЖНО: Для массивов (languages_required, must_have_skills, nice_to_have_skills) всегда возвращай пустой массив [] если данных нет, НЕ возвращай null."""
-    data = _structured_extract("vacancy_schema", schema, prompt)
-    
-    # Исправляем None значения для массивов
-    if data.get("languages_required") is None:
-        data["languages_required"] = []
-    if data.get("must_have_skills") is None:
-        data["must_have_skills"] = []
-    if data.get("nice_to_have_skills") is None:
-        data["nice_to_have_skills"] = []
-    
-    return Vacancy(**data, source_text=text)
-
-def _semantic_normalize(text: str) -> str:
-    """Семантическая нормализация с использованием embeddings"""
-    if not text:
-        return ""
-    
-    # Базовая нормализация
-    normalized = text.strip().lower()
-    
-    # Стандартные формы для нормализации
-    standard_forms = {
-        # Типы занятости
-        "employment": {
-            "фуллтайм": ["full-time", "full time", "полная занятость", "полный рабочий день", "fulltime"],
-            "парттайм": ["part-time", "part time", "частичная занятость", "неполный рабочий день", "parttime"],
-            "контракт": ["contract", "договор", "контрактная работа"],
-            "фриланс": ["freelance", "удаленная работа", "remote", "удаленка", "удаленно"],
-            "стажировка": ["internship", "стажер", "стажировка", "intern"]
-        },
-        # Позиции
-        "position": {
-            "backend": ["back-end", "бэкенд", "бэк-энд", "backend developer", "backend разработчик"],
-            "frontend": ["front-end", "фронтенд", "фронт-энд", "frontend developer", "frontend разработчик"],
-            "fullstack": ["full-stack", "фуллстек", "full stack", "fullstack developer"],
-            "devops": ["dev ops", "dev-ops", "системный администратор", "сисадмин"],
-            "data scientist": ["data science", "дата саентист", "аналитик данных"],
-            "mobile": ["мобильная разработка", "mobile developer", "ios", "android"],
-            "qa": ["quality assurance", "тестировщик", "qa engineer", "тестирование"]
-        }
-    }
-    
-    # Попытка найти семантический матч
-    for category, forms in standard_forms.items():
-        for standard_form, variants in forms.items():
-            if embeddings_manager.are_similar(normalized, standard_form):
-                return standard_form
-            for variant in variants:
-                if embeddings_manager.are_similar(normalized, variant):
-                    return standard_form
-    
-    return normalized
-
-def _norm(s: Optional[str]) -> str:
-    """Простая нормализация для обратной совместимости"""
-    return (s or "").strip().lower()
-
-def score_and_mismatches(c: Candidate, v: Vacancy) -> Tuple[int, Dict[str, Dict[str, Any]], List[str]]:
-    weights = {"city":0.15,"experience":0.2,"position":0.15,"education":0.1,"languages":0.15,"salary":0.1,"employment_type":0.05,"skills":0.1}
-    score = 0.0; mismatches: Dict[str, Dict[str, Any]] = {}; reasons: List[str] = []
-
-    if v.city and c.city:
-        if embeddings_manager.are_similar(c.city, v.city): score+=weights["city"]
-        else:
-            mismatches["city"]={"expected":v.city,"actual":c.city}
-            reasons.append(f"Город отличается: вакансия — {v.city}, кандидат — {c.city}.")
-
-    if v.min_experience_years is not None and c.experience_years is not None:
-        if c.experience_years >= v.min_experience_years: score+=weights["experience"]
-        else:
-            mismatches["experience"]={"expected_min_years":v.min_experience_years,"actual_years":c.experience_years}
-            reasons.append(f"Опыт меньше требуемого: нужно от {v.min_experience_years} лет, у кандидата {c.experience_years}.")
-
-    if v.required_position and c.position:
-        if embeddings_manager.are_similar(v.required_position, c.position): score+=weights["position"]
-        else:
-            mismatches["position"]={"expected":v.required_position,"actual":c.position}
-            reasons.append(f"Должность отличается: требуется {v.required_position}, указано {c.position}.")
-
-    if v.education_required and c.education:
-        if _norm(v.education_required) in _norm(c.education): score+=weights["education"]
-        else:
-            mismatches["education"]={"expected":v.education_required,"actual":c.education}
-            reasons.append(f"Образование не совпадает: требуется {v.education_required}, у кандидата {c.education}.")
-
-    if v.languages_required:
-        cand = {_norm(x) for x in c.languages}
-        req = {_norm(x) for x in v.languages_required}
-        if req.issubset(cand): score+=weights["languages"]
-        else:
-            missing = list(req - cand)
-            mismatches["languages"]={"missing":missing,"candidate":list(cand)}
-            reasons.append(f"Не хватает языков: {', '.join(missing)}.")
-
-    if c.salary_expectation is not None and (v.salary_min is not None or v.salary_max is not None):
-        fits=True
-        if v.salary_max is not None and c.salary_expectation>v.salary_max: fits=False
-        if v.salary_min is not None and c.salary_expectation<v.salary_min: fits=False
-        if fits: score+=weights["salary"]
-        else:
-            mismatches["salary"]={"vacancy_range":[v.salary_min,v.salary_max],"candidate":c.salary_expectation}
-            reasons.append("Ожидания по зарплате выходят за пределы диапазона вакансии.")
-
-    if v.employment_type and c.employment_type:
-        if embeddings_manager.are_similar(v.employment_type, c.employment_type): score+=weights["employment_type"]
-        else:
-            mismatches["employment_type"]={"expected":v.employment_type,"actual":c.employment_type}
-            reasons.append(f"Формат занятости: требуется {v.employment_type}, у кандидата {c.employment_type}.")
-
-    if v.must_have_skills:
-        missing_skills = []
-        for required_skill in v.must_have_skills:
-            # Ищем семантический матч среди навыков кандидата
-            found_match = False
-            for candidate_skill in c.skills:
-                if embeddings_manager.are_similar(required_skill, candidate_skill):
-                    found_match = True
-                    break
-            
-            if not found_match:
-                missing_skills.append(required_skill)
+    try:
+        result_section = message.split("[RESULT]")[1].strip()
+        lines = result_section.split("\n")
         
-        if not missing_skills: score+=weights["skills"]
-        else:
-            mismatches["skills"]={"missing":missing_skills}
-            reasons.append(f"Не хватает ключевых навыков: {', '.join(missing_skills)}.")
+        result = {
+            "match_percent": 0,
+            "summary_one_liner": "",
+            "reasons": []
+        }
+        
+        for line in lines:
+            line = line.strip()
+            if line.startswith("match_percent:"):
+                try:
+                    result["match_percent"] = int(line.split(":", 1)[1].strip())
+                except:
+                    result["match_percent"] = 50
+            elif line.startswith("summary_one_liner:"):
+                result["summary_one_liner"] = line.split(":", 1)[1].strip().strip('"')
+            elif line.startswith("reasons:"):
+                # Парсим список причин
+                reasons_str = line.split(":", 1)[1].strip()
+                # Убираем квадратные скобки и парсим
+                if reasons_str.startswith("[") and reasons_str.endswith("]"):
+                    reasons_str = reasons_str[1:-1]
+                    # Разделяем по запятым и очищаем
+                    reasons = [r.strip().strip('"').strip("'") for r in reasons_str.split(",")]
+                    result["reasons"] = [r for r in reasons if r]
+        
+        return result
+    except Exception as e:
+        print(f"Error parsing [RESULT]: {e}")
+        return None
 
-    return int(round(score*100)), mismatches, reasons
-
-def make_followups(mismatches: Dict[str, Dict[str, Any]]) -> List[str]:
-    context = "\n".join([f"{k}: {v}" for k,v in mismatches.items()]) if mismatches else "нет расхождений"
+def call_openai(messages: List[Dict[str, str]], max_tokens: int = 500) -> str:
+    """Вызов OpenAI API"""
+    if not client:
+        # Fallback если нет ключа
+        return "Спасибо за ответ! Расскажите еще что-нибудь о себе."
     
-    system_prompt = """Ты — опытный HR-специалист и рекрутер. Твоя задача - сформулировать уточняющие вопросы кандидату.
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",  # Используем более дешевую модель
+            messages=messages,
+            max_tokens=max_tokens,
+            temperature=0.7,
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f"OpenAI API error: {e}")
+        raise HTTPException(status_code=500, detail=f"OpenAI API error: {str(e)}")
 
-ПРИНЦИПЫ РАБОТЫ:
-1. Будь дружелюбным и профессиональным
-2. Задавай конкретные вопросы по расхождениям
-3. Не дави на кандидата, а помогай раскрыть потенциал
-4. Учитывай контекст и возможности развития
-5. Максимум 5 вопросов, по одному на каждое расхождение
 
-СТИЛЬ ВОПРОСОВ:
-- Конструктивные и поддерживающие
-- Направленные на понимание ситуации
-- Дающие кандидату возможность объяснить
-- Помогающие оценить потенциал развития"""
+# ===== ЭНДПОИНТЫ =====
 
-    user_msg = f"""Проанализируй расхождения между резюме кандидата и требованиями вакансии и сформулируй уточняющие вопросы.
+@app.get("/")
+async def root():
+    return {
+        "service": "SmartBot AI Assistant",
+        "version": "1.0.0",
+        "status": "running",
+        "openai_configured": client is not None
+    }
 
-РАСХОЖДЕНИЯ:
-{context}
+@app.get("/health")
+async def health():
+    return {
+        "status": "healthy",
+        "openai_configured": client is not None
+    }
 
-Сформулируй 3-5 уточняющих вопросов, которые помогут:
-1. Понять причины расхождений
-2. Оценить потенциал кандидата
-3. Выяснить возможности развития
-4. Принять обоснованное решение
+@app.post("/chat/start", response_model=ChatResponse)
+async def start_chat(request: ChatStartRequest):
+    """
+    Начинает новый диалог с кандидатом
+    
+    1. Анализирует вакансию и резюме
+    2. Формирует первый вопрос или сразу выдает результат
+    3. Возвращает session_id для продолжения диалога
+    """
+    # Генерируем ID сессии
+    session_id = request.session_id or f"session_{datetime.utcnow().timestamp()}"
+    
+    # Формируем начальный контекст
+    initial_message = f"""<JOB_DESCRIPTION>
+{request.vacancy_text}
+</JOB_DESCRIPTION>
 
-Верни результат в формате JSON: {{"questions": ["вопрос1", "вопрос2", ...]}}"""
+<CANDIDATE_RESUME>
+{request.cv_text or "Резюме не предоставлено. Нужно узнать информацию о кандидате."}
+</CANDIDATE_RESUME>
 
-    schema = {"type":"object","properties":{"questions":{"type":"array","items":{"type":"string"}}},"required":["questions"],"additionalProperties":False}
-    import json
-    resp = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[{"role":"system","content":system_prompt},{"role":"user","content":user_msg}],
-        response_format={"type":"json_schema","json_schema":{"name":"followups","schema":schema}},
-        temperature=0.3
-    )
-    data = json.loads(resp.choices[0].message.content)
-    return data.get("questions", [])[:5]
-
-def employer_summary(c: Candidate, v: Vacancy, relevance: int, reasons: List[str]) -> str:
-    base = [
-        f"Релевантность: {relevance}%.",
-        f"Кандидат: {c.full_name or '—'}, позиция: {c.position or '—'}, город: {c.city or '—'}.",
-        f"Опыт: {c.experience_years if c.experience_years is not None else '—'} лет; образование: {c.education or '—'}."
+Проанализируй вакансию и резюме. Если информации достаточно для оценки, сразу выдай [RESULT]. Если нужны уточнения, задай ОДИН самый важный вопрос."""
+    
+    messages = [
+        {"role": "system", "content": SYSTEM_PROMPT},
+        {"role": "user", "content": initial_message}
     ]
-    base.append("Причины несоответствий: " + "; ".join(reasons) if reasons else "Существенных несоответствий не выявлено.")
-    return " ".join(base)
-
-@app.post("/parse")
-def parse_endpoint(req: ParseRequest):
-    if req.kind not in ("cv","vacancy"):
-        raise HTTPException(400, "kind must be 'cv' or 'vacancy'")
-    return {"candidate": extract_candidate(req.text).dict()} if req.kind=="cv" else {"vacancy": extract_vacancy(req.text).dict()}
-
-@app.post("/analyze", response_model=AnalyzeResult)
-def analyze(req: AnalyzeRequest):
-    candidate = req.cv or (extract_candidate(req.cv_text) if req.cv_text else None)
-    vacancy   = req.vacancy or (extract_vacancy(req.vacancy_text) if req.vacancy_text else None)
-    if not candidate or not vacancy:
-        raise HTTPException(400, "Provide (cv or cv_text) AND (vacancy or vacancy_text)")
-    relevance, mismatches, reasons = score_and_mismatches(candidate, vacancy)
-    questions = make_followups(mismatches)
-    summary = employer_summary(candidate, vacancy, relevance, reasons)
-
-    session_id = req.session_id or str(uuid.uuid4())
-    SESSIONS.setdefault(session_id, {"created_at": datetime.utcnow().isoformat(), "candidate": candidate.dict(), "vacancy": vacancy.dict(), "chat":[]})
-    SESSIONS[session_id]["last_analysis"] = {"relevance":relevance,"mismatches":mismatches,"reasons":reasons,"summary":summary,"questions":questions}
-
-    return AnalyzeResult(
+    
+    # Вызываем OpenAI
+    ai_response = call_openai(messages, max_tokens=800)
+    
+    # Проверяем, есть ли [RESULT] в ответе
+    result_data = extract_result_from_message(ai_response)
+    
+    if result_data:
+        # Диалог завершен, есть оценка
+        is_completed = True
+        dialog_stage = "completed"
+        # Удаляем [RESULT] секцию из ответа для кандидата
+        bot_reply = ai_response.split("[RESULT]")[0].strip()
+        if not bot_reply:
+            bot_reply = "Спасибо! Я завершил анализ вашей заявки."
+        
+        relevance_percent = result_data["match_percent"]
+        summary = result_data["summary_one_liner"]
+        reasons = result_data["reasons"]
+    else:
+        # Диалог продолжается, нужны уточнения
+        is_completed = False
+        dialog_stage = "questioning"
+        bot_reply = ai_response.strip()
+        relevance_percent = 50  # Предварительная оценка
+        summary = "Идет уточнение деталей"
+        reasons = ["Требуется дополнительная информация"]
+    
+    # Сохраняем сессию
+    messages.append({"role": "assistant", "content": ai_response})
+    sessions_store[session_id] = {
+        "session_id": session_id,
+        "vacancy_text": request.vacancy_text,
+        "cv_text": request.cv_text,
+        "messages": messages,
+        "question_count": 0,
+        "is_completed": is_completed,
+        "relevance_percent": relevance_percent,
+        "summary": summary,
+        "reasons": reasons,
+        "created_at": datetime.utcnow().isoformat(),
+        "updated_at": datetime.utcnow().isoformat()
+    }
+    save_sessions(sessions_store)
+    
+    return ChatResponse(
         session_id=session_id,
-        relevance_percent=relevance,
+        bot_reply=bot_reply,
+        relevance_percent=relevance_percent,
         reasons=reasons,
-        mismatches=mismatches,
-        followup_questions=questions,
-        candidate=candidate,
-        vacancy=vacancy,
-        summary_for_employer=summary
+        summary_for_employer=summary,
+        dialog_stage=dialog_stage,
+        is_completed=is_completed
     )
 
-@app.post("/chat/turn", response_model=ChatResult)
-def chat_turn(turn: ChatTurn):
-    sess = SESSIONS.get(turn.session_id)
-    if not sess: raise HTTPException(404, "session_id not found")
-    sess["chat"].append({"role":"candidate","text":turn.message_from_candidate,"ts":datetime.utcnow().isoformat()})
-    c = Candidate(**sess["candidate"]); v = Vacancy(**sess["vacancy"])
-    relevance, mismatches, reasons = score_and_mismatches(c, v)
-    questions = make_followups(mismatches)
-    summary = employer_summary(c, v, relevance, reasons)
-    bot_replies = questions[:2] if questions else ["Спасибо! Уточнений больше нет."]
-    for q in bot_replies:
-        sess["chat"].append({"role":"bot","text":q,"ts":datetime.utcnow().isoformat()})
-    sess["last_analysis"] = {"relevance":relevance,"mismatches":mismatches,"reasons":reasons,"summary":summary,"questions":questions}
-    return ChatResult(session_id=turn.session_id, bot_replies=bot_replies, relevance_percent=relevance, reasons=reasons, summary_for_employer=summary)
+@app.post("/chat/turn", response_model=ChatResponse)
+async def chat_turn(request: ChatTurnRequest):
+    """
+    Продолжает диалог с кандидатом
+    
+    1. Получает ответ кандидата
+    2. Анализирует и задает следующий вопрос или завершает диалог
+    3. Обновляет оценку релевантности
+    """
+    # Проверяем существование сессии
+    if request.session_id not in sessions_store:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    session = sessions_store[request.session_id]
+    
+    # Проверяем, не завершен ли уже диалог
+    if session.get("is_completed", False):
+        return ChatResponse(
+            session_id=request.session_id,
+            bot_reply="Спасибо! Анализ уже завершен.",
+            relevance_percent=session["relevance_percent"],
+            reasons=session["reasons"],
+            summary_for_employer=session["summary"],
+            dialog_stage="completed",
+            is_completed=True
+        )
+    
+    # Добавляем сообщение кандидата
+    session["messages"].append({
+        "role": "user",
+        "content": request.message_from_candidate
+    })
+    session["question_count"] = session.get("question_count", 0) + 1
+    
+    # Проверяем, не достигли ли лимита вопросов
+    if session["question_count"] >= 5:
+        # Принудительно завершаем диалог
+        force_completion_msg = "Кандидат ответил на все вопросы. Теперь ОБЯЗАТЕЛЬНО выдай [RESULT] с финальной оценкой."
+        session["messages"].append({
+            "role": "system",
+            "content": force_completion_msg
+        })
+    
+    # Вызываем OpenAI
+    ai_response = call_openai(session["messages"], max_tokens=800)
+    
+    # Проверяем, есть ли [RESULT] в ответе
+    result_data = extract_result_from_message(ai_response)
+    
+    if result_data or session["question_count"] >= 5:
+        # Диалог завершен
+        is_completed = True
+        dialog_stage = "completed"
+        
+        if result_data:
+            relevance_percent = result_data["match_percent"]
+            summary = result_data["summary_one_liner"]
+            reasons = result_data["reasons"]
+            bot_reply = ai_response.split("[RESULT]")[0].strip()
+            if not bot_reply:
+                bot_reply = "Спасибо за ответы! Я завершил анализ."
+        else:
+            # Принудительное завершение без [RESULT]
+            relevance_percent = 60
+            summary = "Кандидат ответил на вопросы, требуется дополнительная оценка"
+            reasons = ["Диалог завершен по лимиту вопросов"]
+            bot_reply = "Спасибо за развернутые ответы! Я передам информацию работодателю."
+        
+        session["is_completed"] = True
+    else:
+        # Диалог продолжается
+        is_completed = False
+        dialog_stage = "questioning"
+        bot_reply = ai_response.strip()
+        relevance_percent = session.get("relevance_percent", 50)
+        summary = session.get("summary", "Идет уточнение деталей")
+        reasons = session.get("reasons", ["Требуется дополнительная информация"])
+    
+    # Обновляем сессию
+    session["messages"].append({"role": "assistant", "content": ai_response})
+    session["relevance_percent"] = relevance_percent
+    session["summary"] = summary
+    session["reasons"] = reasons
+    session["updated_at"] = datetime.utcnow().isoformat()
+    save_sessions(sessions_store)
+    
+    return ChatResponse(
+        session_id=request.session_id,
+        bot_reply=bot_reply,
+        relevance_percent=relevance_percent,
+        reasons=reasons,
+        summary_for_employer=summary,
+        dialog_stage=dialog_stage,
+        is_completed=is_completed
+    )
 
 @app.get("/sessions/{session_id}")
-def get_session(session_id: str):
-    sess = SESSIONS.get(session_id)
-    if not sess: raise HTTPException(404, "session not found")
-    return sess
+async def get_session(session_id: str):
+    """Получить информацию о сессии"""
+    if session_id not in sessions_store:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    session = sessions_store[session_id]
+    return {
+        "session_id": session_id,
+        "vacancy_text": session.get("vacancy_text", ""),
+        "cv_text": session.get("cv_text", ""),
+        "question_count": session.get("question_count", 0),
+        "is_completed": session.get("is_completed", False),
+        "relevance_percent": session.get("relevance_percent", 0),
+        "summary": session.get("summary", ""),
+        "reasons": session.get("reasons", []),
+        "created_at": session.get("created_at"),
+        "updated_at": session.get("updated_at"),
+        "message_count": len(session.get("messages", []))
+    }
+
+@app.get("/sessions")
+async def list_sessions():
+    """Получить список всех сессий"""
+    return {
+        "sessions": [
+            {
+                "session_id": sid,
+                "is_completed": session.get("is_completed", False),
+                "relevance_percent": session.get("relevance_percent", 0),
+                "question_count": session.get("question_count", 0),
+                "created_at": session.get("created_at"),
+                "updated_at": session.get("updated_at")
+            }
+            for sid, session in sessions_store.items()
+        ],
+        "total": len(sessions_store)
+    }
+
+@app.delete("/sessions/{session_id}")
+async def delete_session(session_id: str):
+    """Удалить сессию"""
+    if session_id not in sessions_store:
+        raise HTTPException(status_code=404, detail="Session not found")
+    
+    del sessions_store[session_id]
+    save_sessions(sessions_store)
+    
+    return {"message": "Session deleted successfully"}
+
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8001,
+        reload=True,
+        log_level="info"
+    )
+

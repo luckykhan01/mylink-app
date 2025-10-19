@@ -7,6 +7,7 @@ from pathlib import Path
 from datetime import datetime
 
 from database import get_db, engine
+from file_utils import extract_text_from_file
 from models import Base, UserRole
 from schemas import (
     VacancyCreate, VacancyUpdate, VacancyResponse, VacancyListResponse,
@@ -320,6 +321,9 @@ async def upload_resume(
     
     # Проверяем размер файла (макс 10MB)
     file_content = await file.read()
+    print(f"📁 Received file: {file.filename}, size: {len(file_content)} bytes, type: {file.content_type}")
+    print(f"📁 First 20 bytes: {file_content[:20]}")
+    
     if len(file_content) > 10 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="Файл слишком большой. Максимальный размер: 10MB")
     
@@ -335,20 +339,27 @@ async def upload_resume(
     with open(file_path, "wb") as buffer:
         buffer.write(file_content)
     
+    # Извлекаем текст из файла
+    extracted_text = extract_text_from_file(file_path)
+    
+    if not extracted_text:
+        # Если не удалось извлечь текст, используем заглушку
+        extracted_text = f"Резюме загружено: {file.filename}. Текст не удалось извлечь автоматически."
+    
     # Обновляем заявку с информацией о резюме
     update_data = {
         "resume_filename": file.filename,
         "resume_path": str(file_path),
-        # В будущем здесь можно добавить извлечение текста из PDF/DOC
-        "resume_content": "Resume content will be extracted by AI"
+        "resume_content": extracted_text
     }
     
     update_job_application(db, application_id, update_data)
     
     return {
-        "message": "Резюме успешно загружено",
+        "message": "Резюме успешно загружено и обработано",
         "filename": file.filename,
-        "application_id": application_id
+        "application_id": application_id,
+        "text_extracted": bool(extracted_text)
     }
 
 # ===== ЭНДПОИНТЫ ДЛЯ AI-АНАЛИЗА =====
@@ -378,10 +389,10 @@ async def analyze_application_with_ai(
         raise HTTPException(status_code=400, detail="Недостаточно информации о кандидате для анализа")
     
     try:
-        # Вызываем AI-ассистента
-        analysis_result = await ai_client.analyze_application(
-            cv_text=cv_text,
+        # Вызываем AI-ассистента через новый API /chat/start
+        analysis_result = await ai_client.start_chat(
             vacancy_text=vacancy_text,
+            cv_text=cv_text,
             session_id=f"app_{application_id}"
         )
         
