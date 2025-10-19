@@ -43,6 +43,17 @@ services:
       - backend
     restart: unless-stopped
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - mylink-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
   ai-assistent:
     build: ./ai-assistent
     ports:
@@ -52,6 +63,9 @@ services:
     environment:
       - PYTHONPATH=/app
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
     networks:
       - mylink-network
     restart: unless-stopped
@@ -62,3 +76,4 @@ networks:
 
 volumes:
   postgres_data:
+  redis_data:

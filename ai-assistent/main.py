@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import openai
 from openai import OpenAI
+import redis
 
 app = FastAPI(
     title="SmartBot AI Assistant",
@@ -35,29 +36,62 @@ if not openai_api_key:
     
 client = OpenAI(api_key=openai_api_key) if openai_api_key else None
 
-# Хранилище сессий (в продакшене лучше использовать Redis или БД)
-SESSIONS_FILE = Path("sessions.json")
+# Инициализация Redis
+redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
+try:
+    redis_client = redis.from_url(redis_url, decode_responses=True)
+    redis_client.ping()
+    print(f"✅ Connected to Redis at {redis_url}")
+except Exception as e:
+    print(f"❌ Failed to connect to Redis: {e}")
+    redis_client = None
 
-def load_sessions() -> Dict[str, Any]:
-    """Загружает сессии из файла"""
-    if SESSIONS_FILE.exists():
-        try:
-            with open(SESSIONS_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"Error loading sessions: {e}")
-            return {}
-    return {}
-
-def save_sessions(sessions: Dict[str, Any]):
-    """Сохраняет сессии в файл"""
+# Функции для работы с сессиями через Redis
+def load_session_from_redis(session_id: str) -> Optional[Dict[str, Any]]:
+    """Получить сессию из Redis"""
+    if not redis_client:
+        return None
     try:
-        with open(SESSIONS_FILE, "w", encoding="utf-8") as f:
-            json.dump(sessions, f, ensure_ascii=False, indent=2)
+        session_data = redis_client.get(f"session:{session_id}")
+        if session_data:
+            return json.loads(session_data)
+        return None
     except Exception as e:
-        print(f"Error saving sessions: {e}")
+        print(f"Error getting session {session_id}: {e}")
+        return None
 
-sessions_store = load_sessions()
+def save_session_to_redis(session_id: str, session_data: Dict[str, Any], expire_seconds: int = 86400):
+    """Сохранить сессию в Redis (по умолчанию истекает через 24 часа)"""
+    if not redis_client:
+        return
+    try:
+        redis_client.setex(
+            f"session:{session_id}",
+            expire_seconds,
+            json.dumps(session_data, ensure_ascii=False)
+        )
+    except Exception as e:
+        print(f"Error saving session {session_id}: {e}")
+
+def delete_session_from_redis(session_id: str):
+    """Удалить сессию из Redis"""
+    if not redis_client:
+        return
+    try:
+        redis_client.delete(f"session:{session_id}")
+    except Exception as e:
+        print(f"Error deleting session {session_id}: {e}")
+
+def get_all_session_ids() -> List[str]:
+    """Получить все ID сессий из Redis"""
+    if not redis_client:
+        return []
+    try:
+        keys = redis_client.keys("session:*")
+        return [key.replace("session:", "") for key in keys]
+    except Exception as e:
+        print(f"Error getting session IDs: {e}")
+        return []
 
 # Системный промпт SmartBot
 SYSTEM_PROMPT = """Ты — SmartBot, умный виджет на сайте работодателя. Твоя задача — автоматизировать первичный скрининг кандидатов по конкретной вакансии.
@@ -288,9 +322,9 @@ async def start_chat(request: ChatStartRequest):
         summary = "Идет уточнение деталей"
         reasons = ["Требуется дополнительная информация"]
     
-    # Сохраняем сессию
+    # Сохраняем сессию в Redis
     messages.append({"role": "assistant", "content": ai_response})
-    sessions_store[session_id] = {
+    session_data = {
         "session_id": session_id,
         "vacancy_text": request.vacancy_text,
         "cv_text": request.cv_text,
@@ -303,7 +337,7 @@ async def start_chat(request: ChatStartRequest):
         "created_at": datetime.utcnow().isoformat(),
         "updated_at": datetime.utcnow().isoformat()
     }
-    save_sessions(sessions_store)
+    save_session_to_redis(session_id, session_data)
     
     return ChatResponse(
         session_id=session_id,
@@ -324,11 +358,10 @@ async def chat_turn(request: ChatTurnRequest):
     2. Анализирует и задает следующий вопрос или завершает диалог
     3. Обновляет оценку релевантности
     """
-    # Проверяем существование сессии
-    if request.session_id not in sessions_store:
+    # Проверяем существование сессии в Redis
+    session = load_session_from_redis(request.session_id)
+    if not session:
         raise HTTPException(status_code=404, detail="Session not found")
-    
-    session = sessions_store[request.session_id]
     
     # Проверяем, не завершен ли уже диалог
     if session.get("is_completed", False):
@@ -452,7 +485,7 @@ async def chat_turn(request: ChatTurnRequest):
             print(f"❌ Error generating detailed analysis: {e}")
             detailed_analysis = f"**КРАТКИЙ АНАЛИЗ:** {summary}\n\n**РЕЛЕВАНТНОСТЬ:** {relevance_percent}%\n\n**ПРИЧИНЫ:** {', '.join(reasons)}"
     
-    # Обновляем сессию
+    # Обновляем сессию в Redis
     session["messages"].append({"role": "assistant", "content": ai_response})
     session["relevance_percent"] = relevance_percent
     session["summary"] = summary
@@ -460,7 +493,7 @@ async def chat_turn(request: ChatTurnRequest):
     session["rejection_tags"] = rejection_tags
     session["detailed_analysis"] = detailed_analysis
     session["updated_at"] = datetime.utcnow().isoformat()
-    save_sessions(sessions_store)
+    save_session_to_redis(request.session_id, session)
     
     return ChatResponse(
         session_id=request.session_id,
@@ -477,12 +510,11 @@ async def chat_turn(request: ChatTurnRequest):
     )
 
 @app.get("/sessions/{session_id}")
-async def get_session(session_id: str):
+async def get_session_info(session_id: str):
     """Получить информацию о сессии"""
-    if session_id not in sessions_store:
+    session = load_session_from_redis(session_id)
+    if not session:
         raise HTTPException(status_code=404, detail="Session not found")
-    
-    session = sessions_store[session_id]
     return {
         "session_id": session_id,
         "vacancy_text": session.get("vacancy_text", ""),
@@ -499,30 +531,35 @@ async def get_session(session_id: str):
 
 @app.get("/sessions")
 async def list_sessions():
-    """Получить список всех сессий"""
-    return {
-        "sessions": [
-            {
+    """Получить список всех сессий из Redis"""
+    session_ids = get_all_session_ids()
+    sessions_list = []
+    
+    for sid in session_ids:
+        session = load_session_from_redis(sid)
+        if session:
+            sessions_list.append({
                 "session_id": sid,
                 "is_completed": session.get("is_completed", False),
                 "relevance_percent": session.get("relevance_percent", 0),
                 "question_count": session.get("question_count", 0),
                 "created_at": session.get("created_at"),
                 "updated_at": session.get("updated_at")
-            }
-            for sid, session in sessions_store.items()
-        ],
-        "total": len(sessions_store)
+            })
+    
+    return {
+        "sessions": sessions_list,
+        "total": len(sessions_list)
     }
 
 @app.delete("/sessions/{session_id}")
-async def delete_session(session_id: str):
-    """Удалить сессию"""
-    if session_id not in sessions_store:
+async def delete_session_endpoint(session_id: str):
+    """Удалить сессию из Redis"""
+    session = load_session_from_redis(session_id)
+    if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     
-    del sessions_store[session_id]
-    save_sessions(sessions_store)
+    delete_session_from_redis(session_id)
     
     return {"message": "Session deleted successfully"}
 
